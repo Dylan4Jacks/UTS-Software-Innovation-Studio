@@ -1,0 +1,3 @@
+Go to unity Package Manager
+up the top, click "packages:..." and change to Unity Registry
+Search for Unity UI and TextMeshPro and install those
