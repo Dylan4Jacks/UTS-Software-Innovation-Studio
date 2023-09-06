@@ -2,29 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card {
-    public string name;
-    public int attack;
-    public int speed;
-    public int health;
-    public int currentHealth;
-    public bool isAlive;
-
-    public Card(string name, int attack, int speed, int health) {
-        this.attack = attack;
-        this.speed = speed;
-        this.health = health;
-        currentHealth = health;
-        isAlive = true;
-    }
-    public void takeDamage(int damage) {
-        this.currentHealth -= damage;
-    }
-    public void dealDamage(Card defender) {
-        defender.takeDamage(this.attack);
-        this.takeDamage(defender.attack);
-    }
-}
 public class Team {
 
     //array positions 0 - 5 in order
