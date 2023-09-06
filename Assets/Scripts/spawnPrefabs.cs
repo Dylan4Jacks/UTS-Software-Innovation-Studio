@@ -20,9 +20,9 @@ public class spawnPrefabs : MonoBehaviour
     private void generateCard(GameObject hand)
     {
         GameObject createdCard = Instantiate(cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        createdCard.GetComponent<cardStats>().speed = Random.Range(1, 101);
-        createdCard.GetComponent<cardStats>().strength = Random.Range(1, 101);
-        createdCard.GetComponent<cardStats>().health = Random.Range(1, 101);
+        createdCard.GetComponent<CardStats>().speed = Random.Range(1, 101);
+        createdCard.GetComponent<CardStats>().strength = Random.Range(1, 101);
+        createdCard.GetComponent<CardStats>().health = Random.Range(1, 101);
         createdCard.transform.parent = hand.transform;
     }
 }

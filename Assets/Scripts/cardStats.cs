@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cardStats : MonoBehaviour
+public class CardStats
 {
     public int health;
     public int strength;
