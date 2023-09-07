@@ -64,4 +64,10 @@ public static class Utils
         }
         return children;
     }
+
+    public static int ComparePlacedCreaturesBySpeed(PlacedCreature a, PlacedCreature b) {
+        return a == null? (b == null? 0 : -1): 
+            (b == null? 1 : a.currentSpeed > b.currentSpeed? 1: 
+                (a.currentSpeed < b.currentSpeed? -1 : 0)); 
+    }
 }
