@@ -6,11 +6,9 @@ using UnityEngine;
 public class TeamSlot : MonoBehaviour
 {
     #nullable enable
-    private Card? assignedCard;
+    private PlacedCreature? placedCreature;
     #nullable disable
-    public int currentHealth;
-    public int currentStrength;
-    public int currentSpeed;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -23,16 +21,8 @@ public class TeamSlot : MonoBehaviour
         
     }
     
-    public bool hasCard() {
-        return (assignedCard != null);
-    }
-
-    public void takeDamage(int damage) {
-        this.currentHealth -= damage;
-    }
-    public void dealDamage(TeamSlot defender) {
-        defender.takeDamage(this.currentStrength);
-        this.takeDamage(defender.currentStrength);
+    public bool hasCreature() {
+        return (placedCreature != null);
     }
 }
 
