@@ -11,6 +11,7 @@ public class PlacedCreature : MonoBehaviour
     public int currentSpeed; 
     public GameObject displayHealth;
     public GameObject displayStrength;
+    public bool isSlain;
     
     // Awake is called when instantiated
     void Awake()

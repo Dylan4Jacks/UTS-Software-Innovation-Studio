@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 public class BattleController : MonoBehaviour
 {
-    public int currentRound = 1;
-    public List<BaseCard> playerDeck; //TODO 
-    public GameObject creaturePrefab;
-    public List<GameObject> creatureContainers; 
+    public int currentRound = 0;
+    public List<PlacedCreature> initiativeQueue = new List<PlacedCreature>();
+    public GameObject roundCounter;
     public GameObject enemyTeam;
     public GameObject playerTeam;
-    public List<PlacedCreature> initiativeQueue = new List<PlacedCreature>();
+    public List<GameObject> creatureContainers; 
+    public GameObject creaturePrefab;
 
     void Awake() {
 
@@ -41,19 +42,29 @@ public class BattleController : MonoBehaviour
         placedCreatureTransform.position += ((position > 2)? Vector3.down : Vector3.up) * 48;
 
         placedCreature.GetComponent<PlacedCreature>().setupCard(baseCard);
-        placedCreature.transform.parent = playerTeam.GetComponent<Team>().teamSlots[position].transform;
-        initiativeQueue.Add(placedCreature.GetComponent<PlacedCreature>());
-        sortInitiativeQueue();
+        placedCreature.transform.parent = alignment == Utils.PLAYER? 
+            playerTeam.GetComponent<Team>().teamSlots[position].transform : 
+            enemyTeam.GetComponent<Team>().teamSlots[position].transform;
     } 
 
     private void sortInitiativeQueue() {
         initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
     }
+    private void roundStart() {
+        currentRound += 1; 
+        roundCounter.GetComponent<TextMeshPro>().text = "Round " + currentRound.ToString();
 
+        //populate and sort the initiative queue
+        List<GameObject> playerTeamSlots = playerTeam.GetComponent<Team>().teamSlots;
+        initiativeQueue.AddRange(playerTeam.GetComponentsInChildren<PlacedCreature>());
+        initiativeQueue.AddRange(enemyTeam.GetComponentsInChildren<PlacedCreature>());
+        sortInitiativeQueue();
+    }
     private void testBattle() {
         for (int i = 0; i < 6; i++) {
             placeCreature(Utils.ENEMY, i, new BaseCard("Name", Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
             placeCreature(Utils.PLAYER, i, new BaseCard("Name", Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
         }
+        roundStart();
     }
 }
