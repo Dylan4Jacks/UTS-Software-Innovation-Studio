@@ -30,6 +30,15 @@ public static class Utils
         return position == FRONT_LEFT || position == BACK_LEFT? CONTAINER_LEFT : 
                position == FRONT_MID || position == BACK_MID? CONTAINER_MID : CONTAINER_RIGHT;
     }
+    public static int calculateRowPartner(int position) {
+        if (position == FRONT_LEFT) { return BACK_LEFT; }
+        if (position == BACK_LEFT) { return FRONT_LEFT; }
+        if (position == FRONT_MID) { return BACK_MID; }
+        if (position == BACK_MID) { return FRONT_MID; }
+        if (position == FRONT_MID) { return BACK_MID; }
+        if (position == BACK_MID) { return FRONT_MID; }
+        return 0;
+    }
 
     //This gets all the children, including children of children. This populates the list depth first. 
     public static List<GameObject> getAllChildren(GameObject obj) {

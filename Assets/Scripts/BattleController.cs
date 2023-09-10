@@ -12,9 +12,6 @@ public class BattleController : MonoBehaviour
     public GameObject creaturePrefab;
     public List<Team> teams = new List<Team>(); 
 
-    // [SerializeField] private GameObject enemyTeam;
-    // [SerializeField] private GameObject playerTeam;
-
     void Awake() {
         teams[Utils.ENEMY].alignment = Utils.ENEMY;
         teams[Utils.PLAYER].alignment = Utils.PLAYER;

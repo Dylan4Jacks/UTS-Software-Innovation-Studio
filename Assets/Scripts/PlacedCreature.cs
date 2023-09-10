@@ -6,6 +6,7 @@ using System;
 
 public class PlacedCreature : MonoBehaviour
 {
+    private BattleController battleController;
     public BaseCard baseStats;
     public int currentHealth;
     public int currentStrength;
@@ -20,7 +21,7 @@ public class PlacedCreature : MonoBehaviour
     // Awake is called when instantiated
     void Awake()
     {
-
+        this.battleController = BattleController.instance;
     }
     // Start is called before the first frame update
     void Start()
@@ -56,9 +57,14 @@ public class PlacedCreature : MonoBehaviour
         this.alignment = alignment;
     }
 
-    // private Tuple<int,int> findTarget() {
-    //     int targetAlignment = alignment == Utils.PLAYER? Utils.ENEMY: Utils.ENEMY;
-    //     BattleController.instance.teams[targetAlignment].teamSlots
+    // private PlacedCreature findTarget() {
+    //     int targetAlignment = this.alignment == Utils.PLAYER? Utils.ENEMY: Utils.ENEMY;
+    //     Team targetTeam = battleController.teams[targetAlignment];
+    //     //attack directly infront in its own row
+    //     if (targetTeam.placedCreatures[this.position] != null) {
+
+    //     } 
+
     // }
     // TO DO: Add more functionality for checking abilities. 
     public void attack(int position) {
