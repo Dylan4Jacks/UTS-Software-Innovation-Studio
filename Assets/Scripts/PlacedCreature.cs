@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class PlacedCreature : MonoBehaviour
 {
@@ -9,9 +10,12 @@ public class PlacedCreature : MonoBehaviour
     public int currentHealth;
     public int currentStrength;
     public int currentSpeed; 
-    public GameObject displayHealth;
-    public GameObject displayStrength;
     public bool isSlain;
+
+    [SerializeField] private GameObject displayHealth;
+    [SerializeField] private GameObject displayStrength;
+    private int alignment;
+    private int position;
     
     // Awake is called when instantiated
     void Awake()
@@ -43,10 +47,21 @@ public class PlacedCreature : MonoBehaviour
         currentSpeed = value;
     }
 
-    public void setupCard(BaseCard baseCard) {
+    public void setupCard(BaseCard baseCard, int alignment, int position) {
         this.baseStats = baseCard;
         setCurrentHealth(baseCard.health);
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
+        this.position = position;
+        this.alignment = alignment;
+    }
+
+    // private Tuple<int,int> findTarget() {
+    //     int targetAlignment = alignment == Utils.PLAYER? Utils.ENEMY: Utils.ENEMY;
+    //     BattleController.instance.teams[targetAlignment].teamSlots
+    // }
+    // TO DO: Add more functionality for checking abilities. 
+    public void attack(int position) {
+        // this.findTarget(); 
     }
 }
