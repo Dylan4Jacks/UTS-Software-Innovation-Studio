@@ -550,12 +550,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1472497263}
-  - {fileID: 923277561}
-  - {fileID: 407969807}
-  - {fileID: 1963973128}
   - {fileID: 894086340}
+  - {fileID: 1963973128}
   - {fileID: 1901839794}
+  - {fileID: 1472497263}
+  - {fileID: 407969807}
+  - {fileID: 923277561}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &684244849
@@ -571,6 +571,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamSlots: []
+  placedCreatures:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  creatureContainers:
+  - {fileID: 228116212}
+  - {fileID: 777089341}
+  - {fileID: 1857413863}
+  alignment: 0
 --- !u!1 &743826795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,16 +1108,10 @@ MonoBehaviour:
   currentRound: 0
   initiativeQueue: []
   roundCounter: {fileID: 1827229450}
-  enemyTeam: {fileID: 684244847}
-  playerTeam: {fileID: 1544593779}
-  creatureContainers:
-  - {fileID: 228116212}
-  - {fileID: 777089341}
-  - {fileID: 1857413863}
-  - {fileID: 1589918276}
-  - {fileID: 445672435}
-  - {fileID: 743826795}
   creaturePrefab: {fileID: 4076517278986246010, guid: 8501139eda741374e886a05cfb5e5465, type: 3}
+  teams:
+  - {fileID: 684244849}
+  - {fileID: 1544593781}
 --- !u!4 &1459340879
 Transform:
   m_ObjectHideFlags: 0
@@ -1248,6 +1254,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamSlots: []
+  placedCreatures:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  creatureContainers:
+  - {fileID: 1589918276}
+  - {fileID: 445672435}
+  - {fileID: 743826795}
+  alignment: 1
 --- !u!1 &1589918276
 GameObject:
   m_ObjectHideFlags: 0

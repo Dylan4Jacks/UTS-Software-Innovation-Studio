@@ -11,6 +11,7 @@ public static class Utils
     // for referencing alignment
     public static int ENEMY = 0;
     public static int PLAYER = 1;
+    public static int NO_ALIGNMENT = 2;
 
     // for referencing position relative to alignment
     public static int FRONT_LEFT = 0;
@@ -20,24 +21,24 @@ public static class Utils
     public static int BACK_MID = 4;
     public static int BACK_RIGHT = 5;
 
-    // for referencing the relevant container element 
-    public static int CONTAINER_LEFT = 0;
-    public static int CONTAINER_MID = 1;
-    public static int CONTAINER_RIGHT = 2;
+    // for referencing the relevant LANE element & lanes
+    public static int LANE_LEFT = 0;
+    public static int LANE_MID = 1;
+    public static int LANE_RIGHT = 2;
 
 
-    public static int calculateRelevantContainer(int position) {
-        return position == FRONT_LEFT || position == BACK_LEFT? CONTAINER_LEFT : 
-               position == FRONT_MID || position == BACK_MID? CONTAINER_MID : CONTAINER_RIGHT;
+    public static int calculateLane(int position) {
+        return position == FRONT_LEFT || position == BACK_LEFT? LANE_LEFT : 
+               position == FRONT_MID || position == BACK_MID? LANE_MID : LANE_RIGHT;
     }
-    public static int calculateRowPartner(int position) {
+    public static int calculateLanePartner(int position) {
         if (position == FRONT_LEFT) { return BACK_LEFT; }
         if (position == BACK_LEFT) { return FRONT_LEFT; }
         if (position == FRONT_MID) { return BACK_MID; }
         if (position == BACK_MID) { return FRONT_MID; }
-        if (position == FRONT_MID) { return BACK_MID; }
-        if (position == BACK_MID) { return FRONT_MID; }
-        return 0;
+        if (position == FRONT_RIGHT) { return BACK_RIGHT; }
+        if (position == BACK_RIGHT) { return FRONT_RIGHT; }
+        return 0; // TO DO fix this to make it return null instead.
     }
 
     //This gets all the children, including children of children. This populates the list depth first. 
@@ -61,8 +62,8 @@ public static class Utils
 
     //TODO: write unit test for this one
     public static int ComparePlacedCreaturesBySpeed(PlacedCreature a, PlacedCreature b) {
-        return a == null? (b == null? 0 : -1): 
-            (b == null? 1 : a.currentSpeed > b.currentSpeed? 1: 
+        return a == null? (b == null? 0 : 1): 
+            (b == null? 1 : a.currentSpeed > b.currentSpeed? -1: 
                 (a.currentSpeed < b.currentSpeed? -1 : 0)); 
     }
 }

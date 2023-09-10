@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using UnityEngine;
 public class Team : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class Team : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class Team : MonoBehaviour
         
     }
     public void placeCreature(int position, BaseCard baseCard) {
-        GameObject relevantContainer = creatureContainers[Utils.calculateRelevantContainer(position)];
+        GameObject relevantContainer = creatureContainers[Utils.calculateLane(position)];
         Transform containerTransform = relevantContainer.GetComponent<Transform>();
 
         GameObject placedCreature = Instantiate(BattleController.instance.creaturePrefab, containerTransform.position, Quaternion.identity);
@@ -37,6 +37,46 @@ public class Team : MonoBehaviour
 
         placedCreatures[position].setupCard(baseCard, alignment, position);
         placedCreature.transform.parent = teamSlots[position].transform;
+    }
+
+    public List<PlacedCreature> getLaneCreatures(int lane) {
+        List<PlacedCreature> laneCreatures = new List<PlacedCreature>();
+        if (lane == Utils.LANE_LEFT) {
+            laneCreatures.Add(placedCreatures[Utils.FRONT_LEFT]);
+            laneCreatures.Add(placedCreatures[Utils.BACK_LEFT]); 
+        }
+        if (lane == Utils.LANE_MID) {
+            laneCreatures.Add(placedCreatures[Utils.FRONT_MID]);
+            laneCreatures.Add(placedCreatures[Utils.BACK_MID]); 
+        }
+        if (lane == Utils.LANE_RIGHT) {
+            laneCreatures.Add(placedCreatures[Utils.FRONT_RIGHT]);
+            laneCreatures.Add(placedCreatures[Utils.BACK_RIGHT]); 
+        }
+        return laneCreatures;
+    }
+    public void setVictoriousLane(int lane) {
+        List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
+        foreach (PlacedCreature laneCreature in laneCreatures) {
+            laneCreature.isVictorious = true;
+        }
+        BattleController.instance.laneVictors[lane] = this.alignment;
+    }
+
+    public Team getAdversary() {
+        if (this.alignment == Utils.PLAYER) {
+            return BattleController.instance.teams[Utils.ENEMY];
+        } else {
+            return BattleController.instance.teams[Utils.PLAYER];
+        }
+    }
+    public bool isLaneDefeated(int lane) {
+        List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
+        bool laneDefeated = true;
+        foreach (PlacedCreature creature in laneCreatures) {
+            if (!creature.isSlain) {laneDefeated = false;}
+        } 
+        return laneDefeated;
     }
 }
 
