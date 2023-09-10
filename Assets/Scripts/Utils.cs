@@ -33,13 +33,12 @@ public static class Utils
     }
     public static int calculateLanePartner(int position) {
         if (position == FRONT_LEFT) { return BACK_LEFT; }
-        if (position == BACK_LEFT) { return FRONT_LEFT; }
-        if (position == FRONT_MID) { return BACK_MID; }
-        if (position == BACK_MID) { return FRONT_MID; }
-        if (position == FRONT_RIGHT) { return BACK_RIGHT; }
-        if (position == BACK_RIGHT) { return FRONT_RIGHT; }
-        return 0; // TO DO fix this to make it return null instead.
-    }
+        else if (position == BACK_LEFT) { return FRONT_LEFT; }
+        else if (position == FRONT_MID) { return BACK_MID; }
+        else if (position == BACK_MID) { return FRONT_MID; }
+        else if (position == FRONT_RIGHT) { return BACK_RIGHT; }
+        else { return FRONT_RIGHT; }
+    } 
 
     //This gets all the children, including children of children. This populates the list depth first. 
     public static List<GameObject> getAllChildren(GameObject obj) {

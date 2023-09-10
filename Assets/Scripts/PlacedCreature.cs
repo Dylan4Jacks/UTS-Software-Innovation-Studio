@@ -20,6 +20,7 @@ public class PlacedCreature : MonoBehaviour
     private TextMeshPro strengthText;
     private int alignment;
     private int position;
+    private Team team;
     public bool isVictorious; 
     public PlacedCreature lanePartner; 
     // Awake is called when instantiated
@@ -55,6 +56,7 @@ public class PlacedCreature : MonoBehaviour
         if (lanePartner != null) {
             lanePartner.setNewLanePartner(this);
         }
+        this.team = BattleController.instance.teams[alignment];
     }
     public void setCurrentStrength(int value) {
         currentStrength = value;
@@ -75,17 +77,35 @@ public class PlacedCreature : MonoBehaviour
     public void setNewLanePartner(PlacedCreature partner){
         this.lanePartner = partner;
     }
+    /*************************************************
+    * AUXILIARY FUNCTIONS (to derive things)
+    *************************************************/
+    public List<PlacedCreature> getLaneOpponents() {
+        int lane = Utils.calculateLane(position);
+        return team.getAdversary().getLaneCreatures(lane);
+    }
+    public bool canAttack() {
+        // cards can only attack if: 
+        // strength > 0
+        // They are in the front row OR the creature infront has died
+        // They have an attribute which lets them ignore the card infront
 
+        bool canAttack = false; 
+        if (position <= 2 || !hasLanePartner() || lanePartner.isSlain) {
+            canAttack = true;
+        } 
+        return canAttack;
+    }
     /*************************************************
     * BATTLE FUNCTIONS
     *************************************************/
     private PlacedCreature findTarget() {
-        int targetAlignment = this.alignment == Utils.PLAYER? Utils.ENEMY: Utils.PLAYER;
-        Team targetTeam = battleController.teams[targetAlignment];
-        PlacedCreature target = targetTeam.placedCreatures[this.position];
+        List<PlacedCreature> laneOpponents = this.getLaneOpponents();
+        //attack directly infront 
+        PlacedCreature target = laneOpponents[0];
         //attack directly infront in its own row
         if (target == null || target.isSlain) {
-            target = targetTeam.placedCreatures[Utils.calculateLanePartner(position)];
+            target = laneOpponents[1];
             if (target == null || target.isSlain) {
                 return null; 
             }
@@ -95,7 +115,7 @@ public class PlacedCreature : MonoBehaviour
     }
     // TO DO: Add more functionality for checking abilities. 
     public void attack() {
-        if (this.isSlain) {
+        if (this.isSlain || !this.canAttack()) {
             return;
         }
         PlacedCreature target = this.findTarget();
