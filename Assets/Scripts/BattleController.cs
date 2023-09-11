@@ -36,35 +36,9 @@ public class BattleController : MonoBehaviour
         
     }
 
-    //TODO make this an onupdate thing
-    private void updateInitiativeQueue() {
-        
-    }
-
-    private void sortInitiativeQueue() {
-        initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
-    }
-    private IEnumerator startRound() {
-        this.currentRound += 1; 
-        fillInitiativeQueue();
-        //start looping through the initiative queue to do battle
-        foreach (PlacedCreature creature in initiativeQueue) {
-            //do this thing here where it waits for the previous one to finish.
-            yield return StartCoroutine(creature.attack());
-        }
-    }
-
-    private void fillInitiativeQueue() {
-        initiativeQueue.Clear();
-        foreach (Team team in this.teams) {
-            foreach (PlacedCreature creature in team.placedCreatures) {
-                if (!creature.isSlain && !creature.isVictorious) {
-                    initiativeQueue.Add(creature);
-                }
-            }
-        }
-        sortInitiativeQueue();
-    }
+    /********************************************
+    * publicly visible functions
+    *********************************************/
     public void generateNewTestTeam() {
         Utils.ClearConsole();
         this.currentRound = 0;
@@ -81,6 +55,10 @@ public class BattleController : MonoBehaviour
     public void startBattle() {
         StartCoroutine(runBattle());
     }
+
+    /********************************************
+    * Battle logic
+    *********************************************/
     private IEnumerator runBattle () {
         do {
             yield return startRound();
@@ -89,13 +67,39 @@ public class BattleController : MonoBehaviour
                 Debug.Log("Round has exceeded 50. Something is very wrong.");
                 break;
             }
-            initiativeQueue.Clear();
         } while (hasUnresolvedLanes());
-        if (!hasUnresolvedLanes()) {
-            Debug.Log("Winner: " + determineWinner().ToString());
+        Debug.Log("Winner: " + determineWinner().ToString());
+    }
+    private IEnumerator startRound() {
+        this.currentRound += 1; 
+        fillInitiativeQueue();
+        //start looping through the initiative queue to do battle
+        foreach (PlacedCreature creature in initiativeQueue) {
+            //do this thing here where it waits for the previous one to finish.
+            yield return StartCoroutine(creature.attack());
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
+    private void fillInitiativeQueue() {
+        initiativeQueue.Clear();
+        foreach (Team team in this.teams) {
+            foreach (PlacedCreature creature in team.placedCreatures) {
+                if (!creature.isSlain && !creature.isVictorious) {
+                    initiativeQueue.Add(creature);
+                }
+            }
+        }
+        sortInitiativeQueue();
+    }
+
+    private void sortInitiativeQueue() {
+        initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
+    }
+
+    /********************************************
+    * battle outcomes
+    *********************************************/
     private bool hasUnresolvedLanes() {
         bool hasUnresolvedLanes = false;
         for (int lane = 0; lane < laneVictors.Count; lane++) {

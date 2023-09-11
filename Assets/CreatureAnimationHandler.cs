@@ -8,7 +8,7 @@ public class CreatureAnimationHandler : AnimationHandler
     public IEnumerator basicAttack(int alignment, PlacedCreature target) {
         this.target = target;
         changeAnimationState(alignment == Utils.PLAYER? "creatureBasicAttackPlayer" : "creatureBasicAttackEnemy");
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1)
         {
             yield return null; 
         }

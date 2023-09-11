@@ -116,7 +116,6 @@ public class PlacedCreature : MonoBehaviour
         Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + " is targetting " + target.baseStats.cardName);
         return target;
     }
-    // TO DO: Add more functionality for checking abilities. 
      public IEnumerator attack() {
         if (this.isSlain || !this.canAttack()) {
             Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "cannot attack.");
