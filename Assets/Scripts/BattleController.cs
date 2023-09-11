@@ -111,7 +111,6 @@ public class BattleController : MonoBehaviour
             }
         }
     }
-
     private int determineWinner() {
         int enemyWinCount = 0;
         int playerWinCount = 0;

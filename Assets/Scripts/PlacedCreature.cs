@@ -89,11 +89,11 @@ public class PlacedCreature : MonoBehaviour
         // strength > 0
         // They are in the front row OR the creature infront has died
         // They have an attribute which lets them ignore the card infront
-
-        bool canAttack = false; 
-        if (position <= 2 || !hasLanePartner() || lanePartner.isSlain) {
-            canAttack = true;
-        } 
+        bool canAttack = true; 
+        if (this.isSlain) {canAttack = false;}
+        if (Utils.calculateRow(position, alignment) == Utils.BACK_ROW) {
+            if (hasLanePartner() && !lanePartner.isSlain) {canAttack = false;}
+        }
         return canAttack;
     }
     /*************************************************
@@ -110,19 +110,20 @@ public class PlacedCreature : MonoBehaviour
                 return null; 
             }
         }
-        Debug.Log("Round " + battleController.currentRound.ToString() + ": " + this.baseStats.cardName + " is attacking " + target.baseStats.cardName);
+        Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + " is targetting " + target.baseStats.cardName);
         return target;
     }
     // TO DO: Add more functionality for checking abilities. 
     public void attack() {
         if (this.isSlain || !this.canAttack()) {
+            Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "cannot attack.");
             return;
         }
         PlacedCreature target = this.findTarget();
         if (target == null) {
+            Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "is targetting null");
             return;
         }
-        
         attack(target);
     }
 

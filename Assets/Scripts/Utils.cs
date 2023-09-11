@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class Utils
 {
@@ -28,10 +29,25 @@ public static class Utils
     public static int LANE_MID = 1;
     public static int LANE_RIGHT = 2;
 
+    // for referencing the row a unit is on
+    // WARNING - this is independant from the position reference & 
+    // is not dependent on alignment.
+    public static int FRONT_ROW = 0;
+    public static int BACK_ROW = 1;
+
 
     public static int calculateLane(int position) {
         return position == FRONT_LEFT || position == BACK_LEFT? LANE_LEFT : 
                position == FRONT_MID || position == BACK_MID? LANE_MID : LANE_RIGHT;
+    }
+    public static int calculateRow(int position, int alignment) {
+        if (alignment == PLAYER) {
+            if (position <= FRONT_RIGHT) {return FRONT_ROW;}
+            else {return BACK_ROW;}
+        } else {
+            if (position >= BACK_LEFT) {return FRONT_ROW;}
+            else {return BACK_ROW;}
+        }
     }
     public static int calculateLanePartner(int position) {
         if (position == FRONT_LEFT) { return BACK_LEFT; }
@@ -67,13 +83,14 @@ public static class Utils
             (b == null? 1 : a.currentSpeed > b.currentSpeed? -1: 
                 (a.currentSpeed < b.currentSpeed? -1 : 0)); 
     }
-    public static void ClearConsole()
-    {
-        // This method clears the console by calling the ClearDeveloperConsole function
-        // which is not officially documented but works in many Unity versions
+    public static void ClearConsole() {
         System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView));
         System.Type type = assembly.GetType("UnityEditor.LogEntries");
         System.Reflection.MethodInfo method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
+    }
+
+    public static string roundTemplate() {
+        return "Round " + BattleController.instance.currentRound.ToString() + ": ";
     }
 }
