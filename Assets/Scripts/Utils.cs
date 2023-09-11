@@ -80,8 +80,8 @@ public static class Utils
     //TODO: write unit test for this one
     public static int ComparePlacedCreaturesBySpeed(PlacedCreature a, PlacedCreature b) {
         return a == null? (b == null? 0 : 1): 
-            (b == null? 1 : a.currentSpeed > b.currentSpeed? -1: 
-                (a.currentSpeed < b.currentSpeed? -1 : 0)); 
+            (b == null? -1 : a.currentSpeed > b.currentSpeed? -1: 
+                (a.currentSpeed < b.currentSpeed? 1 : 0)); 
     }
     public static void ClearConsole() {
         System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView));

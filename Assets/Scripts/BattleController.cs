@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Threading;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 public class BattleController : MonoBehaviour
 {
     public static BattleController instance;
@@ -43,10 +44,18 @@ public class BattleController : MonoBehaviour
     private void sortInitiativeQueue() {
         initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
     }
-    private void roundStart() {
+    private IEnumerator startRound() {
         this.currentRound += 1; 
-        
-        //populate and sort the initiative queue
+        fillInitiativeQueue();
+        //start looping through the initiative queue to do battle
+        foreach (PlacedCreature creature in initiativeQueue) {
+            //do this thing here where it waits for the previous one to finish.
+            yield return StartCoroutine(creature.attack());
+        }
+    }
+
+    private void fillInitiativeQueue() {
+        initiativeQueue.Clear();
         foreach (Team team in this.teams) {
             foreach (PlacedCreature creature in team.placedCreatures) {
                 if (!creature.isSlain && !creature.isVictorious) {
@@ -55,14 +64,8 @@ public class BattleController : MonoBehaviour
             }
         }
         sortInitiativeQueue();
-        //start looping through the initiative queue to do battle
-        foreach (PlacedCreature creature in initiativeQueue) {
-            creature.attack();
-        }
     }
-
-    //runs a testbattle
-    public void testBattle() {
+    public void generateNewTestTeam() {
         Utils.ClearConsole();
         this.currentRound = 0;
         for (int i = 0; i < 3; i++) {
@@ -72,8 +75,15 @@ public class BattleController : MonoBehaviour
             teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
             teams[Utils.PLAYER].placeCreature(i, new BaseCard("Player_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
         }
+        fillInitiativeQueue();
+    }
+
+    public void startBattle() {
+        StartCoroutine(runBattle());
+    }
+    private IEnumerator runBattle () {
         do {
-            roundStart();
+            yield return startRound();
             resolveLaneVictories();
             if (this.currentRound == 50) {
                 Debug.Log("Round has exceeded 50. Something is very wrong.");

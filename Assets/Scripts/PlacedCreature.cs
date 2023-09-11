@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class PlacedCreature : MonoBehaviour
 {
+    [SerializeField] private CreatureAnimationHandler creatureAnimator;
     private BattleController battleController;
     public BaseCard baseStats;
     public int currentHealth;
@@ -114,20 +117,23 @@ public class PlacedCreature : MonoBehaviour
         return target;
     }
     // TO DO: Add more functionality for checking abilities. 
-    public void attack() {
+     public IEnumerator attack() {
         if (this.isSlain || !this.canAttack()) {
             Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "cannot attack.");
-            return;
+            yield break;
         }
         PlacedCreature target = this.findTarget();
         if (target == null) {
             Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "is targetting null");
-            return;
+            yield break;
         }
-        attack(target);
+        yield return attack(target);
     }
 
-    public void attack(PlacedCreature target) {
+    public IEnumerator attack(PlacedCreature target) {
+        Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation start");
+        yield return StartCoroutine(creatureAnimator.basicAttack(alignment, target));
+        Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation finish");
         target.beAttacked(this);
         this.checkDeath(target); //check death after damage taken from retaliation
     }
@@ -157,5 +163,4 @@ public class PlacedCreature : MonoBehaviour
     public void perish() {
         this.isSlain = true;
     }
-    
 }
