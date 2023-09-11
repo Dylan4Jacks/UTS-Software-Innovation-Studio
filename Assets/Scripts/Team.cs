@@ -41,20 +41,30 @@ public class Team : MonoBehaviour
 
     public List<PlacedCreature> getLaneCreatures(int lane) {
         List<PlacedCreature> laneCreatures = new List<PlacedCreature>();
-        if (lane == Utils.LANE_LEFT) {
+        if (lane == Utils.LANE_LEFT && this.alignment == Utils.PLAYER) {
             laneCreatures.Add(placedCreatures[Utils.FRONT_LEFT]);
             laneCreatures.Add(placedCreatures[Utils.BACK_LEFT]); 
+        } else if (lane == Utils.LANE_LEFT && this.alignment == Utils.ENEMY) {
+            laneCreatures.Add(placedCreatures[Utils.BACK_LEFT]);
+            laneCreatures.Add(placedCreatures[Utils.FRONT_LEFT]);
         }
-        if (lane == Utils.LANE_MID) {
+        if (lane == Utils.LANE_MID && this.alignment == Utils.PLAYER) {
             laneCreatures.Add(placedCreatures[Utils.FRONT_MID]);
             laneCreatures.Add(placedCreatures[Utils.BACK_MID]); 
+        } else if (lane == Utils.LANE_MID && this.alignment == Utils.ENEMY) {
+            laneCreatures.Add(placedCreatures[Utils.BACK_MID]);
+            laneCreatures.Add(placedCreatures[Utils.FRONT_MID]);
         }
-        if (lane == Utils.LANE_RIGHT) {
+        if (lane == Utils.LANE_RIGHT && this.alignment == Utils.PLAYER) {
             laneCreatures.Add(placedCreatures[Utils.FRONT_RIGHT]);
             laneCreatures.Add(placedCreatures[Utils.BACK_RIGHT]); 
+        } else if (lane == Utils.LANE_RIGHT && this.alignment == Utils.ENEMY) {
+            laneCreatures.Add(placedCreatures[Utils.BACK_RIGHT]);
+            laneCreatures.Add(placedCreatures[Utils.FRONT_RIGHT]);
         }
         return laneCreatures;
     }
+
     public void setVictoriousLane(int lane) {
         List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
         foreach (PlacedCreature laneCreature in laneCreatures) {

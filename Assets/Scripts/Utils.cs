@@ -13,7 +13,9 @@ public static class Utils
     public static int PLAYER = 1;
     public static int NO_ALIGNMENT = 2;
 
-    // for referencing position relative to alignment
+    // for referencing position
+    // WARNING: these positions do not flip when referencing the enemy.
+    // eg. BACK_RIGHT will be the enemy's FRONT_RIGHT (in the context of battle)
     public static int FRONT_LEFT = 0;
     public static int FRONT_MID = 1;
     public static int FRONT_RIGHT = 2;

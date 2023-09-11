@@ -1112,6 +1112,7 @@ MonoBehaviour:
   teams:
   - {fileID: 684244849}
   - {fileID: 1544593781}
+  laneVictors: 000000000000000000000000
 --- !u!4 &1459340879
 Transform:
   m_ObjectHideFlags: 0

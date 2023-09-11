@@ -72,8 +72,8 @@ public class BattleController : MonoBehaviour
         do {
             roundStart();
             resolveLaneVictories();
-            if (this.currentRound == 20) {
-                Debug.Log("Round has exceeded 20. Something is very wrong.");
+            if (this.currentRound == 50) {
+                Debug.Log("Round has exceeded 50. Something is very wrong.");
                 break;
             }
             initiativeQueue.Clear();
