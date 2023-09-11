@@ -27,7 +27,6 @@ public class BattleController : MonoBehaviour
         else {
             instance = this;
         }
-        testBattle();
     }
 
     // Update is called once per frame
@@ -46,7 +45,7 @@ public class BattleController : MonoBehaviour
     }
     private void roundStart() {
         this.currentRound += 1; 
-
+        
         //populate and sort the initiative queue
         foreach (Team team in this.teams) {
             foreach (PlacedCreature creature in team.placedCreatures) {
@@ -61,7 +60,11 @@ public class BattleController : MonoBehaviour
             creature.attack();
         }
     }
-    private void testBattle() {
+
+    //runs a testbattle
+    public void testBattle() {
+        Utils.ClearConsole();
+        this.currentRound = 0;
         for (int i = 0; i < 3; i++) {
             laneVictors[i] = -1; //temporary for debugging
         } 

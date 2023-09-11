@@ -67,4 +67,13 @@ public static class Utils
             (b == null? 1 : a.currentSpeed > b.currentSpeed? -1: 
                 (a.currentSpeed < b.currentSpeed? -1 : 0)); 
     }
+    public static void ClearConsole()
+    {
+        // This method clears the console by calling the ClearDeveloperConsole function
+        // which is not officially documented but works in many Unity versions
+        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView));
+        System.Type type = assembly.GetType("UnityEditor.LogEntries");
+        System.Reflection.MethodInfo method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+    }
 }

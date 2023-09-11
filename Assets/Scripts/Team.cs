@@ -36,7 +36,19 @@ public class Team : MonoBehaviour
         placedCreatureTransform.position += ((position > 2)? Vector3.down : Vector3.up) * 48;
 
         placedCreatures[position].setupCard(baseCard, alignment, position);
-        placedCreature.transform.parent = teamSlots[position].transform;
+        // If there's already a creature here
+        if (teamSlots[position].transform.childCount > 0) {
+            replaceCreature(teamSlots[position], placedCreature); 
+        } else {
+            placedCreature.transform.parent = teamSlots[position].transform;
+        }
+    }
+
+    private void replaceCreature(GameObject teamSlot, GameObject newCreature) {
+        foreach (Transform child in teamSlot.transform) {
+            Destroy(child.gameObject);
+        }
+        newCreature.transform.parent = teamSlot.transform;
     }
 
     public List<PlacedCreature> getLaneCreatures(int lane) {
