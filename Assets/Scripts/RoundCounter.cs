@@ -7,9 +7,8 @@ public class RoundCounter : MonoBehaviour
 {
     public BattleController battleController;
     public TextMeshPro textMesh;
-    // Update is called once per frame
-    void Update()
-    {
-        textMesh.text = "Round " + battleController.currentRound.ToString();
+
+    public void setText(string text) {
+        textMesh.text = text;
     }
 }

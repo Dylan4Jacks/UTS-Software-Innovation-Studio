@@ -5,15 +5,22 @@ using TMPro;
 using System.Threading;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 public class BattleController : MonoBehaviour
 {
-    public static BattleController instance;
+    // Related to battle
+    public bool enableRoundBreaks = false;
     public int currentRound = 0;
     public List<PlacedCreature> initiativeQueue = new List<PlacedCreature>();
-    public GameObject roundCounter;
+    [SerializeField] public List<int> laneVictors = new List<int>(new int[3]);
+
+    // For referencing
+    public static BattleController instance;
+    public RoundCounter roundCounter;
     public GameObject creaturePrefab;
     public List<Team> teams = new List<Team>(); 
-    [SerializeField] public List<int> laneVictors = new List<int>(new int[3]);
+    
+
 
     void Awake() {
         teams[Utils.ENEMY].alignment = Utils.ENEMY;
@@ -28,6 +35,7 @@ public class BattleController : MonoBehaviour
         else {
             instance = this;
         }
+        generateNewTestTeam();
     }
 
     // Update is called once per frame
@@ -40,8 +48,7 @@ public class BattleController : MonoBehaviour
     * publicly visible functions
     *********************************************/
     public void generateNewTestTeam() {
-        Utils.ClearConsole();
-        this.currentRound = 0;
+        resetBattle();
         for (int i = 0; i < 3; i++) {
             laneVictors[i] = -1; //temporary for debugging
         } 
@@ -55,29 +62,36 @@ public class BattleController : MonoBehaviour
     public void startBattle() {
         StartCoroutine(runBattle());
     }
-
+    public void toggleRoundBreaks() {
+        enableRoundBreaks = !enableRoundBreaks;
+    }
     /********************************************
     * Battle logic
     *********************************************/
     private IEnumerator runBattle () {
         do {
-            yield return startRound();
-            resolveLaneVictories();
-            if (this.currentRound == 50) {
-                Debug.Log("Round has exceeded 50. Something is very wrong.");
+            yield return runRound();
+            if (enableRoundBreaks) {
+                roundCounter.setText("Round " + currentRound + " End");
                 break;
-            }
+            };
         } while (hasUnresolvedLanes());
-        Debug.Log("Winner: " + determineWinner().ToString());
     }
-    private IEnumerator startRound() {
+    private IEnumerator runRound() {
         this.currentRound += 1; 
+        roundCounter.setText("Round " + this.currentRound.ToString());
         fillInitiativeQueue();
         //start looping through the initiative queue to do battle
         foreach (PlacedCreature creature in initiativeQueue) {
             //do this thing here where it waits for the previous one to finish.
+            Debug.Log(Utils.roundTemplate() + creature.baseStats.cardName + " to act");
             yield return StartCoroutine(creature.attack());
-            yield return new WaitForSeconds(0.2f);
+            Debug.Log(Utils.roundTemplate() + creature.baseStats.cardName + " turn finished");
+        }
+        resolveLaneVictories();
+        if (!hasUnresolvedLanes()) {
+            Debug.Log("battle's over");
+            handleBattleEnd();
         }
     }
 
@@ -138,5 +152,20 @@ public class BattleController : MonoBehaviour
         if (enemyWinCount > playerWinCount && enemyWinCount > drawCount) {return Utils.ENEMY;}
         else if (playerWinCount > enemyWinCount && playerWinCount > drawCount) {return Utils.PLAYER;}
         else {return Utils.NO_ALIGNMENT;}
+    }
+
+     //TO DO: flesh this out
+    private void handleBattleEnd() {
+        roundCounter.setText(Utils.alignmentString(determineWinner()) + " wins!");
+        Debug.Log("Winner: " + Utils.alignmentString(determineWinner()));
+    }
+
+    /********************************************
+    * Misc internal
+    *********************************************/
+    private void resetBattle() {
+        Utils.ClearConsole();
+        this.currentRound = 0;
+        roundCounter.setText("PREPARATION");
     }
 }

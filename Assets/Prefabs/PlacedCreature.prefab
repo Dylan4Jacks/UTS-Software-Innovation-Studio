@@ -438,6 +438,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6499502903708728012}
   currentState: Idle
+  self: {fileID: 3335215538205318696}
+  effectsHandler: {fileID: 7205368141154814930, guid: b05844771e245664b8a44595fb18680a, type: 3}
 --- !u!1 &8573984274994553301
 GameObject:
   m_ObjectHideFlags: 0

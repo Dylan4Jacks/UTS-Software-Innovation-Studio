@@ -93,4 +93,18 @@ public static class Utils
     public static string roundTemplate() {
         return "Round " + BattleController.instance.currentRound.ToString() + ": ";
     }
+
+    public static string alignmentString(int alignment) {
+        string text = "ERROR";
+        if (alignment == ENEMY) {
+            text = "Enemy";
+        }
+        if (alignment == PLAYER) {
+            text = "Player";
+        }
+        if (alignment == NO_ALIGNMENT) {
+            text = "Neither";
+        }
+        return text;
+    }
 }

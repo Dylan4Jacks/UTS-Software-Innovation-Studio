@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public class PlacedCreature : MonoBehaviour
 {
-    [SerializeField] private CreatureAnimationHandler creatureAnimator;
+    [SerializeField] public CreatureAnimationHandler creatureAnimator;
     private BattleController battleController;
     public BaseCard baseStats;
     public int currentHealth;
@@ -126,25 +126,25 @@ public class PlacedCreature : MonoBehaviour
             Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "is targetting null");
             yield break;
         }
-        yield return attack(target);
+        yield return StartCoroutine(attack(target));
     }
 
     public IEnumerator attack(PlacedCreature target) {
         Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation start");
         yield return StartCoroutine(creatureAnimator.basicAttack(alignment, target));
         Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation finish");
-        target.beAttacked(this);
-        this.checkDeath(target); //check death after damage taken from retaliation
+        yield return StartCoroutine(target.beAttacked(this));
+        yield return StartCoroutine(this.checkDeath(target)); //check death after damage taken from retaliation
     }
 
-    public void beAttacked(PlacedCreature attacker) {
+    public IEnumerator beAttacked(PlacedCreature attacker) {
         //check abilities to see if anything activates upon being attacked
         //then take damage
         //then retaliate
         // Debug.Log(attacker.baseStats.cardName + " is attacking " + this.baseStats.cardName);
         setCurrentHealth(currentHealth - attacker.currentStrength);
         retaliate(attacker);
-        this.checkDeath(attacker); 
+        yield return StartCoroutine(this.checkDeath(attacker)); 
     }
 
     public void retaliate(PlacedCreature attacker) {
@@ -152,14 +152,15 @@ public class PlacedCreature : MonoBehaviour
         setCurrentHealth(attacker.currentHealth - this.currentStrength);
     }
 
-    public void checkDeath(PlacedCreature killer) {
+    public IEnumerator checkDeath(PlacedCreature killer) {
         if (this.currentHealth <= 0) {
-            this.isSlain = true;
+            yield return perish();
             Debug.Log(this.baseStats.cardName + " has been slain by " + killer.baseStats.cardName);
         }
     }
 
-    public void perish() {
+    public IEnumerator perish() {
         this.isSlain = true;
+        yield return StartCoroutine(creatureAnimator.perish());
     }
 }
