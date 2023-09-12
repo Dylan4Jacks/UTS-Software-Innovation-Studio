@@ -849,9 +849,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a5fe80769c8364aa15dfd6632c87a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textField: {fileID: 0}
-  inputField: {fileID: 0}
-  submitCharacterButton: {fileID: 0}
+  textField: {fileID: 1339133596}
+  inputField: {fileID: 2076111549}
+  submitCharacterButton: {fileID: 577205212}
 --- !u!1 &1459567616
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,6 +1068,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1896215936}
   - component: {fileID: 1896215935}
+  - component: {fileID: 1896215937}
   m_Layer: 0
   m_Name: SINGLETON_GAME_AUDIO
   m_TagString: Untagged
@@ -1085,7 +1086,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 4f514b7ed5d98f0419c1816436d68e6d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1186,6 +1187,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1896215937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896215934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1fe6ca40a14ab479feb4d3950c345e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2076111547
 GameObject:
   m_ObjectHideFlags: 0

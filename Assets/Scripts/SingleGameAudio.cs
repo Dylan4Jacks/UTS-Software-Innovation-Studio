@@ -6,10 +6,13 @@ public class SingleGameAudio : MonoBehaviour
 {
     static SingleGameAudio instance;
 
-    private void Awake()
+    void Awake()
     {
         if(instance != null) {
             Destroy(gameObject);
+        } else {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
 }
