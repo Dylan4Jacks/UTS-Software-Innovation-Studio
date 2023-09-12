@@ -149,7 +149,7 @@ public class PlacedCreature : MonoBehaviour
 
     public void retaliate(PlacedCreature attacker) {
         // Debug.Log(this.baseStats.cardName + " is retaliating against" + attacker.baseStats.cardName);
-        setCurrentHealth(attacker.currentHealth - this.currentStrength);
+        attacker.setCurrentHealth(attacker.currentHealth - this.currentStrength);
     }
 
     public IEnumerator checkDeath(PlacedCreature killer) {
