@@ -47,11 +47,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda258ee74c6b4543a676a7547a8dd94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureAnimator: {fileID: 175128696149129971}
+  baseStats:
+    cardName: 
+    strength: 0
+    speed: 0
+    health: 0
   currentHealth: 0
   currentStrength: 0
   currentSpeed: 0
+  isSlain: 0
   displayHealth: {fileID: 8573984274994553301}
   displayStrength: {fileID: 5484388190977171111}
+  isVictorious: 0
+  lanePartner: {fileID: 0}
 --- !u!1 &4317708263096175478
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +327,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3487605352194017452}
   - component: {fileID: 6359603618831224315}
+  - component: {fileID: 6499502903708728012}
+  - component: {fileID: 175128696149129971}
   m_Layer: 0
   m_Name: Creature
   m_TagString: Untagged
@@ -392,6 +403,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6499502903708728012
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295802246366970723}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 07ab7345ee4ada341bfe6ab18e96b0b3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &175128696149129971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295802246366970723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3436ba81c196445be0af576fb4c11f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6499502903708728012}
+  currentState: Idle
+  self: {fileID: 3335215538205318696}
+  effectsHandler: {fileID: 7205368141154814930, guid: b05844771e245664b8a44595fb18680a, type: 3}
 --- !u!1 &8573984274994553301
 GameObject:
   m_ObjectHideFlags: 0
