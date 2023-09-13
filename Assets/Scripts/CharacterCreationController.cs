@@ -8,15 +8,16 @@ using UnityEditor;
 
 public class CharacterCreationController : MonoBehaviour
 {
-    public TMP_Text textField;
-    public TMP_InputField inputField;
-    public Button submitCharacterButton;
-    public 
+    public TMP_Text txtQuestion;
+    public TMP_InputField inAnswer;
+    public Button btnContinue;
+    private SingleCharacter singleCharacter = SingleCharacter.Instance;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        submitCharacterButton.onClick.AddListener(() => LoadNextQuestion());
+        btnContinue.onClick.AddListener(() => LoadNextQuestion());
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class CharacterCreationController : MonoBehaviour
     {
         //Save Current Response
         //Load Next Question
-        textField.text = "NEXT QUESTION";
+        txtQuestion.text = "NEXT QUESTION";
     }
 
     

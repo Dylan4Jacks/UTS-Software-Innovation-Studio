@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SinglePlayerInput : MonoBehaviour
+public class SingleCharacter : MonoBehaviour
 {
-    public static SinglePlayerInput Instance { get; private set; }
+    public static SingleCharacter Instance { get; private set; }
 
     private Dictionary<string, string> questionsAndResponses = new Dictionary<string, string>();
 
