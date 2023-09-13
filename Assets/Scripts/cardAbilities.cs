@@ -5,15 +5,15 @@ using UnityEngine;
 public class CardAbilities : MonoBehaviour
 {
     string[] abilities = {
-        'heal',
-        'areaHeal',
-        'areaDamage',
-        'strengthIncrease',
-        'sheildIncrease',
-        'speedIncrease',
-        'strengthDecrease',
-        'sheildDecrease',
-        'speedDecrease',
+        "heal",
+        "areaHeal",
+        "areaDamage",
+        "strengthIncrease",
+        "sheildIncrease",
+        "speedIncrease",
+        "strengthDecrease",
+        "sheildDecrease",
+        "speedDecrease",
     };
 
     // Heal Ability
