@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SingleCharacter : MonoBehaviour
 {
     public static SingleCharacter Instance;
 
-    List<string> Questions = new List<string>
+    public List<string> Questions = new List<string>
     { // Optionally can use 1 question and user enters text within the limit
         "What is your backstory?", 
         "What is your profession?",
         "What motivates you?"
     };
 
+    public class QuestionResponse
+    {
+        public string question;
+        public string response;
+    }
+    public List<QuestionResponse> AskedQuestions = new List<QuestionResponse>();
 
     private void Awake()
     {
@@ -28,24 +35,8 @@ public class SingleCharacter : MonoBehaviour
 
     public void AddQuestionAndResponse(string question, string response)
     {
-        if (!questionsAndResponses.ContainsKey(question)) {
-            questionsAndResponses.Add(question, response);
-        }
-        else {
-            // Handle duplicate questions, if necessary. For example:
-            questionsAndResponses[question] = response; // Overwrite the existing response
+        if (!AskedQuestions.Any(qr => qr.question.Equals(question))) {
+            AskedQuestions.Add(new QuestionResponse { question=question, response=response });
         }
     }
-
-    public string GetResponse(string question)
-    {
-        if (questionsAndResponses.TryGetValue(question, out string response)) {
-            return response;
-        }
-        else {
-            return null; // or return a default/fallback response
-        }
-    }
-
-    // ... Additional methods as needed ...
 }
