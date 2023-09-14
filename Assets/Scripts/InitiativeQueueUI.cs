@@ -33,7 +33,8 @@ public class InitiativeQueueUI : MonoBehaviour
         for (int i = 0; i < creaturesQueue.Count; i++) {
             int creaturePosition = creaturesQueue[i].getPosition();
             int creatureAlignment = creaturesQueue[i].getAlignment();
-            
+            Debug.Log(creaturesQueue.Count);
+            Debug.Log(slots.Count);            
             slots[i].creature = creaturesQueue[i];
 
             Team team = battleController.teams[creatureAlignment];

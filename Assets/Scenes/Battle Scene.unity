@@ -3863,7 +3863,6 @@ GameObject:
   - component: {fileID: 897360073}
   - component: {fileID: 897360072}
   - component: {fileID: 897360071}
-  - component: {fileID: 897360074}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3954,41 +3953,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &897360074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897360069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 405a73b4a3d4ce943ab208740a815013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slots:
-  - {fileID: 212708907}
-  - {fileID: 2019629139}
-  - {fileID: 1947910972}
-  - {fileID: 403406362}
-  - {fileID: 297344681}
-  - {fileID: 246336561}
-  selectCreatureBox:
-  - {fileID: 445476258}
-  - {fileID: 305714526}
-  - {fileID: 458854187}
-  - {fileID: 1779300282}
-  - {fileID: 45790667}
-  - {fileID: 1534643722}
-  - {fileID: 1596313600}
-  - {fileID: 2062697915}
-  - {fileID: 2005259221}
-  - {fileID: 1648151730}
-  - {fileID: 1368384315}
-  - {fileID: 105646804}
-  initiativeQueueObject: {fileID: 0}
-  upArrow: {fileID: 0}
-  downArrow: {fileID: 0}
 --- !u!1 &923277560
 GameObject:
   m_ObjectHideFlags: 0
@@ -5230,6 +5194,7 @@ MonoBehaviour:
   teams:
   - {fileID: 684244849}
   - {fileID: 1544593781}
+  initiativeQueueUI: {fileID: 1546645814}
 --- !u!4 &1459340879
 Transform:
   m_ObjectHideFlags: 0
@@ -5888,7 +5853,19 @@ MonoBehaviour:
   - {fileID: 403406362}
   - {fileID: 297344681}
   - {fileID: 246336561}
-  selectCreatureBox: []
+  selectCreatureBox:
+  - {fileID: 445476258}
+  - {fileID: 305714526}
+  - {fileID: 458854187}
+  - {fileID: 1779300282}
+  - {fileID: 45790667}
+  - {fileID: 1534643722}
+  - {fileID: 1596313600}
+  - {fileID: 2062697915}
+  - {fileID: 2005259221}
+  - {fileID: 1648151730}
+  - {fileID: 1368384315}
+  - {fileID: 105646804}
   initiativeQueueObject: {fileID: 737260583}
   upArrow: {fileID: 1483542456}
   downArrow: {fileID: 1408365286}
