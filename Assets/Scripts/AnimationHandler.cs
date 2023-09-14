@@ -7,22 +7,22 @@ using UnityEngine;
 public class AnimationHandler : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] protected Animator animator;
-    [SerializeField] protected string currentState;
+    [SerializeField] public Animator animator;
+    [SerializeField] public string currentState;
 
-    protected void changeAnimationState(string newState) {
+    public void changeAnimationState(string newState) {
         if (currentState == newState) return;
         animator.Play(newState);
         currentState = newState;
     }
 
-    protected IEnumerator waitForAnimationToFinish() {
+    public IEnumerator waitForAnimationToFinish() {
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
         {
             yield return null; 
         }
     }
-    protected IEnumerator waitForAnimatorStateChange() {
+    public IEnumerator waitForAnimatorStateChange() {
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime != 0) {
         
             yield return null;

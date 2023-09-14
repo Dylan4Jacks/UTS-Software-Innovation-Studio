@@ -109,6 +109,7 @@ public class BattleController : MonoBehaviour
 
     private void sortInitiativeQueue() {
         initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
+        InitiativeQueueUI.instance.handleNewQueue(initiativeQueue, this);
     }
 
     /********************************************
