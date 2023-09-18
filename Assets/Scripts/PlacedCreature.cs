@@ -152,7 +152,7 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = attacker.currentStrength - currentSheild;
         if (adjustedAttack > 0)
         {
-            setCurrentHealth(currentHealth - attacker.currentStrength);
+            setCurrentHealth(currentHealth - adjustedAttack);
         }
         retaliate(attacker);
         yield return StartCoroutine(this.checkDeath(attacker)); 
@@ -163,7 +163,7 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = this.currentStrength - attacker.currentSheild;
         if (adjustedAttack > 0)
         {
-            attacker.setCurrentHealth(attacker.currentHealth - this.currentStrength);
+            attacker.setCurrentHealth(attacker.currentHealth - adjustedAttack);
         }
     }
 
