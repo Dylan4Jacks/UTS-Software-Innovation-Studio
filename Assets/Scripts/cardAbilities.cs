@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class CardAbilities : MonoBehaviour
 {
-    string[] abilities = {
+    string[] abilities =
+    {
+        "sheildIncrease",
+        "sheildDecrease",
+    };
+   /*. string[] abilities = {
         'heal',
         'areaHeal',
         'areaDamage',
@@ -14,7 +19,7 @@ public class CardAbilities : MonoBehaviour
         'strengthDecrease',
         'sheildDecrease',
         'speedDecrease',
-    };
+    };*/
 
     // Heal Ability
         // Range: Need to determine the range of base stats first

@@ -15,6 +15,7 @@ public class PlacedCreature : MonoBehaviour
     public int currentStrength;
     public int currentSpeed; 
     public bool isSlain;
+    public int currentSheild;
 
     [SerializeField] private GameObject displayHealth;
     [SerializeField] private GameObject displayStrength;
@@ -53,6 +54,7 @@ public class PlacedCreature : MonoBehaviour
         setCurrentHealth(baseCard.health);
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
+        setCurrentSheild(baseCard.sheild);
         this.position = position;
         this.alignment = alignment;
         this.lanePartner = battleController.teams[alignment].placedCreatures[Utils.calculateLanePartner(this.position)];
@@ -72,6 +74,11 @@ public class PlacedCreature : MonoBehaviour
     public void setCurrentSpeed(int value) {
         //TODO add display speed
         currentSpeed = value;
+    }
+    public void setCurrentSheild(int value)
+    {
+        //TODO add display sheild
+        currentSheild = value;
     }
     public bool hasLanePartner() {
         return lanePartner != null;
@@ -142,14 +149,22 @@ public class PlacedCreature : MonoBehaviour
         //then take damage
         //then retaliate
         // Debug.Log(attacker.baseStats.cardName + " is attacking " + this.baseStats.cardName);
-        setCurrentHealth(currentHealth - attacker.currentStrength);
+        int adjustedAttack = attacker.currentStrength - currentSheild;
+        if (adjustedAttack > 0)
+        {
+            setCurrentHealth(currentHealth - attacker.currentStrength);
+        }
         retaliate(attacker);
         yield return StartCoroutine(this.checkDeath(attacker)); 
     }
 
     public void retaliate(PlacedCreature attacker) {
         // Debug.Log(this.baseStats.cardName + " is retaliating against" + attacker.baseStats.cardName);
-        attacker.setCurrentHealth(attacker.currentHealth - this.currentStrength);
+        int adjustedAttack = this.currentStrength - attacker.currentSheild;
+        if (adjustedAttack > 0)
+        {
+            attacker.setCurrentHealth(attacker.currentHealth - this.currentStrength);
+        }
     }
 
     public IEnumerator checkDeath(PlacedCreature killer) {
