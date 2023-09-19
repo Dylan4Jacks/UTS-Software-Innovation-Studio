@@ -33,13 +33,12 @@ public class InitiativeQueueUI : MonoBehaviour
         for (int i = 0; i < creaturesQueue.Count; i++) {
             int creaturePosition = creaturesQueue[i].getPosition();
             int creatureAlignment = creaturesQueue[i].getAlignment();
-            Debug.Log(creaturesQueue.Count);
-            Debug.Log(slots.Count);            
-            slots[i].creature = creaturesQueue[i];
 
             Team team = battleController.teams[creatureAlignment];
             GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creaturePosition)];
-            slots[i].creatureSelectionBox = Utils.getChildren(relevantContainer)[creaturePosition > 2? 1 : 0];
+            GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creaturePosition > 2? 1 : 0];
+            
+            slots[i].setupSlot(creaturesQueue[i], creatureSelectionBox);
         }
     } 
 
