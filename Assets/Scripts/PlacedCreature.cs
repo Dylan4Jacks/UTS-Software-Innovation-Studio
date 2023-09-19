@@ -15,7 +15,8 @@ public class PlacedCreature : MonoBehaviour
     public int currentStrength;
     public int currentSpeed; 
     public bool isSlain;
-    public int currentSheild;
+    public int currentShield;
+    public string[] currentAbility;
 
     [SerializeField] private GameObject displayHealth;
     [SerializeField] private GameObject displayStrength;
@@ -55,6 +56,7 @@ public class PlacedCreature : MonoBehaviour
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
         setCurrentSheild(baseCard.sheild);
+        setCurrentAbility(baseCard.ability);
         this.position = position;
         this.alignment = alignment;
         this.lanePartner = battleController.teams[alignment].placedCreatures[Utils.calculateLanePartner(this.position)];
@@ -79,6 +81,10 @@ public class PlacedCreature : MonoBehaviour
     {
         //TODO add display sheild
         currentSheild = value;
+    }
+    public void setCurrentAbility(string[] value)
+    {
+        currentAbility = value;
     }
     public bool hasLanePartner() {
         return lanePartner != null;
@@ -177,5 +183,16 @@ public class PlacedCreature : MonoBehaviour
     public IEnumerator perish() {
         this.isSlain = true;
         yield return StartCoroutine(creatureAnimator.perish());
+    }
+
+    /*************************************************
+    * ABILTIES
+    *************************************************/
+    public void triggerInitialAbilities () {
+       if (currentAbility[0] == "shield")
+        {
+            //Adds Sheild to Self
+            currentShield = int.Parse(currentAbility[1]);
+        }
     }
 }
