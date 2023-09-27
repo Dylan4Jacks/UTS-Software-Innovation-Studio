@@ -188,81 +188,86 @@ public class PlacedCreature : MonoBehaviour
     /*************************************************
     * ABILTIES
     *************************************************/
+
+    public int abilityTarget (string target)
+    {
+        // Determines target of ability for player's team
+        if (alignment == 1)
+        {
+            switch (target)
+            {
+                case "self":
+                    return position;
+                case "front":
+                    if (position - 3 >= 0)
+                    {
+                        return position - 3;
+                    }
+                    break;
+                case "back":
+                    if (position + 3 <= 5)
+                    {
+                        return position + 3;
+                    }
+                    break;
+                case "left":
+                    if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                    {
+                        return position - 1;
+                    }
+                    break;
+                case "right":
+                    if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                    {
+                        return position + 1;
+                    }
+                    break;
+            }
+        }
+        // Determines the target of the ability for the enemy's team
+        else
+        {
+            switch (target)
+            {
+                case "self":
+                    return position;
+                case "front":
+                    if (position + 3 <= 5)
+                    {
+                        return position + 3;
+                    }
+                    break;
+                case "back":
+                    if (position - 3 >= 0)
+                    {
+                        return position - 3;
+                    }
+                    break;
+                case "left":
+                    if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                    {
+                        return position - 1;
+                    }
+                    break;
+                case "right":
+                    if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                    {
+                        return position + 1;
+                    }
+                    break;
+            }
+        }
+        return -1;
+    }
+
     public void triggerInitialAbilities () {
-        int i = int.Parse(currentAbility[2]);
-        int targetPosition = -1;
+        int targetPosition = this.abilityTarget(currentAbility[1]);
+
         if (currentAbility[0] == "shield")
         {
-            // Determines target of ability for player's team
-            if (alignment == 1) { 
-                switch (currentAbility[1])
-                {
-                    case "self":
-                        currentShield = int.Parse(currentAbility[2]);
-                        break;
-                    case "front":
-                        if (position - 3 >= 0)
-                        {
-                            targetPosition = position - 3;
-                        }
-                        break;
-                    case "back":
-                        if (position + 3 <= 5)
-                        {
-                            targetPosition = position + 3;
-                        }
-                        break;
-                    case "left":
-                        if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
-                        {
-                            targetPosition = position - 1;
-                        }
-                        break;
-                    case "right":
-                        if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
-                        {
-                            targetPosition = position + 1;
-                        }
-                        break;
-                }
-            } 
-            // Determines the target of the ability for the enemy's team
-            else
+            if (targetPosition != -1)
             {
-                switch (currentAbility[1])
-                {
-                    case "self":
-                        currentShield = int.Parse(currentAbility[2]);
-                        break;
-                    case "front":
-                        if (position + 3 <= 5)
-                        {
-                            targetPosition = position + 3;
-                        }
-                        break;
-                    case "back":
-                        if (position - 3 >= 0)
-                        {
-                            targetPosition = position - 3;
-                        }
-                        break;
-                    case "left":
-                        if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
-                        {
-                            targetPosition = position - 1;
-                        }
-                        break;
-                    case "right":
-                        if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
-                        {
-                            targetPosition = position + 1;
-                        }
-                        break;
-                }
-            }
-            if (targetPosition > -1)
-            {
-                battleController.teams[alignment].placedCreatures[targetPosition].currentShield = position;
+                battleController.teams[alignment].placedCreatures[targetPosition].currentShield = int.Parse(currentAbility[2]);
             }
         }
     }
