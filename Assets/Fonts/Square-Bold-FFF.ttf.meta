@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: e13c04f25fc18a749b850019cfdc93e0
+guid: 3217fb25dbf19d94781a72d5769ff135
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
   fontSize: 16
-  forceTextureCase: -1
+  forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - EnterCommand
+  - FFF Forward
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 2
+  fontRenderingMode: 0
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1

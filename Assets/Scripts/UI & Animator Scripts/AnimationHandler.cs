@@ -10,6 +10,9 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] public Animator animator;
     [SerializeField] public string currentState;
 
+    public void Start() {
+        this.animator = gameObject.GetComponent<Animator>();
+    }
     public void changeAnimationState(string newState) {
         if (currentState == newState) return;
         animator.Play(newState);

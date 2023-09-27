@@ -7,18 +7,32 @@ public class InitiativeQueueSlot : MonoBehaviour, IPointerEnterHandler, IPointer
 {
       public PlacedCreature creature;
       public AnimationHandler animator;
-      public GameObject creatureSelectionBox;
+      public SelectedCreatureBox selectedCreatureBox;
       public int priority; 
 
+    // public void 
      public void OnPointerEnter(PointerEventData eventData)
     {
-        animator.changeAnimationState("Highlighted");
-        creatureSelectionBox.SetActive(true);
-
+        highlightSelf();
+        selectedCreatureBox.highlightSelf();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        unHighlightSelf();
+        selectedCreatureBox.unHighlightSelf();
+    }
+
+    public void highlightSelf() {
+        animator.changeAnimationState("Highlighted");
+    }
+
+    public void unHighlightSelf() {
         animator.changeAnimationState("Normal");
-        creatureSelectionBox.SetActive(false);
+    }
+
+    public void setupSlot(PlacedCreature creature, GameObject creatureSelectionBox) {
+        this.creature = creature;
+        this.selectedCreatureBox = creatureSelectionBox.GetComponent<SelectedCreatureBox>();
+        creatureSelectionBox.GetComponent<SelectedCreatureBox>().setInitiativeQueueSlot(this);
     }
 }
