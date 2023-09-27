@@ -55,7 +55,7 @@ public class PlacedCreature : MonoBehaviour
         setCurrentHealth(baseCard.health);
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
-        setCurrentSheild(baseCard.sheild);
+        setCurrentShield(baseCard.shield);
         setCurrentAbility(baseCard.ability);
         this.position = position;
         this.alignment = alignment;
@@ -77,10 +77,10 @@ public class PlacedCreature : MonoBehaviour
         //TODO add display speed
         currentSpeed = value;
     }
-    public void setCurrentSheild(int value)
+    public void setCurrentShield(int value)
     {
         //TODO add display sheild
-        currentSheild = value;
+        currentShield = value;
     }
     public void setCurrentAbility(string[] value)
     {
@@ -155,7 +155,7 @@ public class PlacedCreature : MonoBehaviour
         //then take damage
         //then retaliate
         // Debug.Log(attacker.baseStats.cardName + " is attacking " + this.baseStats.cardName);
-        int adjustedAttack = attacker.currentStrength - currentSheild;
+        int adjustedAttack = attacker.currentStrength - currentShield;
         if (adjustedAttack > 0)
         {
             setCurrentHealth(currentHealth - adjustedAttack);
@@ -166,7 +166,7 @@ public class PlacedCreature : MonoBehaviour
 
     public void retaliate(PlacedCreature attacker) {
         // Debug.Log(this.baseStats.cardName + " is retaliating against" + attacker.baseStats.cardName);
-        int adjustedAttack = this.currentStrength - attacker.currentSheild;
+        int adjustedAttack = this.currentStrength - attacker.currentShield;
         if (adjustedAttack > 0)
         {
             attacker.setCurrentHealth(attacker.currentHealth - adjustedAttack);
@@ -189,10 +189,81 @@ public class PlacedCreature : MonoBehaviour
     * ABILTIES
     *************************************************/
     public void triggerInitialAbilities () {
-       if (currentAbility[0] == "shield")
+        int i = int.Parse(currentAbility[2]);
+        int targetPosition = -1;
+        if (currentAbility[0] == "shield")
         {
-            //Adds Sheild to Self
-            currentShield = int.Parse(currentAbility[1]);
+            // Determines target of ability for player's team
+            if (alignment == 1) { 
+                switch (currentAbility[1])
+                {
+                    case "self":
+                        currentShield = int.Parse(currentAbility[2]);
+                        break;
+                    case "front":
+                        if (position - 3 >= 0)
+                        {
+                            targetPosition = position - 3;
+                        }
+                        break;
+                    case "back":
+                        if (position + 3 <= 5)
+                        {
+                            targetPosition = position + 3;
+                        }
+                        break;
+                    case "left":
+                        if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                        {
+                            targetPosition = position - 1;
+                        }
+                        break;
+                    case "right":
+                        if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                        {
+                            targetPosition = position + 1;
+                        }
+                        break;
+                }
+            } 
+            // Determines the target of the ability for the enemy's team
+            else
+            {
+                switch (currentAbility[1])
+                {
+                    case "self":
+                        currentShield = int.Parse(currentAbility[2]);
+                        break;
+                    case "front":
+                        if (position + 3 <= 5)
+                        {
+                            targetPosition = position + 3;
+                        }
+                        break;
+                    case "back":
+                        if (position - 3 >= 0)
+                        {
+                            targetPosition = position - 3;
+                        }
+                        break;
+                    case "left":
+                        if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                        {
+                            targetPosition = position - 1;
+                        }
+                        break;
+                    case "right":
+                        if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                        {
+                            targetPosition = position + 1;
+                        }
+                        break;
+                }
+            }
+            if (targetPosition > -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentShield = position;
+            }
         }
     }
 }
