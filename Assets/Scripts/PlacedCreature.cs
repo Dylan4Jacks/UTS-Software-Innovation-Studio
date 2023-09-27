@@ -269,6 +269,27 @@ public class PlacedCreature : MonoBehaviour
             {
                 battleController.teams[alignment].placedCreatures[targetPosition].currentShield = int.Parse(currentAbility[2]);
             }
+        } 
+        else if (currentAbility[0] == "health")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentHealth += int.Parse(currentAbility[2]);
+            }
+        }
+        else if (currentAbility[0] == "stregnth")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentStrength += int.Parse(currentAbility[2]);
+            }
+        }
+        else if (currentAbility[0] == "speed")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentSpeed += int.Parse(currentAbility[2]);
+            }
         }
     }
 }
