@@ -1,6 +1,7 @@
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
+using System.IO;
 
 public class OpenAIController : MonoBehaviour
 {
@@ -37,6 +39,8 @@ public class OpenAIController : MonoBehaviour
         StartCharacterCreation();
         submitCharacterButton.onClick.AddListener(() => GetResponse());
     }
+
+    
 
     private void StartCharacterCreation()
     {
@@ -137,4 +141,10 @@ public class OpenAIController : MonoBehaviour
         // Re-enable OK button
         submitCharacterButton.enabled = true;
     }
+}
+public class ModuleConfig {
+    public int numberOfObjcets {get; set; }
+    public int numberOfObjectAttributes {get; set; }
+    public string objectAttributes {get; set; }
+    public string objectContextDescription {get; set; }
 }
