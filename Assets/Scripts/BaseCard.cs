@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class BaseCard {
+    GameObject  creatureDisplay; // this is a GameObject incase we want to add accessories to the wug
     public string cardName;
     public int strength;
     public int speed;
