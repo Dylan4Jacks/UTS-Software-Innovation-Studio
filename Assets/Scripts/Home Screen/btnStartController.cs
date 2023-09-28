@@ -9,11 +9,50 @@ public class btnStartController : MonoBehaviour, IPointerEnterHandler, IPointerE
 {
     public Color normalColor = Color.white; // The color of text normally
     public Color hoverColor = Color.red;    // The color of text on hover
-    public TMP_Text textMeshPro;
+    public TMP_Text txtStartText;
+    [SerializeField] private float flashSpeed = 1f;
+    [SerializeField] private float minAlpha = 0f;
+    [SerializeField] private float maxAlpha = 1f;
+    [SerializeField] [Range(0, 2)] private float VisiblePerc = 1; // New variable
+
+    //Flashing Text Private values
+    private float timer;
+
+    private void Awake()
+    {
+    float fadeInPerc = 0.5f - VisiblePerc * 0.25f;
+    timer = fadeInPerc / flashSpeed; // Initialize timer to the point where the text is fully visible  
+    }
+
     private void Start()
     {
-        textMeshPro.color = normalColor; // Set initial color
+        txtStartText.color = normalColor; // Set initial color
     }
+    private void Update()
+    {
+        timer += Time.deltaTime * flashSpeed;
+        float lerpTime = Mathf.PingPong(timer, 1);
+        float fadeInPerc = 0.5f - VisiblePerc * 0.25f;
+        float fadeOutPerc = 0.5f + VisiblePerc * 0.25f;
+
+        float modifiedLerpTime;
+        if (lerpTime < fadeInPerc)
+        {
+            modifiedLerpTime = lerpTime / fadeInPerc;
+        }
+        else if (lerpTime < fadeOutPerc)
+        {
+            modifiedLerpTime = 1;
+        }
+        else
+        {
+            modifiedLerpTime = 1 - (lerpTime - fadeOutPerc) / (1 - fadeOutPerc);
+        }
+
+        float alpha = Mathf.Lerp(minAlpha, maxAlpha, modifiedLerpTime);
+        txtStartText.color = new Color(txtStartText.color.r, txtStartText.color.g, txtStartText.color.b, alpha);
+    }
+
 
     public void LoadNextScene()
     {
@@ -31,11 +70,11 @@ public class btnStartController : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        textMeshPro.color = hoverColor;
+        txtStartText.color = hoverColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        textMeshPro.color = normalColor;
+        txtStartText.color = normalColor;
     }
 }

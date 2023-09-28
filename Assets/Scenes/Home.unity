@@ -435,7 +435,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hoverColor: {r: 1, g: 0, b: 0, a: 1}
-  textMeshPro: {fileID: 1173127758}
+  txtStartText: {fileID: 1173127758}
+  flashSpeed: 0.3
+  minAlpha: 0
+  maxAlpha: 1
+  VisiblePerc: 1.3
 --- !u!1 &682658917
 GameObject:
   m_ObjectHideFlags: 0
