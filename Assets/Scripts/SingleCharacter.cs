@@ -9,9 +9,8 @@ public class SingleCharacter : MonoBehaviour
 
     public List<string> Questions = new List<string>
     { // Optionally can use 1 question and user enters text within the limit
-        "What is your backstory?", 
-        "What is your profession?",
-        "What motivates you?"
+        //"What is your backstory? What is your profession? What motivates you?"
+        "Who are you?"
     };
 
     public class QuestionResponse
