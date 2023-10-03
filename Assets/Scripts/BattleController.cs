@@ -61,6 +61,8 @@ public class BattleController : MonoBehaviour
     }
 
     public void startBattle() {
+        //Initiate game start abilities
+        activateInitiationAbilities();
         StartCoroutine(runBattle());
     }
     public void toggleRoundBreaks() {
@@ -69,6 +71,13 @@ public class BattleController : MonoBehaviour
     /********************************************
     * Battle logic
     *********************************************/
+    private void activateInitiationAbilities ()
+    {
+        foreach (PlacedCreature creature in initiativeQueue)
+        {
+           creature.triggerInitialAbilities();
+        }
+    }
     private IEnumerator runBattle () {
         do {
             yield return runRound();

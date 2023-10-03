@@ -15,6 +15,8 @@ public class PlacedCreature : MonoBehaviour
     public int currentStrength;
     public int currentSpeed; 
     public bool isSlain;
+    public int currentShield;
+    public string[] currentAbility;
 
     [SerializeField] private GameObject displayHealth;
     [SerializeField] private GameObject displayStrength;
@@ -53,6 +55,8 @@ public class PlacedCreature : MonoBehaviour
         setCurrentHealth(baseCard.health);
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
+        setCurrentShield(baseCard.shield);
+        setCurrentAbility(baseCard.ability);
         this.position = position;
         this.alignment = alignment;
         this.lanePartner = battleController.teams[alignment].placedCreatures[Utils.calculateLanePartner(this.position)];
@@ -72,6 +76,15 @@ public class PlacedCreature : MonoBehaviour
     public void setCurrentSpeed(int value) {
         //TODO add display speed
         currentSpeed = value;
+    }
+    public void setCurrentShield(int value)
+    {
+        //TODO add display sheild
+        currentShield = value;
+    }
+    public void setCurrentAbility(string[] value)
+    {
+        currentAbility = value;
     }
     public bool hasLanePartner() {
         return lanePartner != null;
@@ -150,14 +163,22 @@ public class PlacedCreature : MonoBehaviour
         //then take damage
         //then retaliate
         // Debug.Log(attacker.baseStats.cardName + " is attacking " + this.baseStats.cardName);
-        setCurrentHealth(currentHealth - attacker.currentStrength);
+        int adjustedAttack = attacker.currentStrength - currentShield;
+        if (adjustedAttack > 0)
+        {
+            setCurrentHealth(currentHealth - adjustedAttack);
+        }
         retaliate(attacker);
         yield return StartCoroutine(this.checkDeath(attacker)); 
     }
 
     public void retaliate(PlacedCreature attacker) {
         // Debug.Log(this.baseStats.cardName + " is retaliating against" + attacker.baseStats.cardName);
-        attacker.setCurrentHealth(attacker.currentHealth - this.currentStrength);
+        int adjustedAttack = this.currentStrength - attacker.currentShield;
+        if (adjustedAttack > 0)
+        {
+            attacker.setCurrentHealth(attacker.currentHealth - adjustedAttack);
+        }
     }
 
     public IEnumerator checkDeath(PlacedCreature killer) {
@@ -170,5 +191,113 @@ public class PlacedCreature : MonoBehaviour
     public IEnumerator perish() {
         this.isSlain = true;
         yield return StartCoroutine(creatureAnimator.perish());
+    }
+
+    /*************************************************
+    * ABILTIES
+    *************************************************/
+
+    public int abilityTarget (string target)
+    {
+        // Determines target of ability for player's team
+        if (alignment == 1)
+        {
+            switch (target)
+            {
+                case "self":
+                    return position;
+                case "front":
+                    if (position - 3 >= 0)
+                    {
+                        return position - 3;
+                    }
+                    break;
+                case "back":
+                    if (position + 3 <= 5)
+                    {
+                        return position + 3;
+                    }
+                    break;
+                case "left":
+                    if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                    {
+                        return position - 1;
+                    }
+                    break;
+                case "right":
+                    if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                    {
+                        return position + 1;
+                    }
+                    break;
+            }
+        }
+        // Determines the target of the ability for the enemy's team
+        else
+        {
+            switch (target)
+            {
+                case "self":
+                    return position;
+                case "front":
+                    if (position + 3 <= 5)
+                    {
+                        return position + 3;
+                    }
+                    break;
+                case "back":
+                    if (position - 3 >= 0)
+                    {
+                        return position - 3;
+                    }
+                    break;
+                case "left":
+                    if ((position - 1 >= 0 && position <= 2) || (position - 1 >= 3 && position <= 5 && position >= 3))
+                    {
+                        return position - 1;
+                    }
+                    break;
+                case "right":
+                    if ((position + 1 <= 2 && position <= 2) || (position + 1 <= 5 && position <= 5 && position >= 3))
+                    {
+                        return position + 1;
+                    }
+                    break;
+            }
+        }
+        return -1;
+    }
+
+    public void triggerInitialAbilities () {
+        int targetPosition = this.abilityTarget(currentAbility[1]);
+
+        if (currentAbility[0] == "shield")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentShield = int.Parse(currentAbility[2]);
+            }
+        } 
+        else if (currentAbility[0] == "health")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentHealth += int.Parse(currentAbility[2]);
+            }
+        }
+        else if (currentAbility[0] == "stregnth")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentStrength += int.Parse(currentAbility[2]);
+            }
+        }
+        else if (currentAbility[0] == "speed")
+        {
+            if (targetPosition != -1)
+            {
+                battleController.teams[alignment].placedCreatures[targetPosition].currentSpeed += int.Parse(currentAbility[2]);
+            }
+        }
     }
 }
