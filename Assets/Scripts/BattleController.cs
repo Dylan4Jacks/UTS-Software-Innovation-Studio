@@ -19,6 +19,7 @@ public class BattleController : MonoBehaviour
     public RoundCounter roundCounter;
     public GameObject creaturePrefab;
     public List<Team> teams = new List<Team>(); 
+    public InitiativeQueueUI initiativeQueueUI;
     
 
 
@@ -118,6 +119,7 @@ public class BattleController : MonoBehaviour
 
     private void sortInitiativeQueue() {
         initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
+        initiativeQueueUI.handleNewQueue(initiativeQueue, this);
     }
 
     /********************************************

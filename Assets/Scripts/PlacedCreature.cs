@@ -93,6 +93,14 @@ public class PlacedCreature : MonoBehaviour
     public void setNewLanePartner(PlacedCreature partner){
         this.lanePartner = partner;
     }
+
+    public int getPosition() {
+        return this.position;
+    }
+
+    public int getAlignment() {
+        return this.alignment;
+    }
     /*************************************************
     * AUXILIARY FUNCTIONS (to derive things)
     *************************************************/
