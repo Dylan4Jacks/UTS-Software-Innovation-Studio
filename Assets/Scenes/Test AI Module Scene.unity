@@ -968,6 +968,7 @@ GameObject:
   - component: {fileID: 1453053540}
   - component: {fileID: 1453053539}
   - component: {fileID: 1453053538}
+  - component: {fileID: 1453053541}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1061,6 +1062,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1453053541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453053536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ae28d486ebd1949a152a486dad7ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textField: {fileID: 628999316}
+  inputField: {fileID: 2027673124}
+  submitCharacterButton: {fileID: 15436406}
+  ModuleCharacterButton: {fileID: 1283465491}
 --- !u!1 &1458863547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,9 +1459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea8670ca8acab1488ebb9200eb4a80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textField: {fileID: 628999316}
-  inputField: {fileID: 2027673124}
-  submitCharacterButton: {fileID: 15436406}
 --- !u!1 &1890546689
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 using System.IO;
+using System.Threading;
 
 public class OpenAIController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class OpenAIController : MonoBehaviour
     public TMP_InputField inputField;
     public Button submitCharacterButton;
     public Button ModuleCharacterButton;
-    ModularOpenAIController modularOpenAIController = new ModularOpenAIController();
+    ModularOpenAIController modularOpenAIController;
 
     private OpenAIAPI api;
     private List<ChatMessage> cardCreationMessage;
@@ -31,17 +32,27 @@ public class OpenAIController : MonoBehaviour
     string rxHPString = @"(?<=(: HP: )).*(?=(, Speed:))";
     string rxSpeedString = @"(?<=(, Speed: )).*(?=(, Attack: ))";
     string rxAttackString = @"(?<=(, Attack: )).*(?=(\n)?)";
+    string apiResponseString;
 
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-    void Start()
+     void Start()
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
         api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
         StartCharacterCreation();
         submitCharacterButton.onClick.AddListener(() => GetResponse());
-        ModuleCharacterButton.onClick.AddListener(() => modularOpenAIController.submitCharacterPrompt(inputPromptString));
+
+        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
+        if (ModuleCharacterButton != null)
+            { 
+
+                ModuleCharacterButton.onClick.AddListener(() => Debug.Log(string.Format("{0} {1}","MODULE WAIT TEST: ",modularOpenAIController.submitCharacterPrompt(inputPromptString))));
+                
+            } else { 
+                Debug.Log("ModuleCharacterButton is not assigned in the Inspector."); 
+            }
     }
 
     private void StartCharacterCreation()
