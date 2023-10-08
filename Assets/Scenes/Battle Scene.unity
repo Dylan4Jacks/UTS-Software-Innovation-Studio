@@ -425,6 +425,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 212708911}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 6
 --- !u!114 &212708909
 MonoBehaviour:
@@ -832,6 +834,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 246336565}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 11
 --- !u!114 &246336563
 MonoBehaviour:
@@ -976,6 +980,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 267337660}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 5
 --- !u!114 &267337663
 MonoBehaviour:
@@ -1123,6 +1129,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 297344685}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 10
 --- !u!114 &297344683
 MonoBehaviour:
@@ -1511,6 +1519,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 318931984}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 4
 --- !u!114 &318931987
 MonoBehaviour:
@@ -1641,6 +1651,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 385518763}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 0
 --- !u!114 &385518766
 MonoBehaviour:
@@ -1832,6 +1844,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 403406366}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 9
 --- !u!114 &403406364
 MonoBehaviour:
@@ -3833,6 +3847,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 854262760}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 1
 --- !u!114 &854262763
 MonoBehaviour:
@@ -4798,6 +4814,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 992704072}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 3
 --- !u!114 &992704075
 MonoBehaviour:
@@ -5078,6 +5096,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 1167433126}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 2
 --- !u!114 &1167433129
 MonoBehaviour:
@@ -7467,6 +7487,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 1947910976}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 8
 --- !u!114 &1947910974
 MonoBehaviour:
@@ -8019,6 +8041,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 2019629137}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 7
 --- !u!114 &2019629140
 MonoBehaviour:
