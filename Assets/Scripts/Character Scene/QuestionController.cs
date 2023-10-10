@@ -4,8 +4,8 @@ using System.Collections;
 
 public class QuestionController : MonoBehaviour
 {
-    public float delayBeforeStart = 0.3f;
-    public float fadeInTime = 0.5f;
+    public float delayBeforeStart = 0.1f;
+    public float fadeInTime = 0.1f;
     private TMP_Text textComponent;
 
     private void Start()

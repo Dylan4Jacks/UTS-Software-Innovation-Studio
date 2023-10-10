@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.UI;
 //TODO
-public class CharacterController : MonoBehaviour
+public class CharacterCreationController : MonoBehaviour
 {
+    public TMP_Text textField;
+    public TMP_Text inputField;
+    public Button BtnSubmit;
 
-    public TextMeshProUGUI answerText; // Drag and drop your TextMeshPro object here in the Inspector
-
+    public SingleCharacter singleCharacter;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,21 +22,25 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        // Count visible characters excluding whitespace
-        int visibleCharCount = answerText.text.Count(c => !char.IsWhiteSpace(c));
-        
-        // Check if 'Enter' key is pressed and visibleCharCount is more than 10
-        if (!(Input.GetKeyDown(KeyCode.Return) && visibleCharCount > 10))
+        // Check if 'Enter' key is pressed
+        if (!Input.GetKeyDown(KeyCode.Return))
         {
             return;
         }
-        
-        LoadNextScene(); // Call function to load next scene
+        // TODO: Implement After OpenAIController works with integration
+        //LoadNextScene(); // Call function to load next scene
     }
 
     // Function to load the next scene
     public void LoadNextScene()
     {
+        // Card Limit set to 0 for testing. Limit should be 7 at the minimum for a good game
+        if(singleCharacter.cards.Count < 0) 
+        {
+            Debug.Log("Card Count too low");
+            return; 
+        }
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
