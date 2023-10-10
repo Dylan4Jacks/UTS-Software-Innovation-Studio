@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2510,8 +2510,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Generate Test Team
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
-  m_sharedMaterial: {fileID: 2126447099092399449, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 05b96ab6b9249224bad064769131e577, type: 2}
+  m_sharedMaterial: {fileID: 6237778910176629806, guid: 05b96ab6b9249224bad064769131e577, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
+  m_overrideHtmlColors: 1
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
@@ -3081,8 +3081,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.0000076293945, y: 0}
+  m_SizeDelta: {x: -21.2498, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &742527805
 MonoBehaviour:
@@ -3106,8 +3106,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: toggle breaking between rounds
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
-  m_sharedMaterial: {fileID: 2126447099092399449, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 05b96ab6b9249224bad064769131e577, type: 2}
+  m_sharedMaterial: {fileID: 6237778910176629806, guid: 05b96ab6b9249224bad064769131e577, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3127,14 +3127,14 @@ MonoBehaviour:
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
+  m_overrideHtmlColors: 1
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
   m_fontSize: 15
   m_fontSizeBase: 15
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3452,8 +3452,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Start Test Battle
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
-  m_sharedMaterial: {fileID: 2126447099092399449, guid: 9da2f31f6e89bdf4e854737956e80315, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 05b96ab6b9249224bad064769131e577, type: 2}
+  m_sharedMaterial: {fileID: 6237778910176629806, guid: 05b96ab6b9249224bad064769131e577, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3473,14 +3473,14 @@ MonoBehaviour:
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
+  m_overrideHtmlColors: 1
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 31.7
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

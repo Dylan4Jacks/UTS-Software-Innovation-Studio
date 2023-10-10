@@ -10,11 +10,15 @@ public class BaseCard {
     public int strength;
     public int speed;
     public int health;
+    public int shield;
+    public string[] ability;
 
     public BaseCard(string name, int strength, int speed, int health) {
         this.cardName = name;
         this.strength = strength;
         this.speed = speed;
         this.health = health;
+        this.shield = 0;
+        this.ability = new string[] {"shield", "right", "1"};
     }
 }
