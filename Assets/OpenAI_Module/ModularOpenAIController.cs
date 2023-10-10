@@ -12,19 +12,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 using System.IO;
-using System.Threading;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
-public class OpenAIController : MonoBehaviour
+public class ModularOpenAIController : MonoBehaviour
 {
-    public TMP_Text textField;
-    public TMP_InputField inputField;
-    public Button submitCharacterButton;
-    public Button ModuleCharacterButton;
-    ModularOpenAIController modularOpenAIController;
-
     private OpenAIAPI api;
     private List<ChatMessage> cardCreationMessage;
-    string inputPromptString = "I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.";
+    BaseCard[] cards;
+    private ModuleConfigGetterSetter moduleConfigGetterSetter;
 
     // REGEX Expression for card creation
 
@@ -32,57 +29,51 @@ public class OpenAIController : MonoBehaviour
     string rxHPString = @"(?<=(: HP: )).*(?=(, Speed:))";
     string rxSpeedString = @"(?<=(, Speed: )).*(?=(, Attack: ))";
     string rxAttackString = @"(?<=(, Attack: )).*(?=(\n)?)";
-    string apiResponseString;
 
+    public ModularOpenAIController(){
+        string configJsonString  = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Assets/OpenAI_Module/moduleConfig.json"));
+        moduleConfigGetterSetter = JsonConvert.DeserializeObject<ModuleConfigGetterSetter>(configJsonString)!;
+    }
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-     void Start()
+    public string submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
         api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
-        StartCharacterCreation();
-        submitCharacterButton.onClick.AddListener(() => GetResponse());
-
-        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
-        if (ModuleCharacterButton != null)
-            { 
-
-                ModuleCharacterButton.onClick.AddListener(() => Debug.Log(string.Format("{0} {1}","MODULE WAIT TEST: ",modularOpenAIController.submitCharacterPrompt(inputPromptString))));
-                
-            } else { 
-                Debug.Log("ModuleCharacterButton is not assigned in the Inspector."); 
-            }
+        return StartCharacterCreation(inputPrompt).ToString();
     }
-
-    private void StartCharacterCreation()
+    private string StartCharacterCreation(string inputPrompt)
     {
+        Debug.Log("Modular Button function Beginning");
         cardCreationMessage = new List<ChatMessage> { 
             //This is where the prompt limits are imput
-            new ChatMessage(ChatMessageRole.System, "You are to create 8 creatures related to the character brief that is given. These creatures will be used for cards in a card game. You will respond with only the creature's name, HP, Speed, and Attack stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line")
+            new (ChatMessageRole.System, "You are to create 8 creatures related to the character brief that is given. These creatures will be used for cards in a card game. You will respond with only the creature's name, HP, Speed, and Attack stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line")
+            // Chat System Brief with Object attributes: "You are to create" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line"
             // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
         };
 
-        inputField.text = inputPromptString;
-        string startString = "What is your backstory? What is your profession? What motivates this character?";
-        textField.text = startString;
-        Debug.Log(startString);
+        Task<string> task = Task.Run(() =>
+        {
+            return GetResponse(inputPrompt);
+        });
+
+        task.Wait();
+
+        return task.Result;
     }
 
-    private async void GetResponse()
+    private async Task<string> GetResponse(string inputPrompt)
     {
-        if (inputField.text.Length < 1)
+        if (inputPrompt.Length < 1)
         {
-            return;
+            return "Prompt Length too Small!";
         }
-
-        //Disable the OK button
-        submitCharacterButton.enabled = false;
 
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
         userMessage.Role = ChatMessageRole.User;
-        userMessage.Content = inputField.text;
+        userMessage.Content = inputPrompt;
         if (userMessage.Content.Length > 200) //This is here to save tokens when making an API
         {
             //Shorten user message if over 100
@@ -93,11 +84,6 @@ public class OpenAIController : MonoBehaviour
         //Add Message to list
         cardCreationMessage.Add(userMessage);
 
-        // Update the text field with the user message
-        textField.text = string.Format("Input: {0}", userMessage.Content);
-
-        // Clear input field
-        inputField.text = "";
 
         // Send Character creation message to OpenAI to get the reponse in cards
         var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
@@ -118,8 +104,6 @@ public class OpenAIController : MonoBehaviour
 
         string apiResponseString = APIResponse.Content;
 
-        // Update the Test field with response
-        textField.text = apiResponseString;
 
         // Split Creatures/Objects into individual Strings
         string[] cardUnserialized = apiResponseString.Split(
@@ -128,7 +112,7 @@ public class OpenAIController : MonoBehaviour
         );
 
         //Initialize Array of Card Objects
-        BaseCard[] cards = new BaseCard[cardUnserialized.Length];
+        cards = new BaseCard[cardUnserialized.Length];
         int i = 0;
         foreach (var item in cardUnserialized)
         {
@@ -151,13 +135,17 @@ public class OpenAIController : MonoBehaviour
         Debug.Log(cards[0].cardName.ToString());
         Debug.Log(cards[0].strength.ToString());
 
-        // Re-enable OK button
-        submitCharacterButton.enabled = true;
+        return apiResponseString;
+    }
+
+    internal static void submitCharacterPrompt()
+    {
+        throw new NotImplementedException();
     }
 }
-public class ModuleConfig {
-    public int numberOfObjcets {get; set; }
-    public int numberOfObjectAttributes {get; set; }
-    public string objectAttributes {get; set; }
-    public string objectContextDescription {get; set; }
+public class ModuleConfigGetterSetter {
+    public int NumberOfObjcets { get; set; }
+    public int NumberOfObjectAttributes { get; set; }
+    public string ObjectAttributes { get; set; }
+    public string ObjectContextDescription { get; set; }
 }
