@@ -20,6 +20,7 @@ public class CharacterCreationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
     }
 

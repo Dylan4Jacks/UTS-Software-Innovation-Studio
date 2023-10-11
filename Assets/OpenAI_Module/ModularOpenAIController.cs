@@ -107,7 +107,6 @@ public class ModularOpenAIController : MonoBehaviour
 
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
-        int i = 0;
         foreach (var item in cardUnserialized)
         {
 
@@ -122,8 +121,7 @@ public class ModularOpenAIController : MonoBehaviour
                                 int.Parse(speedMatch.Value), 
                                 int.Parse(hpMatch.Value)
                                 );
-            cards[i] = card;
-            i++;
+            cards.Add(card);
         }
 
         Debug.Log(cards[0].cardName.ToString());
