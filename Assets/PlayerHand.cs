@@ -8,12 +8,9 @@ public class PlayerHand : MonoBehaviour
     public GameObject cardPrefab;
     public CardInHand selectedCard;
     public static PlayerHand instance;
-    private BattleController battleController;
     // Start is called before the first frame update
     void Start()
     {
-        this.battleController = BattleController.instance;
-
         if (instance != null && instance != this) {
             Destroy(this);
         }
@@ -61,6 +58,6 @@ public class PlayerHand : MonoBehaviour
     }
     
     public void placeCreature(int team, int position) {
-        battleController.teams[team].placeCreature(position, this.selectedCard.baseCard);
+        BattleController.instance.teams[team].placeCreature(position, this.selectedCard.baseCard);
     }
 }
