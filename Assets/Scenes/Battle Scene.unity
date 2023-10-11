@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -425,6 +425,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 212708911}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 6
 --- !u!114 &212708909
 MonoBehaviour:
@@ -612,6 +614,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 5
 --- !u!114 &221758486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,6 +836,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 246336565}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 11
 --- !u!114 &246336563
 MonoBehaviour:
@@ -976,6 +982,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 267337660}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 5
 --- !u!114 &267337663
 MonoBehaviour:
@@ -1123,6 +1131,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 297344685}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 10
 --- !u!114 &297344683
 MonoBehaviour:
@@ -1267,6 +1277,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 3
 --- !u!114 &305714532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1511,6 +1523,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 318931984}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 4
 --- !u!114 &318931987
 MonoBehaviour:
@@ -1641,6 +1655,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 385518763}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 0
 --- !u!114 &385518766
 MonoBehaviour:
@@ -1832,6 +1848,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 403406366}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 9
 --- !u!114 &403406364
 MonoBehaviour:
@@ -2007,6 +2025,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 0
 --- !u!222 &445476265
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2209,6 +2229,7 @@ GameObject:
   - component: {fileID: 470281944}
   - component: {fileID: 470281943}
   - component: {fileID: 470281942}
+  - component: {fileID: 470281949}
   m_Layer: 0
   m_Name: BottomSelect (2)
   m_TagString: Untagged
@@ -2327,6 +2348,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 5
 --- !u!114 &470281947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2362,6 +2385,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &470281949
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470281940}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.27132416, y: -1.0852966}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 129.60439, y: 93.247894}
+  m_EdgeRadius: 0
 --- !u!1 &515096387
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,6 +2655,7 @@ GameObject:
   - component: {fileID: 536942883}
   - component: {fileID: 536942882}
   - component: {fileID: 536942881}
+  - component: {fileID: 536942888}
   m_Layer: 0
   m_Name: BottomSelect (1)
   m_TagString: Untagged
@@ -2705,6 +2774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 4
 --- !u!114 &536942886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2740,6 +2811,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &536942888
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536942879}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.0852966, y: -1.8565826}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 129.06177, y: 88.44949}
+  m_EdgeRadius: 0
 --- !u!1 &580836496
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,7 +3233,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.35
+  m_fontSize: 20
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3833,6 +3949,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 854262760}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 1
 --- !u!114 &854262763
 MonoBehaviour:
@@ -3888,6 +4006,7 @@ GameObject:
   - component: {fileID: 861605610}
   - component: {fileID: 861605609}
   - component: {fileID: 861605608}
+  - component: {fileID: 861605615}
   m_Layer: 0
   m_Name: Top Select (1)
   m_TagString: Untagged
@@ -4006,6 +4125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 1
 --- !u!114 &861605613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4041,6 +4162,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &861605615
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861605606}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.6351357, y: -2.1023216}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 126.67211, y: 98.64115}
+  m_EdgeRadius: 0
 --- !u!1 &887541942
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,6 +4223,7 @@ GameObject:
   - component: {fileID: 887541946}
   - component: {fileID: 887541945}
   - component: {fileID: 887541944}
+  - component: {fileID: 887541951}
   m_Layer: 0
   m_Name: Top Select
   m_TagString: Untagged
@@ -4175,6 +4342,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 0
 --- !u!114 &887541949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4210,6 +4379,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &887541951
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887541942}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.34062958, y: 0.17031097}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 132.48091, y: 97.39662}
+  m_EdgeRadius: 0
 --- !u!1 &894086339
 GameObject:
   m_ObjectHideFlags: 0
@@ -4410,8 +4624,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -354.99997, y: -70.00001}
-  m_SizeDelta: {x: 183.6606, y: 73.75}
+  m_AnchoredPosition: {x: -355, y: -66}
+  m_SizeDelta: {x: 139, y: 57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &933437074
 MonoBehaviour:
@@ -4523,6 +4737,7 @@ GameObject:
   - component: {fileID: 956212188}
   - component: {fileID: 956212187}
   - component: {fileID: 956212186}
+  - component: {fileID: 956212193}
   m_Layer: 0
   m_Name: BottomSelect
   m_TagString: Untagged
@@ -4641,6 +4856,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 3
 --- !u!114 &956212191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4676,6 +4893,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &956212193
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956212184}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2.713173, y: 0.00002670288}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 133.40282, y: 92.16262}
+  m_EdgeRadius: 0
 --- !u!1 &979936565
 GameObject:
   m_ObjectHideFlags: 0
@@ -4798,6 +5060,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 992704072}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 3
 --- !u!114 &992704075
 MonoBehaviour:
@@ -5078,6 +5342,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 1167433126}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 2
 --- !u!114 &1167433129
 MonoBehaviour:
@@ -5251,6 +5517,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 1
 --- !u!114 &1181442455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6355,6 +6623,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 2
 --- !u!114 &1530112619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6844,6 +7114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 0
+  slotPosition: 4
 --- !u!114 &1599838827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7467,6 +7739,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 1947910976}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 8
 --- !u!114 &1947910974
 MonoBehaviour:
@@ -7775,6 +8049,7 @@ GameObject:
   - component: {fileID: 2009132944}
   - component: {fileID: 2009132943}
   - component: {fileID: 2009132942}
+  - component: {fileID: 2009132949}
   m_Layer: 0
   m_Name: Top Select (2)
   m_TagString: Untagged
@@ -7893,6 +8168,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiativeQueueSlot: {fileID: 0}
   animator: {fileID: 0}
+  team: 1
+  slotPosition: 2
 --- !u!114 &2009132947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7928,6 +8205,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &2009132949
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009132940}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.9343567, y: 0.70075226}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 129.94238, y: 96.77248}
+  m_EdgeRadius: 0
 --- !u!1 &2019629135
 GameObject:
   m_ObjectHideFlags: 0
@@ -8019,6 +8341,8 @@ MonoBehaviour:
   creature: {fileID: 0}
   animator: {fileID: 2019629137}
   selectedCreatureBox: {fileID: 0}
+  creatureSprite: {fileID: 21300000, guid: 2e2cfd2d6b60f5743ad8891b0c53e138, type: 3}
+  deathSprite: {fileID: -768117335, guid: a98d5836c3ad65a42a39a1c13f108d22, type: 3}
   priority: 7
 --- !u!114 &2019629140
 MonoBehaviour:
@@ -8133,6 +8457,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020580250}
   m_CullTransparentMesh: 1
+--- !u!1 &2062555656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2062555657}
+  - component: {fileID: 2062555658}
+  m_Layer: 0
+  m_Name: PlayerHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2062555657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062555656}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 287.47345, y: 37.624508, z: -20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2062555658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062555656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c622ee97ca4813c4eb38e46ce3221115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hand: []
+  cardPrefab: {fileID: 6914258130127149327, guid: 4ebcda94892dce342969c1fce16efaa2, type: 3}
+  selectedCard: {fileID: 0}
 --- !u!1 &2066049562
 GameObject:
   m_ObjectHideFlags: 0
@@ -8289,6 +8660,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1459340879}
   - {fileID: 119859536}
+  - {fileID: 2062555657}
   - {fileID: 1734954035}
   - {fileID: 684244848}
   - {fileID: 1544593780}

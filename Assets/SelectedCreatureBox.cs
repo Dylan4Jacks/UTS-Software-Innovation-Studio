@@ -7,23 +7,32 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
 {
     public InitiativeQueueSlot initiativeQueueSlot;
     public AnimationHandler animator;
+    public int team; 
+    public int slotPosition;
+    private BattleController battleController;
 
     public void Start() {
+        this.battleController = BattleController.instance;
         this.animator = gameObject.GetComponent<AnimationHandler>();
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Pointer entered");
         highlightSelf();
+        if (initiativeQueueSlot == null) {return;}
         initiativeQueueSlot.highlightSelf();
 
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Pointer exited");
         unHighlightSelf();
+        if (initiativeQueueSlot == null) {return;}
         initiativeQueueSlot.unHighlightSelf();
 
+    }
+
+    public void OnMouseDown() {
+        Debug.Log("testing");
+        this.placeCreature();
     }
 
     public void highlightSelf() {
@@ -35,5 +44,11 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void setInitiativeQueueSlot(InitiativeQueueSlot initiativeQueueSlot) {
         this.initiativeQueueSlot = initiativeQueueSlot;
+    }
+
+    public void placeCreature() {
+        if (PlayerHand.instance.selectedCard != null) {
+            PlayerHand.instance.placeCreature(this.team, this.slotPosition);
+        }
     }
 }

@@ -76,6 +76,7 @@ public class InitiativeQueueUI : MonoBehaviour
     }
 
     public void clickUp() {
+        //move down a page 
         moveUp(1);
     }
 
