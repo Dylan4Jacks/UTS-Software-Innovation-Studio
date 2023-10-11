@@ -114,7 +114,7 @@ public class ModularOpenAIController : MonoBehaviour
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
-
+            Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
                                 nameMatch.Value, 
                                 int.Parse(attackMatch.Value), 
