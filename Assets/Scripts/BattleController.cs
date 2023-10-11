@@ -55,7 +55,7 @@ public class BattleController : MonoBehaviour
         } 
         for (int i = 0; i < 6; i++) {
             teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
-            teams[Utils.PLAYER].placeCreature(i, new BaseCard("Player_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
+            // teams[Utils.PLAYER].placeCreature(i, new BaseCard("Player_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
         }
         fillInitiativeQueue();
     }
@@ -109,6 +109,9 @@ public class BattleController : MonoBehaviour
         initiativeQueue.Clear();
         foreach (Team team in this.teams) {
             foreach (PlacedCreature creature in team.placedCreatures) {
+                if (creature == null) {
+                    break;
+                }
                 if (!creature.isSlain && !creature.isVictorious) {
                     initiativeQueue.Add(creature);
                 }
