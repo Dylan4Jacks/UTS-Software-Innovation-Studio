@@ -9,11 +9,9 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     public AnimationHandler animator;
     public int team; 
     public int slotPosition;
-    private PlayerHand playerHand;
     private BattleController battleController;
 
     public void Start() {
-        this.playerHand = PlayerHand.instance;
         this.battleController = BattleController.instance;
         this.animator = gameObject.GetComponent<AnimationHandler>();
     }
@@ -49,8 +47,8 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     public void placeCreature() {
-        if (playerHand.selectedCard != null) {
-            playerHand.placeCreature(this.team, this.slotPosition);
+        if (PlayerHand.instance.selectedCard != null) {
+            PlayerHand.instance.placeCreature(this.team, this.slotPosition);
         }
     }
 }

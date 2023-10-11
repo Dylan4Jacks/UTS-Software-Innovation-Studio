@@ -13,7 +13,7 @@ public class spawnPrefabs : MonoBehaviour
         // Instantiate at position (0, 0, 0) and zero rotation.
         GameObject playerHand = Instantiate(hand, new Vector3(0, 0, 0), Quaternion.identity);
         this.singleCharacter = SingleCharacter.Instance;
-        if(singleCharacter.cards.Count > 7) 
+        if(singleCharacter != null && singleCharacter.cards.Count > 7) 
         {
             foreach (BaseCard card in singleCharacter.cards)
             {
