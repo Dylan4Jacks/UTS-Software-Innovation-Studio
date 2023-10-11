@@ -20,7 +20,7 @@ public class ModularOpenAIController : MonoBehaviour
 {
     private OpenAIAPI api;
     private List<ChatMessage> cardCreationMessage;
-    BaseCard[] cards;
+    List<BaseCard> cards;
     private ModuleConfigGetterSetter moduleConfigGetterSetter;
 
     // REGEX Expression for card creation
@@ -37,13 +37,13 @@ public class ModularOpenAIController : MonoBehaviour
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-    public string submitCharacterPrompt(string inputPrompt)
+    public List<BaseCard> submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
         api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
-        return StartCharacterCreation(inputPrompt).ToString();
+        return StartCharacterCreation(inputPrompt);
     }
-    private string StartCharacterCreation(string inputPrompt)
+    private List<BaseCard> StartCharacterCreation(string inputPrompt)
     {
         Debug.Log("Modular Button function Beginning");
         cardCreationMessage = new List<ChatMessage> { 
@@ -52,7 +52,7 @@ public class ModularOpenAIController : MonoBehaviour
             // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
         };
 
-        Task<string> task = Task.Run(() =>
+        Task<List<BaseCard>> task = Task.Run(() =>
         {
             return GetResponse(inputPrompt);
         });
@@ -62,13 +62,8 @@ public class ModularOpenAIController : MonoBehaviour
         return task.Result;
     }
 
-    private async Task<string> GetResponse(string inputPrompt)
+    private async Task<List<BaseCard>> GetResponse(string inputPrompt)
     {
-        if (inputPrompt.Length < 1)
-        {
-            return "Prompt Length too Small!";
-        }
-
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
         userMessage.Role = ChatMessageRole.User;
@@ -111,7 +106,7 @@ public class ModularOpenAIController : MonoBehaviour
         );
 
         //Initialize Array of Card Objects
-        cards = new BaseCard[cardUnserialized.Length];
+        cards = new List<BaseCard>();
         int i = 0;
         foreach (var item in cardUnserialized)
         {
@@ -134,7 +129,7 @@ public class ModularOpenAIController : MonoBehaviour
         Debug.Log(cards[0].cardName.ToString());
         Debug.Log(cards[0].strength.ToString());
 
-        return apiResponseString;
+        return cards;
     }
 
     internal static void submitCharacterPrompt()
