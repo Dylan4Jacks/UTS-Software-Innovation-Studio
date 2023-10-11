@@ -1,38 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.UI;
 
-public class CharacterController : MonoBehaviour
+//TODO
+public class CharacterCreationController : MonoBehaviour
 {
+    public TMP_Text textField;
+    public TMP_Text inputField;
+    public Button BtnSubmit;
 
-    public TextMeshProUGUI answerText; // Drag and drop your TextMeshPro object here in the Inspector
+    ModularOpenAIController modularOpenAIController;
 
+    public SingleCharacter singleCharacter;
     // Start is called before the first frame update
     void Start()
     {
-        
+        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
+        BtnSubmit.onClick.AddListener(() => CreateCharacter());
     }
 
     void Update()
     {
-        // Count visible characters excluding whitespace
-        int visibleCharCount = answerText.text.Count(c => !char.IsWhiteSpace(c));
-        
-        // Check if 'Enter' key is pressed and visibleCharCount is more than 10
-        if (!(Input.GetKeyDown(KeyCode.Return) && visibleCharCount > 10))
+        // Check if 'Enter' key is pressed
+        if (!Input.GetKeyDown(KeyCode.Return))
         {
             return;
         }
-        
-        LoadNextScene(); // Call function to load next scene
+        // TODO: Implement After OpenAIController works with integration
+        //LoadNextScene(); // Call function to load next scene
+    }
+
+    void CreateCharacter()
+    {
+        int charLimit = 30;
+        if(inputField.text.Length < charLimit) 
+        {
+            Debug.Log($"Character Length Too Small. Must be Greater then {charLimit}");
+            return;
+        }
+
+        //List<card>
+        List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
+        singleCharacter.cards.AddRange(cards);
+        LoadNextScene();
     }
 
     // Function to load the next scene
     public void LoadNextScene()
     {
+        // Card Limit set to 0 for testing. Limit should be 7 at the minimum for a good game
+        if(singleCharacter.cards.Count < 0) 
+        {
+            Debug.Log("Card Count too low");
+            return; 
+        }
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
