@@ -47,7 +47,7 @@ public class CharacterCreationController : MonoBehaviour
         //List<card>
         List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
         singleCharacter.cards.AddRange(cards);
-        LoadNextScene();
+        //LoadNextScene();
     }
 
     // Function to load the next scene
