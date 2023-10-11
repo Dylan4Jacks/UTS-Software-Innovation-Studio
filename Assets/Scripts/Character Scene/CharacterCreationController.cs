@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
+
 //TODO
 public class CharacterCreationController : MonoBehaviour
 {
@@ -13,11 +14,14 @@ public class CharacterCreationController : MonoBehaviour
     public TMP_Text inputField;
     public Button BtnSubmit;
 
+    ModularOpenAIController modularOpenAIController;
+
     public SingleCharacter singleCharacter;
     // Start is called before the first frame update
     void Start()
     {
-        
+        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
+        BtnSubmit.onClick.AddListener(() => CreateCharacter());
     }
 
     void Update()
@@ -29,6 +33,21 @@ public class CharacterCreationController : MonoBehaviour
         }
         // TODO: Implement After OpenAIController works with integration
         //LoadNextScene(); // Call function to load next scene
+    }
+
+    void CreateCharacter()
+    {
+        int charLimit = 30;
+        if(inputField.text.Length < charLimit) 
+        {
+            Debug.Log($"Character Length Too Small. Must be Greater then {charLimit}");
+            return;
+        }
+
+        //List<card>
+        List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
+        singleCharacter.cards.AddRange(cards);
+        LoadNextScene();
     }
 
     // Function to load the next scene

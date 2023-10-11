@@ -20,7 +20,7 @@ public class ModularOpenAIController : MonoBehaviour
 {
     private OpenAIAPI api;
     private List<ChatMessage> cardCreationMessage;
-    BaseCard[] cards;
+    List<BaseCard> cards;
     private ModuleConfigGetterSetter moduleConfigGetterSetter;
 
     // REGEX Expression for card creation
@@ -37,23 +37,22 @@ public class ModularOpenAIController : MonoBehaviour
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-    public string submitCharacterPrompt(string inputPrompt)
+    public List<BaseCard> submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
         api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
-        return StartCharacterCreation(inputPrompt).ToString();
+        return StartCharacterCreation(inputPrompt);
     }
-    private string StartCharacterCreation(string inputPrompt)
+    private List<BaseCard> StartCharacterCreation(string inputPrompt)
     {
         Debug.Log("Modular Button function Beginning");
         cardCreationMessage = new List<ChatMessage> { 
             //This is where the prompt limits are imput
-            new (ChatMessageRole.System, "You are to create 8 creatures related to the character brief that is given. These creatures will be used for cards in a card game. You will respond with only the creature's name, HP, Speed, and Attack stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line")
-            // Chat System Brief with Object attributes: "You are to create" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line"
+            new (ChatMessageRole.System, "You are to create" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line")
             // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
         };
 
-        Task<string> task = Task.Run(() =>
+        Task<List<BaseCard>> task = Task.Run(() =>
         {
             return GetResponse(inputPrompt);
         });
@@ -63,13 +62,8 @@ public class ModularOpenAIController : MonoBehaviour
         return task.Result;
     }
 
-    private async Task<string> GetResponse(string inputPrompt)
+    private async Task<List<BaseCard>> GetResponse(string inputPrompt)
     {
-        if (inputPrompt.Length < 1)
-        {
-            return "Prompt Length too Small!";
-        }
-
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
         userMessage.Role = ChatMessageRole.User;
@@ -112,8 +106,7 @@ public class ModularOpenAIController : MonoBehaviour
         );
 
         //Initialize Array of Card Objects
-        cards = new BaseCard[cardUnserialized.Length];
-        int i = 0;
+        cards = new List<BaseCard>();
         foreach (var item in cardUnserialized)
         {
 
@@ -121,21 +114,20 @@ public class ModularOpenAIController : MonoBehaviour
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
-
+            Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
                                 nameMatch.Value, 
                                 int.Parse(attackMatch.Value), 
                                 int.Parse(speedMatch.Value), 
                                 int.Parse(hpMatch.Value)
                                 );
-            cards[i] = card;
-            i++;
+            cards.Add(card);
         }
 
         Debug.Log(cards[0].cardName.ToString());
         Debug.Log(cards[0].strength.ToString());
 
-        return apiResponseString;
+        return cards;
     }
 
     internal static void submitCharacterPrompt()
