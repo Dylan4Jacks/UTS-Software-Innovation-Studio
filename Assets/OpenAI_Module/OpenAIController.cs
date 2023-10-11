@@ -17,13 +17,16 @@ using System.Threading;
 public class OpenAIController : MonoBehaviour
 {
     public TMP_Text textField;
-    public TMP_InputField inputField;
+    public TMP_Text inputField;
     public Button submitCharacterButton;
-    public Button ModuleCharacterButton;
+    
+    public SingleCharacter singleCharacter;
+    public CharacterCreationController characterCreationController;
+
     ModularOpenAIController modularOpenAIController;
 
+
     private OpenAIAPI api;
-    private List<ChatMessage> cardCreationMessage;
     string inputPromptString = "I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.";
 
     // REGEX Expression for card creation
@@ -45,19 +48,11 @@ public class OpenAIController : MonoBehaviour
         submitCharacterButton.onClick.AddListener(() => GetResponse());
 
         modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
-        if (ModuleCharacterButton != null)
-            { 
-
-                ModuleCharacterButton.onClick.AddListener(() => Debug.Log(string.Format("{0} {1}","MODULE WAIT TEST: ",modularOpenAIController.submitCharacterPrompt(inputPromptString))));
-                
-            } else { 
-                Debug.Log("ModuleCharacterButton is not assigned in the Inspector."); 
-            }
     }
 
     private void StartCharacterCreation()
     {
-        cardCreationMessage = new List<ChatMessage> { 
+        singleCharacter.cardCreationMessage = new List<ChatMessage> { 
             //This is where the prompt limits are imput
             new ChatMessage(ChatMessageRole.System, "You are to create 8 creatures related to the character brief that is given. These creatures will be used for cards in a card game. You will respond with only the creature's name, HP, Speed, and Attack stats, no other information. Each stat must be greater than 0 and cannot exceed 20. The format for each creature should be numbered list similar to this '1. {Creature Name}: HP: 10, Speed: 10, Attack: 10' then go to a new line")
             // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
@@ -91,7 +86,7 @@ public class OpenAIController : MonoBehaviour
         Debug.Log(string.Format("{0}: {1}", userMessage.rawRole, userMessage.Content));
 
         //Add Message to list
-        cardCreationMessage.Add(userMessage);
+        singleCharacter.cardCreationMessage.Add(userMessage);
 
         // Update the text field with the user message
         textField.text = string.Format("Input: {0}", userMessage.Content);
@@ -105,7 +100,7 @@ public class OpenAIController : MonoBehaviour
             Model = Model.ChatGPTTurbo,
             Temperature = 0.1,
             MaxTokens = 300,
-            Messages = cardCreationMessage
+            Messages = singleCharacter.cardCreationMessage
         });
 
         // Get Response from API
@@ -114,7 +109,7 @@ public class OpenAIController : MonoBehaviour
         APIResponse.Content = chatResult.Choices[0].Message.Content;
         Debug.Log(string.Format("{0}: {1}", APIResponse.rawRole, APIResponse.Content));
 
-        cardCreationMessage.Add(APIResponse);
+        singleCharacter.cardCreationMessage.Add(APIResponse);
 
         string apiResponseString = APIResponse.Content;
 
@@ -128,7 +123,6 @@ public class OpenAIController : MonoBehaviour
         );
 
         //Initialize Array of Card Objects
-        BaseCard[] cards = new BaseCard[cardUnserialized.Length];
         int i = 0;
         foreach (var item in cardUnserialized)
         {
@@ -144,15 +138,16 @@ public class OpenAIController : MonoBehaviour
                                 int.Parse(speedMatch.Value), 
                                 int.Parse(hpMatch.Value)
                                 );
-            cards[i] = card;
+            singleCharacter.cards.Add(card);
             i++;
         }
 
-        Debug.Log(cards[0].cardName.ToString());
-        Debug.Log(cards[0].strength.ToString());
-
+        Debug.Log(singleCharacter.cards[0].cardName.ToString());
+        Debug.Log(singleCharacter.cards[0].strength.ToString());
+        characterCreationController.LoadNextScene();
         // Re-enable OK button
         submitCharacterButton.enabled = true;
+        
     }
 }
 public class ModuleConfig {
