@@ -44,7 +44,7 @@ public class CharacterCreationController : MonoBehaviour
         }
 
         //List<card>
-        List<BaseCards> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
+        List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
         singleCharacter.cards.AddRange(cards);
         LoadNextScene();
     }
