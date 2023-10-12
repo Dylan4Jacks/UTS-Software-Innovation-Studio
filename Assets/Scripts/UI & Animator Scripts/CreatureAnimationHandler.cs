@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CreatureAnimationHandler : AnimationHandler
@@ -7,6 +8,7 @@ public class CreatureAnimationHandler : AnimationHandler
     public PlacedCreature self;
     public GameObject effectsHandler;
     private PlacedCreature target; 
+    public GameObject deadCreatureObject;
     public IEnumerator basicAttack(int alignment, PlacedCreature target) {
         this.target = target;
         changeAnimationState("creaturePreparingAttack");
@@ -29,7 +31,10 @@ public class CreatureAnimationHandler : AnimationHandler
     }
 
     public IEnumerator creatureDead() {
-        changeAnimationState("creatureDead");
+        changeAnimationState("Creature_dying");
         yield return waitForAnimatorStateChange();
+        yield return waitForAnimationToFinish();
+        deadCreatureObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

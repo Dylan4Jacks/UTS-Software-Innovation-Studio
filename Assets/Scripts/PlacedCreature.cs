@@ -10,7 +10,7 @@ public class PlacedCreature : MonoBehaviour
 {
     [SerializeField] public CreatureAnimationHandler creatureAnimator;
     private BattleController battleController;
-    public BaseCard baseStats;
+    public BaseCard baseCard;
     public int currentHealth;
     public int currentStrength;
     public int currentSpeed; 
@@ -20,6 +20,7 @@ public class PlacedCreature : MonoBehaviour
 
     [SerializeField] private GameObject displayHealth;
     [SerializeField] private GameObject displayStrength;
+    [SerializeField] private SpriteRenderer creatureRenderer;
     
     private TextMeshPro healthText;
     private TextMeshPro strengthText;
@@ -51,7 +52,8 @@ public class PlacedCreature : MonoBehaviour
     * BASIC FUNCTIONS (setters, getters, etc.)
     *************************************************/
     public void setupCard(BaseCard baseCard, int alignment, int position) {
-        this.baseStats = baseCard;
+        this.baseCard = baseCard;
+        creatureRenderer.sprite = baseCard.sprite;
         setCurrentHealth(baseCard.health);
         setCurrentStrength(baseCard.strength);
         setCurrentSpeed(baseCard.speed);
@@ -64,6 +66,7 @@ public class PlacedCreature : MonoBehaviour
             lanePartner.setNewLanePartner(this);
         }
         this.team = BattleController.instance.teams[alignment];
+        
     }
     public void setCurrentStrength(int value) {
         currentStrength = value;
@@ -134,26 +137,26 @@ public class PlacedCreature : MonoBehaviour
                 return null; 
             }
         }
-        Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + " is targetting " + target.baseStats.cardName);
+        Debug.Log(Utils.roundTemplate() + this.baseCard.cardName + " is targetting " + target.baseCard.cardName);
         return target;
     }
      public IEnumerator attack() {
         if (this.isSlain || !this.canAttack()) {
-            Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "cannot attack.");
+            Debug.Log(Utils.roundTemplate() + this.baseCard.cardName + "cannot attack.");
             yield break;
         }
         PlacedCreature target = this.findTarget();
         if (target == null) {
-            Debug.Log(Utils.roundTemplate() + this.baseStats.cardName + "is targetting null");
+            Debug.Log(Utils.roundTemplate() + this.baseCard.cardName + "is targetting null");
             yield break;
         }
         yield return StartCoroutine(attack(target));
     }
 
     public IEnumerator attack(PlacedCreature target) {
-        Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation start");
+        Debug.Log(Utils.roundTemplate() + baseCard.cardName + " animation start");
         yield return StartCoroutine(creatureAnimator.basicAttack(alignment, target));
-        Debug.Log(Utils.roundTemplate() + baseStats.cardName + " animation finish");
+        Debug.Log(Utils.roundTemplate() + baseCard.cardName + " animation finish");
         yield return StartCoroutine(target.beAttacked(this));
         yield return StartCoroutine(this.checkDeath(target)); //check death after damage taken from retaliation
     }
@@ -162,7 +165,7 @@ public class PlacedCreature : MonoBehaviour
         //check abilities to see if anything activates upon being attacked
         //then take damage
         //then retaliate
-        // Debug.Log(attacker.baseStats.cardName + " is attacking " + this.baseStats.cardName);
+        // Debug.Log(attacker.baseCard.cardName + " is attacking " + this.baseCard.cardName);
         int adjustedAttack = attacker.currentStrength - currentShield;
         if (adjustedAttack > 0)
         {
@@ -173,7 +176,7 @@ public class PlacedCreature : MonoBehaviour
     }
 
     public void retaliate(PlacedCreature attacker) {
-        // Debug.Log(this.baseStats.cardName + " is retaliating against" + attacker.baseStats.cardName);
+        // Debug.Log(this.baseCard.cardName + " is retaliating against" + attacker.baseCard.cardName);
         int adjustedAttack = this.currentStrength - attacker.currentShield;
         if (adjustedAttack > 0)
         {
@@ -184,7 +187,7 @@ public class PlacedCreature : MonoBehaviour
     public IEnumerator checkDeath(PlacedCreature killer) {
         if (this.currentHealth <= 0) {
             yield return perish();
-            Debug.Log(this.baseStats.cardName + " has been slain by " + killer.baseStats.cardName);
+            Debug.Log(this.baseCard.cardName + " has been slain by " + killer.baseCard.cardName);
         }
     }
 

@@ -54,7 +54,7 @@ public class BattleController : MonoBehaviour
             laneVictors[i] = -1; //temporary for debugging
         } 
         for (int i = 0; i < 6; i++) {
-            teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101), "wug"));
+            teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5), "beast"));
             // teams[Utils.PLAYER].placeCreature(i, new BaseCard("Player_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
         }
         fillInitiativeQueue();
@@ -94,9 +94,9 @@ public class BattleController : MonoBehaviour
         //start looping through the initiative queue to do battle
         foreach (PlacedCreature creature in initiativeQueue) {
             //do this thing here where it waits for the previous one to finish.
-            Debug.Log(Utils.roundTemplate() + creature.baseStats.cardName + " to act");
+            Debug.Log(Utils.roundTemplate() + creature.baseCard.cardName + " to act");
             yield return StartCoroutine(creature.attack());
-            Debug.Log(Utils.roundTemplate() + creature.baseStats.cardName + " turn finished");
+            Debug.Log(Utils.roundTemplate() + creature.baseCard.cardName + " turn finished");
         }
         resolveLaneVictories();
         if (!hasUnresolvedLanes()) {

@@ -96,7 +96,7 @@ public class Team : MonoBehaviour
         List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
         bool laneDefeated = true;
         foreach (PlacedCreature creature in laneCreatures) {
-            if (!creature.isSlain) {laneDefeated = false;}
+            if (creature != null && !creature.isSlain) {laneDefeated = false;}
         } 
         return laneDefeated;
     }
