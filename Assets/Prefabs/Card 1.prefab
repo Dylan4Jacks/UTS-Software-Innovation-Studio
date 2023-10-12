@@ -828,6 +828,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseCard:
+    sprite: {fileID: 0}
+    spriteType: 
     cardName: 
     strength: 0
     speed: 0
@@ -838,6 +840,7 @@ MonoBehaviour:
   cardAttackValueText: {fileID: 8313699637225035039}
   cardHealthValueText: {fileID: 4882181296444793442}
   cardSpeedValueText: {fileID: 2625534223201841349}
+  creatureSpriteRenderer: {fileID: 3117215241512912219}
   originalPos: {x: 0, y: 0, z: 0}
   originalRotate: {x: 0, y: 0, z: 0, w: 0}
   hand: {fileID: 0}

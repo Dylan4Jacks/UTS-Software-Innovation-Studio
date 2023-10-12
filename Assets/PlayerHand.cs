@@ -19,9 +19,9 @@ public class PlayerHand : MonoBehaviour
         }
 
         List<BaseCard> cards = new List<BaseCard>();
-        cards.Add(new BaseCard("Woah", 2, 2, 2));
-        cards.Add(new BaseCard("Yeah", 3, 3, 3));
-        cards.Add(new BaseCard("Ohno", 4, 4, 4));
+        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
+        cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
+        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
 
         spawnHand(cards);
     }
@@ -46,8 +46,7 @@ public class PlayerHand : MonoBehaviour
             cardTransform.rotation = Quaternion.AngleAxis(7 - cardCount, Vector3.forward);
             cardTransform.localScale = new Vector3(0.4f,0.4f,0.4f);
             cardInHand.GetComponent<CardInHand>().initialise(card, this);
-
-            cardInHand.transform.parent = gameObject.transform;
+            cardInHand.transform.SetParent(gameObject.transform, false);
 
             //set the cardinhand as a child object
         }
