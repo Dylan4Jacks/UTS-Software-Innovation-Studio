@@ -11,6 +11,7 @@ public class CardInHand : MonoBehaviour
     public TextMeshPro cardNameText;
     public TextMeshPro cardAttackValueText;
     public TextMeshPro cardHealthValueText;
+    public TextMeshPro cardSpeedValueText;
 
     public Vector3 originalPos;
     public Quaternion originalRotate;
@@ -34,6 +35,7 @@ public class CardInHand : MonoBehaviour
         cardNameText.text = card.cardName;
         cardAttackValueText.text = card.strength.ToString();
         cardHealthValueText.text = card.health.ToString();
+        cardSpeedValueText.text = card.speed.ToString();
         gameObject.name = baseCard.cardName;
 
         this.originalPos = gameObject.transform.position;

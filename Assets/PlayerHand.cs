@@ -59,5 +59,7 @@ public class PlayerHand : MonoBehaviour
     
     public void placeCreature(int team, int position) {
         BattleController.instance.teams[team].placeCreature(position, this.selectedCard.baseCard);
+        Destroy(this.selectedCard.gameObject);
+        this.selectedCard = null;
     }
 }
