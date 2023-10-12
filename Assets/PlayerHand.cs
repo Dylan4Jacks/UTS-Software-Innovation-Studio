@@ -17,13 +17,11 @@ public class PlayerHand : MonoBehaviour
         else {
             Instance = this;
         }
+    
+        
+        
 
-        List<BaseCard> cards = new List<BaseCard>();
-        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
-        cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
-        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
-
-        spawnHand(cards);
+        spawnHand();
     }
 
     // Update is called once per frame
@@ -32,7 +30,16 @@ public class PlayerHand : MonoBehaviour
         
     }
 
-    void spawnHand(List<BaseCard> cards) {
+    void spawnHand() {
+        List<BaseCard> cards = new List<BaseCard>();
+        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
+        cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
+        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
+
+        if (SingleCharacter.Instance != null) {
+            cards = SingleCharacter.Instance.cards;
+        }
+
         int cardCount = 0;
         foreach (BaseCard card in cards) {
             cardCount++;

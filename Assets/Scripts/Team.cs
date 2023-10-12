@@ -80,7 +80,9 @@ public class Team : MonoBehaviour
     public void setVictoriousLane(int lane) {
         List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
         foreach (PlacedCreature laneCreature in laneCreatures) {
-            laneCreature.isVictorious = true;
+            if (laneCreature != null) {
+                laneCreature.isVictorious = true;
+            }
         }
         BattleController.instance.laneVictors[lane] = this.alignment;
     }

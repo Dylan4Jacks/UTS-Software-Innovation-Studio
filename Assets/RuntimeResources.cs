@@ -14,6 +14,7 @@ public class RuntimeResources : MonoBehaviour
             }
         else {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
 
         initialiseSprites();
