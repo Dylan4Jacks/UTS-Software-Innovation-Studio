@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,11 +15,12 @@ public class CardInHand : MonoBehaviour
     public Vector3 originalPos;
     public Quaternion originalRotate;
 
-    private PlayerHand hand;
+    public PlayerHand hand;
+    private Boolean isSelected = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -38,9 +40,6 @@ public class CardInHand : MonoBehaviour
         this.originalRotate = gameObject.transform.rotation;
         this.hand = playerHand;
     }
-    void placeCreature() {
-
-    }
     
     void OnMouseEnter() {
         gameObject.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
@@ -51,6 +50,23 @@ public class CardInHand : MonoBehaviour
     }
 
     public void OnMouseDown() {
-        hand.setSelectedCard(this);
+        if (!isSelected) {
+            if (hand.selectedCard != null) { hand.selectedCard.unSelect(); }
+            hand.setSelectedCard(this);
+            setSelected();
+        } else {
+            hand.selectedCard = null;
+            unSelect();
+        }
+    }
+
+    void setSelected() {
+        this.isSelected = true;
+        gameObject.transform.position += Vector3.up * 50;
+    }
+
+    public void unSelect() {
+        this.isSelected = false;
+        gameObject.transform.position += Vector3.down * 50;
     }
 }

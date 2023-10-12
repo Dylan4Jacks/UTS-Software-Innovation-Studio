@@ -47,8 +47,8 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     public void placeCreature() {
-        if (PlayerHand.instance.selectedCard != null) {
-            PlayerHand.instance.placeCreature(this.team, this.slotPosition);
+        if (PlayerHand.Instance.selectedCard != null) {
+            PlayerHand.Instance.placeCreature(this.team, this.slotPosition);
         }
     }
 }

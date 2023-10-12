@@ -7,15 +7,15 @@ public class PlayerHand : MonoBehaviour
     public List<GameObject> hand;
     public GameObject cardPrefab;
     public CardInHand selectedCard;
-    public static PlayerHand instance;
+    public static PlayerHand Instance;
     // Start is called before the first frame update
     void Start()
     {
-        if (instance != null && instance != this) {
+        if (Instance != null && Instance != this) {
             Destroy(this);
         }
         else {
-            instance = this;
+            Instance = this;
         }
 
         List<BaseCard> cards = new List<BaseCard>();
