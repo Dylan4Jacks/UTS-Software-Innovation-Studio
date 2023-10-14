@@ -6036,6 +6036,7 @@ GameObject:
   - component: {fileID: 1459340879}
   - component: {fileID: 1459340878}
   - component: {fileID: 1459340880}
+  - component: {fileID: 1459340881}
   m_Layer: 0
   m_Name: SCENE_MANAGER
   m_TagString: Untagged
@@ -6094,6 +6095,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 4281122678604557220, guid: eb6e6ca8ef6f6214180f1e168a9f33ca, type: 3}
   hand: {fileID: 7259491067112871142, guid: c55d839950d81a04ab960ab4af73afa4, type: 3}
+  singleCharacter: {fileID: 0}
+--- !u!114 &1459340881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459340877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d52124abf38eb746b368a43097fbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1472497262
 GameObject:
   m_ObjectHideFlags: 0
@@ -8483,7 +8497,7 @@ Transform:
   m_GameObject: {fileID: 2062555656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 287.47345, y: 37.624508, z: -20}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

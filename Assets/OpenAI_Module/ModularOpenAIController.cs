@@ -119,7 +119,8 @@ public class ModularOpenAIController : MonoBehaviour
                                 nameMatch.Value, 
                                 int.Parse(attackMatch.Value), 
                                 int.Parse(speedMatch.Value), 
-                                int.Parse(hpMatch.Value)
+                                int.Parse(hpMatch.Value),
+                                "wug"
                                 );
             cards.Add(card);
         }
