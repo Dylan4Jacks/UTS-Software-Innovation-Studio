@@ -7,6 +7,7 @@ public class RuntimeResources : MonoBehaviour
 {
     public static RuntimeResources Instance;
     public Dictionary<string, Sprite> spriteDictionary = new Dictionary<string, Sprite>();
+    public Texture2D cursorTexture;
     void Awake() 
     {
         if (Instance != null && Instance != this) {
@@ -18,6 +19,7 @@ public class RuntimeResources : MonoBehaviour
         }
 
         initialiseSprites();
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
     }
 
     private void initialiseSprites() {

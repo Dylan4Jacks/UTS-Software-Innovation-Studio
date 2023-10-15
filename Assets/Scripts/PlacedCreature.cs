@@ -276,7 +276,7 @@ public class PlacedCreature : MonoBehaviour
 
         if (currentAbility[0] == "shield")
         {
-            if (targetPosition != -1)
+            if (targetPosition != -1 && battleController.teams[alignment].placedCreatures[targetPosition] != null)
             {
                 battleController.teams[alignment].placedCreatures[targetPosition].currentShield = int.Parse(currentAbility[2]);
             }

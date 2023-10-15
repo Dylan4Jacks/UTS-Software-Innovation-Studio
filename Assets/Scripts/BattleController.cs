@@ -6,13 +6,16 @@ using System.Threading;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using UnityEditorInternal;
 public class BattleController : MonoBehaviour
 {
     // Related to battle
-    public bool enableRoundBreaks = false;
+    public bool enableRoundBreaks = true;
     public int currentRound = 0;
     public List<PlacedCreature> initiativeQueue = new List<PlacedCreature>();
     [SerializeField] public List<int> laneVictors = new List<int>(new int[3]);
+    string battleState = "PREPARATION";
+    public InfoPanelButton battleButton;
 
     // For referencing
     public static BattleController instance;
@@ -49,7 +52,6 @@ public class BattleController : MonoBehaviour
     * publicly visible functions
     *********************************************/
     public void generateNewTestTeam() {
-        resetBattle();
         for (int i = 0; i < 3; i++) {
             laneVictors[i] = -1; //temporary for debugging
         } 
@@ -82,12 +84,14 @@ public class BattleController : MonoBehaviour
         do {
             yield return runRound();
             if (enableRoundBreaks) {
-                roundCounter.setText("Round " + currentRound + " End");
+                changeBattleState("ROUND_BREAK");
                 break;
             };
         } while (hasUnresolvedLanes());
     }
     private IEnumerator runRound() {
+        changeBattleState("BATTLING");
+        battleButton.setWaitForRound();
         this.currentRound += 1; 
         roundCounter.setText("Round " + this.currentRound.ToString());
         fillInitiativeQueue();
@@ -172,14 +176,40 @@ public class BattleController : MonoBehaviour
     private void handleBattleEnd() {
         roundCounter.setText(Utils.alignmentString(determineWinner()) + " wins!");
         Debug.Log("Winner: " + Utils.alignmentString(determineWinner()));
+        changeBattleState("BATTLE_END");
+        battleButton.setGameOver();
     }
 
     /********************************************
     * Misc internal
     *********************************************/
     private void resetBattle() {
+        generateNewTestTeam();
         Utils.ClearConsole();
         this.currentRound = 0;
-        roundCounter.setText("PREPARATION");
+        changeBattleState("PREPARATION");
+    }
+
+    private void changeBattleState(string newState) {
+        if (battleState == "BATTLE_END" && newState != "PREPARATION") {
+            return;
+        }
+        switch(newState) {
+            case "PREPARATION": 
+                roundCounter.setText("PREPARATION");
+                battleButton.setInitial();
+                break;
+            case "BATTLING":
+                battleButton.setWaitForRound();
+                break;
+            case "BATTLE_END":
+                battleButton.setGameOver();
+                break;
+            case "ROUND_BREAK":
+                battleButton.setNextRound();
+                break;
+            default: break;
+        }
+        battleState = newState;
     }
 }
