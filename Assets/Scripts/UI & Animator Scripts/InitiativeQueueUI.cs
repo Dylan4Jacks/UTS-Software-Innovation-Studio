@@ -25,22 +25,26 @@ public class InitiativeQueueUI : MonoBehaviour
         }
     }
 
-    public void handleNewQueue(List<PlacedCreature> creaturesQueue, BattleController battleController){
-        queueLength = creaturesQueue.Count;
-        if (creaturesQueue.Count > 6) {
-            downArrow.gameObject.SetActive(true);
-        }
-        for (int i = 0; i < creaturesQueue.Count; i++) {
-            int creaturePosition = creaturesQueue[i].getPosition();
-            int creatureAlignment = creaturesQueue[i].getAlignment();
-
-            Team team = battleController.teams[creatureAlignment];
-            GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creaturePosition)];
-            GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creaturePosition > 2? 1 : 0];
-            
-            slots[i].setupSlot(creaturesQueue[i], creatureSelectionBox);
-        }
+    public void setCreature(int position) {
+        
     } 
+
+    // public void handleNewQueue(List<PlacedCreature> creaturesQueue, BattleController battleController){
+    //     queueLength = creaturesQueue.Count;
+    //     if (creaturesQueue.Count > 6) {
+    //         downArrow.gameObject.SetActive(true);
+    //     }
+    //     for (int i = 0; i < creaturesQueue.Count; i++) {
+    //         int creaturePosition = creaturesQueue[i].getPosition();
+    //         int creatureAlignment = creaturesQueue[i].getAlignment();
+
+    //         Team team = battleController.teams[creatureAlignment];
+    //         GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creaturePosition)];
+    //         GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creaturePosition > 2? 1 : 0];
+            
+    //         slots[i].setupSlot(creaturesQueue[i], creatureSelectionBox);
+    //     }
+    // } 
 
     private void moveDown(int numSlots) {
         //move down by number of slots

@@ -57,9 +57,7 @@ public class BattleController : MonoBehaviour
         } 
         for (int i = 0; i < 6; i++) {
             teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5), "beast"));
-            // teams[Utils.PLAYER].placeCreature(i, new BaseCard("Player_"+i.ToString(), Random.Range(1, 101), Random.Range(1, 101), Random.Range(1, 101)));
         }
-        fillInitiativeQueue();
     }
 
     public void startBattle() {
@@ -94,7 +92,7 @@ public class BattleController : MonoBehaviour
         battleButton.setWaitForRound();
         this.currentRound += 1; 
         roundCounter.setText("Round " + this.currentRound.ToString());
-        fillInitiativeQueue();
+        // fillInitiativeQueue();
         //start looping through the initiative queue to do battle
         foreach (PlacedCreature creature in initiativeQueue) {
             //do this thing here where it waits for the previous one to finish.
@@ -109,25 +107,25 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    private void fillInitiativeQueue() {
-        initiativeQueue.Clear();
-        foreach (Team team in this.teams) {
-            foreach (PlacedCreature creature in team.placedCreatures) {
-                if (creature == null) {
-                    break;
-                }
-                if (!creature.isSlain && !creature.isVictorious) {
-                    initiativeQueue.Add(creature);
-                }
-            }
-        }
-        sortInitiativeQueue();
-    }
+    // private void fillInitiativeQueue() {
+    //     initiativeQueue.Clear();
+    //     foreach (Team team in this.teams) {
+    //         foreach (PlacedCreature creature in team.placedCreatures) {
+    //             if (creature == null) {
+    //                 break;
+    //             }
+    //             if (!creature.isSlain && !creature.isVictorious) {
+    //                 initiativeQueue.Add(creature);
+    //             }
+    //         }
+    //     }
+    //     sortInitiativeQueue();
+    // }
 
-    private void sortInitiativeQueue() {
-        initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
-        initiativeQueueUI.handleNewQueue(initiativeQueue, this);
-    }
+    // private void sortInitiativeQueue() {
+    //     initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
+    //     //initiativeQueueUI.handleNewQueue(initiativeQueue, this);
+    // }
 
     /********************************************
     * battle outcomes
@@ -172,12 +170,36 @@ public class BattleController : MonoBehaviour
         else {return Utils.NO_ALIGNMENT;}
     }
 
-     //TO DO: flesh this out
     private void handleBattleEnd() {
         roundCounter.setText(Utils.alignmentString(determineWinner()) + " wins!");
         Debug.Log("Winner: " + Utils.alignmentString(determineWinner()));
         changeBattleState("BATTLE_END");
         battleButton.setGameOver();
+    }
+
+    /*******************************************
+    * Initiative Queue Stuff
+    ********************************************/
+    public void insertInInitiativeQueue(PlacedCreature creature) {
+        if (initiativeQueue.Count == 0) {
+            initiativeQueue.Add(creature);
+            //do initiative queue UI thing
+        } else {
+            for(int i = 0; i < initiativeQueue.Count; i++) {
+                if (creature.currentSpeed > initiativeQueue[i].currentSpeed) {
+                    initiativeQueue.Insert(i, creature);
+                    //do initiative queue UI thing
+                    return;
+                }
+            }
+            initiativeQueue.Add(creature);
+        }
+        
+    }
+
+    public void removeFromInitiativeQueue(PlacedCreature creature) {
+        initiativeQueue.Remove(creature);
+        //do initiative queue UI thing
     }
 
     /********************************************
