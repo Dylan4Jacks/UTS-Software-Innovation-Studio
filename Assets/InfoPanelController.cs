@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InfoPanelController : MonoBehaviour
 {
+    public string currentState = "DEFAULT"; //DEFAULT, BASECARD, PLACEDCREATURE
     public static InfoPanelController instance; 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,18 @@ public class InfoPanelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    public void viewPlacedCreature(PlacedCreature placedCreature) {
+
+    }
+
+    public void viewBaseCard(BaseCard baseCard) {
+
+    }
+
+    public void returnToDefault() {
         
     }
 }
