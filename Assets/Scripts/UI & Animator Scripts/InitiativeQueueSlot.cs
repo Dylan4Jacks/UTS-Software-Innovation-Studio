@@ -30,16 +30,33 @@ public class InitiativeQueueSlot : MonoBehaviour
     }
 
     public void highlightSelf() {
-        highlight.SetActive(true);
+        if (creature != null) {
+            selectedCreatureBox.highlightSelf();
+            highlight.SetActive(true);
+        }
     }
 
     public void unHighlightSelf() {
-        highlight.SetActive(false);
+        if (creature != null) {
+            selectedCreatureBox.unHighlightSelf();
+            highlight.SetActive(false);        
+        }
     }
 
-    public void setCreature(PlacedCreature creature, GameObject creatureSelectionBox) {
+    public void setCreature(PlacedCreature creature) {
         this.creature = creature;
+        creatureSprite.sprite = creature.baseCard.sprite;
+
+        Team team = BattleController.instance.teams[creature.alignment];
+        GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creature.position)];
+        GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creature.position > 2? 1 : 0];
+
         this.selectedCreatureBox = creatureSelectionBox.GetComponent<SelectedCreatureBox>();
         creatureSelectionBox.GetComponent<SelectedCreatureBox>().setInitiativeQueueSlot(this);
+    }
+    public void empty() {
+        if (selectedCreatureBox != null) { selectedCreatureBox.emptySlot(); }
+        this.creature = null;
+        this.selectedCreatureBox = null;
     }
 }

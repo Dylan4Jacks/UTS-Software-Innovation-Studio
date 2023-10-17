@@ -31,7 +31,6 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     public void OnMouseDown() {
-        Debug.Log("testing");
         this.placeCreature();
     }
 
@@ -44,6 +43,10 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void setInitiativeQueueSlot(InitiativeQueueSlot initiativeQueueSlot) {
         this.initiativeQueueSlot = initiativeQueueSlot;
+    }
+
+    public void emptySlot() {
+        this.initiativeQueueSlot = null;
     }
 
     public void placeCreature() {

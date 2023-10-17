@@ -17,7 +17,6 @@ public class InfoPanelButton : MonoBehaviour
     void Start()
     {
         this.battleController = BattleController.instance;
-        Debug.Log(buttonText.gameObject.transform.position.ToString());
     }
 
     // Update is called once per frame

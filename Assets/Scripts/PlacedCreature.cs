@@ -24,8 +24,8 @@ public class PlacedCreature : MonoBehaviour
     
     private TextMeshPro healthText;
     private TextMeshPro strengthText;
-    private int alignment;
-    private int position;
+    public int alignment;
+    public int position;
     private Team team;
     public bool isVictorious; 
     public PlacedCreature lanePartner; 

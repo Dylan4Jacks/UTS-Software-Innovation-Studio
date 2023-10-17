@@ -39,6 +39,7 @@ public class BattleController : MonoBehaviour
         else {
             instance = this;
         }
+        setupReferences();
         generateNewTestTeam();
     }
 
@@ -188,6 +189,7 @@ public class BattleController : MonoBehaviour
             for(int i = 0; i < initiativeQueue.Count; i++) {
                 if (creature.currentSpeed > initiativeQueue[i].currentSpeed) {
                     initiativeQueue.Insert(i, creature);
+                    initiativeQueueUI.updateUI();
                     //do initiative queue UI thing
                     return;
                 }
@@ -233,5 +235,9 @@ public class BattleController : MonoBehaviour
             default: break;
         }
         battleState = newState;
+    }
+
+    private void setupReferences() {
+        initiativeQueueUI.battleController = this;
     }
 }

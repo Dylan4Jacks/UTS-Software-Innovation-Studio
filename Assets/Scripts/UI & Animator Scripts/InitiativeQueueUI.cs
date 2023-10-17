@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -11,9 +12,8 @@ public class InitiativeQueueUI : MonoBehaviour
     public GameObject initiativeQueueObject;
     public NavArrow upArrow; 
     public NavArrow downArrow;
-
-    protected int startElement = 0;
-    protected int queueLength;
+    public BattleController battleController;
+    protected int currentPage = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,66 +25,35 @@ public class InitiativeQueueUI : MonoBehaviour
         }
     }
 
-    public void setCreature(int position) {
-        
-    } 
-
-    // public void handleNewQueue(List<PlacedCreature> creaturesQueue, BattleController battleController){
-    //     queueLength = creaturesQueue.Count;
-    //     if (creaturesQueue.Count > 6) {
-    //         downArrow.gameObject.SetActive(true);
-    //     }
-    //     for (int i = 0; i < creaturesQueue.Count; i++) {
-    //         int creaturePosition = creaturesQueue[i].getPosition();
-    //         int creatureAlignment = creaturesQueue[i].getAlignment();
-
-    //         Team team = battleController.teams[creatureAlignment];
-    //         GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creaturePosition)];
-    //         GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creaturePosition > 2? 1 : 0];
-            
-    //         slots[i].setupSlot(creaturesQueue[i], creatureSelectionBox);
-    //     }
-    // } 
-
-    private void moveDown(int numSlots) {
-        //move down by number of slots
-        if ((startElement + 6) >= queueLength) {
-            return;
+    public void updateUI() {
+        List<PlacedCreature> initiativeQueue = battleController.initiativeQueue;
+        int queueSize = initiativeQueue.Count;
+        int pagesInQueue = queueSize%6 == 0? queueSize/6 : queueSize/6 + 1; 
+        if (currentPage > pagesInQueue) {currentPage = pagesInQueue;}
+        int index = (currentPage - 1)*6; 
+        int endIndex = currentPage*6 <= queueSize? currentPage*6: queueSize;
+        foreach (InitiativeQueueSlot slot in slots) {
+            if (index >= endIndex) {slot.empty();} 
+            else {slot.setCreature(initiativeQueue[index]);}
+            index++;
         }
-        initiativeQueueObject.GetComponent<Transform>().position += Vector3.up * 68f * numSlots; 
-        startElement += numSlots;
-        if (startElement > 0) {
-            upArrow.gameObject.SetActive(true);
-        }
-        if (startElement + 6 == queueLength) {
-            downArrow.gameObject.SetActive(false);
-        }
-        if ((startElement + 6) < queueLength) {
-            downArrow.gameObject.SetActive(true);
-        }
+        validateNavArrows(pagesInQueue); 
     }
 
-    private void moveUp(int numSlots) {
-        //move up by number of slots
-        if (startElement == 0) {
-            return;
-        }
-        initiativeQueueObject.GetComponent<Transform>().position += Vector3.down * 68f * numSlots; 
-        startElement -= numSlots;
-        if (startElement == 0) {
-            upArrow.gameObject.SetActive(false);
-        }
-        if ((startElement + 6) < queueLength) {
-            downArrow.gameObject.SetActive(true);
-        }
+    private void validateNavArrows(int pagesInQueue) {
+        if (currentPage == 1) {upArrow.gameObject.SetActive(false);}
+        if (currentPage == pagesInQueue) {downArrow.gameObject.SetActive(false);}
+        if (pagesInQueue > currentPage) {downArrow.gameObject.SetActive(true);}
+        if (currentPage > 1) {upArrow.gameObject.SetActive(true);} 
     }
 
     public void clickUp() {
-        //move down a page 
-        moveUp(1);
+        currentPage -= 1;
+        updateUI();
     }
 
     public void clickDown() {
-        moveDown(1);
+        currentPage += 1;
+        updateUI();
     }
 }
