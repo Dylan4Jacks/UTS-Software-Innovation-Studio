@@ -64,5 +64,7 @@ public class InitiativeQueueSlot : MonoBehaviour
         if (selectedCreatureBox != null) { selectedCreatureBox.emptySlot(); }
         this.creature = null;
         this.selectedCreatureBox = null;
+        creatureSprite.gameObject.SetActive(false);
+        deathSprite.SetActive(false);
     }
 }
