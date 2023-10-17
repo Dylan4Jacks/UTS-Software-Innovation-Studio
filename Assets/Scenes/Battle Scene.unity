@@ -2163,7 +2163,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 2022795006}
   highlight: {fileID: 725304061}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 546762385}
 --- !u!61 &557119155
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2267,7 +2267,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 353365754}
   highlight: {fileID: 1663167315}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 1032354783}
 --- !u!61 &574903410
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5535,7 +5535,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 1944871518}
   highlight: {fileID: 1828340913}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 940039772}
 --- !u!61 &1138561079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6967,6 +6967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e402dd9c9fb96c428daa7366ae752af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: DEFAULT
 --- !u!1 &1472497262
 GameObject:
   m_ObjectHideFlags: 0
@@ -9232,7 +9233,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 1431075173}
   highlight: {fileID: 96941611}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 1229130488}
 --- !u!61 &1747609282
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9626,7 +9627,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 2114918622}
   highlight: {fileID: 1793819998}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 1817027164}
 --- !u!61 &1816362792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10574,7 +10575,7 @@ MonoBehaviour:
   selectedCreatureBox: {fileID: 0}
   creatureSprite: {fileID: 448677800}
   highlight: {fileID: 607544175}
-  deathSprite: {fileID: 0}
+  deathSprite: {fileID: 1543687174}
 --- !u!61 &2004419054
 BoxCollider2D:
   m_ObjectHideFlags: 0
