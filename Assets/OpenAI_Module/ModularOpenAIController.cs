@@ -176,13 +176,13 @@ public class ModularOpenAIController : MonoBehaviour
         );
 
         // ensuring allocated image is real, otherwise allocating unknown image
-        string[] cardImages = { "wug", "beast", "humanoid", "furniture" }
-        foreach(var item in allocatedImagesUnserialized)
+        string[] cardImages = { "wug", "beast", "humanoid", "furniture" };
+        for (int i = 0; i < allocatedImagesUnserialized.Length; i++)
         {
-            int pos = Array.IndexOf(cardImages, item);
+            int pos = Array.IndexOf(cardImages, allocatedImagesUnserialized[i]);
             if (pos < 0 )
             {
-                item = "unknown";
+                allocatedImagesUnserialized[i] = "unknown";
             }
         }
 
