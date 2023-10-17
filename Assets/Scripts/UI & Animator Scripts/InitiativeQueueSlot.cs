@@ -11,7 +11,7 @@ public class InitiativeQueueSlot : MonoBehaviour
       public SelectedCreatureBox selectedCreatureBox;
       public SpriteRenderer creatureSprite;
       public GameObject highlight;
-      public int priority; 
+      public GameObject deathSprite;
     void Start() {
     }
     void Update() {
@@ -22,7 +22,6 @@ public class InitiativeQueueSlot : MonoBehaviour
             return;
         }
         highlightSelf();
-
     }
 
     void OnMouseExit() {
@@ -45,8 +44,15 @@ public class InitiativeQueueSlot : MonoBehaviour
 
     public void setCreature(PlacedCreature creature) {
         this.creature = creature;
-        creatureSprite.sprite = creature.baseCard.sprite;
-
+        if (creature.isSlain) {
+            creatureSprite.gameObject.SetActive(false);
+            deathSprite.SetActive(true);
+        } else {
+            deathSprite.SetActive(false);
+            creatureSprite.gameObject.SetActive(true);
+            creatureSprite.sprite = creature.baseCard.sprite;
+        }
+        
         Team team = BattleController.instance.teams[creature.alignment];
         GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creature.position)];
         GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creature.position > 2? 1 : 0];

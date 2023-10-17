@@ -14,7 +14,7 @@ public class PlacedCreature : MonoBehaviour
     public int currentHealth;
     public int currentStrength;
     public int currentSpeed; 
-    public bool isSlain;
+    public bool isSlain = false;
     public int currentShield;
     public string[] currentAbility;
 
@@ -194,6 +194,7 @@ public class PlacedCreature : MonoBehaviour
     public IEnumerator perish() {
         this.isSlain = true;
         yield return StartCoroutine(creatureAnimator.perish());
+        battleController.initiativeQueueUI.updateUI();
     }
 
     /*************************************************
