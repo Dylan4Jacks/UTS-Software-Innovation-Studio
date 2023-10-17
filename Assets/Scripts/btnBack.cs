@@ -11,8 +11,8 @@ public class btnBack : MonoBehaviour
     public bool pressed = false;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    [Range(0, 1)] public float fadeAmountHover = 0.7f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
-    [Range(0, 1)] public float fadeAmountPress = 0.9f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
+    [Range(0, 1)] public float fadeAmountHover = 0.6f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
+    [Range(0, 1)] public float fadeAmountPress = 0.3f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
     private bool isMouseOver = false;
 
     // Start is called before the first frame update

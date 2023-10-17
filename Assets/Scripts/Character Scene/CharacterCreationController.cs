@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
+using Unity.Collections.LowLevel.Unsafe;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
@@ -16,12 +17,14 @@ public class CharacterCreationController : MonoBehaviour
 
     ModularOpenAIController modularOpenAIController;
 
-    public SingleCharacter singleCharacter;
     // Start is called before the first frame update
     void Start()
     {
         modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
+
+        print($"Input field: {inputField.text}");
+        print($"SingleCharacter: {SingleCharacter.Instance.CharacterDescription}");
     }
 
     void Update()
@@ -37,6 +40,14 @@ public class CharacterCreationController : MonoBehaviour
 
     void CreateCharacter()
     {
+        if (SingleCharacter.Instance == null) {
+            SingleCharacter.Instance = new SingleCharacter();
+        }
+
+        if (SingleCharacter.Instance.CharacterDescription == inputField.text) {
+            LoadNextScene();
+        }
+
         int charLimit = 30;
         if(inputField.text.Length < charLimit) 
         {
@@ -46,7 +57,8 @@ public class CharacterCreationController : MonoBehaviour
 
         //List<card>
         List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
-        singleCharacter.cards.AddRange(cards);
+        SingleCharacter.Instance.cards.AddRange(cards);
+        SingleCharacter.Instance.CharacterDescription = inputField.text;
         LoadNextScene();
     }
 
@@ -54,7 +66,7 @@ public class CharacterCreationController : MonoBehaviour
     public void LoadNextScene()
     {
         // Card Limit set to 0 for testing. Limit should be 7 at the minimum for a good game
-        if(singleCharacter.cards.Count < 0) 
+        if(SingleCharacter.Instance.cards.Count < 0) 
         {
             Debug.Log("Card Count too low");
             return; 
