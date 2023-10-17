@@ -115,7 +115,7 @@ public class ModularOpenAIController : MonoBehaviour
         // removes final comma and space
         cardNames.Substring(cardNames.Length - 2);
 
-        List<string> alloactedImages = allocateImages(cardNames);
+        string[] alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
@@ -144,11 +144,49 @@ public class ModularOpenAIController : MonoBehaviour
         return cards;
     }
 
-    private async List<string> allocateImages(string cardNames)
+    private async Task<string[]> allocateImages(string cardNames)
     {
-        imageOptions = "wug, beast, humanoid, furniture";
-        imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. You should respond with only the words chosen to describe each card, without including the card, and only in the format '{descriptive word}, {descriptive word}'.";
+        string imageOptions = "wug, beast, humanoid, furniture";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. You should respond with only the words chosen to describe each card, without including the card, and only in the format '{descriptive word}, {descriptive word}'.";
 
+        // Fill the user message form the input field
+        ChatMessage userMessage = new ChatMessage();
+        userMessage.Role = ChatMessageRole.User;
+        userMessage.Content = imageAllocationPrompt;
+
+        List<ChatMessage> test = new List<ChatMessage>();
+        test.Add(userMessage);
+
+        // Send Character creation message to OpenAI to get the reponse in cards
+        var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
+        {
+            Model = Model.ChatGPTTurbo,
+            Temperature = 0.1,
+            MaxTokens = 300,
+            Messages = test
+        });
+
+        // Get Response from API
+        string apiResponseString = chatResult.Choices[0].Message.Content; ;
+
+        // Split Creatures/Objects into individual Strings
+        string[] allocatedImagesUnserialized = apiResponseString.Split(
+            new string[] { "\\,\\ ", "\\," },
+            StringSplitOptions.None
+        );
+
+        // ensuring allocated image is real, otherwise allocating unknown image
+        string[] cardImages = { "wug", "beast", "humanoid", "furniture" }
+        foreach(var item in allocatedImagesUnserialized)
+        {
+            int pos = Array.IndexOf(cardImages, item);
+            if (pos < 0 )
+            {
+                item = "unknown";
+            }
+        }
+
+        return allocatedImagesUnserialized;
     }
 
     internal static void submitCharacterPrompt()
