@@ -105,30 +105,50 @@ public class ModularOpenAIController : MonoBehaviour
             StringSplitOptions.None
         );
 
-        //Initialize Array of Card Objects
-        cards = new List<BaseCard>();
+        // adds each card name to a string
+        string cardNames = "";
         foreach (var item in cardUnserialized)
         {
+            cardNames += Regex.Match(item, rxCardNameString) + ", ";
+        }
 
+        // removes final comma and space
+        cardNames.Substring(cardNames.Length - 2);
+
+        List<string> alloactedImages = allocateImages(cardNames);
+
+        //Initialize Array of Card Objects
+        cards = new List<BaseCard>();
+        int i = 0;
+        foreach (var item in cardUnserialized)
+        {
             Match nameMatch = Regex.Match(item, rxCardNameString);
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
             Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
-                                nameMatch.Value, 
-                                int.Parse(attackMatch.Value), 
-                                int.Parse(speedMatch.Value), 
+                                nameMatch.Value,
+                                int.Parse(attackMatch.Value),
+                                int.Parse(speedMatch.Value),
                                 int.Parse(hpMatch.Value),
-                                "wug"
+                                alloactedImages[i]
                                 );
             cards.Add(card);
+            i++;
         }
 
         Debug.Log(cards[0].cardName.ToString());
         Debug.Log(cards[0].strength.ToString());
 
         return cards;
+    }
+
+    private async List<string> allocateImages(string cardNames)
+    {
+        imageOptions = "wug, beast, humanoid, furniture";
+        imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. You should respond with only the words chosen to describe each card, without including the card, and only in the format '{descriptive word}, {descriptive word}'.";
+
     }
 
     internal static void submitCharacterPrompt()
