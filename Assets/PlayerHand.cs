@@ -7,17 +7,17 @@ public class PlayerHand : MonoBehaviour
     public List<GameObject> hand;
     public GameObject cardPrefab;
     public CardInHand selectedCard;
-    public static PlayerHand instance;
+    public static PlayerHand Instance;
     // Start is called before the first frame update
     void Start()
     {
-        if (instance != null && instance != this) {
+        if (Instance != null && Instance != this) {
             Destroy(this);
         }
         else {
-            instance = this;
+            Instance = this;
         }
-
+ 
         List<BaseCard> cards = new List<BaseCard>();
         cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2));
         cards.Add(new BaseCard("Yeah", "Description2", 3, 3, 3));
@@ -32,7 +32,16 @@ public class PlayerHand : MonoBehaviour
         
     }
 
-    void spawnHand(List<BaseCard> cards) {
+    void spawnHand() {
+        List<BaseCard> cards = new List<BaseCard>();
+        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
+        cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
+        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
+
+        if (SingleCharacter.Instance != null) {
+            cards = SingleCharacter.Instance.cards;
+        }
+
         int cardCount = 0;
         foreach (BaseCard card in cards) {
             cardCount++;
@@ -46,8 +55,7 @@ public class PlayerHand : MonoBehaviour
             cardTransform.rotation = Quaternion.AngleAxis(7 - cardCount, Vector3.forward);
             cardTransform.localScale = new Vector3(0.4f,0.4f,0.4f);
             cardInHand.GetComponent<CardInHand>().initialise(card, this);
-
-            cardInHand.transform.parent = gameObject.transform;
+            cardInHand.transform.SetParent(gameObject.transform, false);
 
             //set the cardinhand as a child object
         }
@@ -59,5 +67,7 @@ public class PlayerHand : MonoBehaviour
     
     public void placeCreature(int team, int position) {
         BattleController.instance.teams[team].placeCreature(position, this.selectedCard.baseCard);
+        Destroy(this.selectedCard.gameObject);
+        this.selectedCard = null;
     }
 }
