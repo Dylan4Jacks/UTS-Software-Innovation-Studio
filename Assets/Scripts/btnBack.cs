@@ -46,8 +46,7 @@ public class btnBack : MonoBehaviour
 
     public void LoadLastScene()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int SceneIndex = currentSceneIndex - 1;
+        int SceneIndex = 0;
         // Check if next scene index is out of bounds, then reset to 0 (optional)
         if (SceneIndex >= SceneManager.sceneCountInBuildSettings) {
             SceneIndex = 0; // or load a specific scene, like a main menu

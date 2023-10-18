@@ -22,9 +22,6 @@ public class CharacterCreationController : MonoBehaviour
     {
         modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
-
-        print($"Input field: {inputField.text}");
-        print($"SingleCharacter: {SingleCharacter.Instance.CharacterDescription}");
     }
 
     void Update()
