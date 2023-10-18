@@ -6956,7 +6956,23 @@ MonoBehaviour:
   defaultView: {fileID: 1234754810}
   creatureView: {fileID: 657811009}
   panelDescription: {fileID: 2139167356}
+  creatureDescription: {fileID: 1138070111}
+  creatureName: {fileID: 1710166342}
+  creatureAttack: {fileID: 1730684794}
+  creatureSpeed: {fileID: 757114064}
+  creatureHealth: {fileID: 811136690}
+  creatureSprite: {fileID: 1149131658}
   defaultText: Place your creatures!
+  baseCard:
+    sprite: {fileID: 0}
+    spriteType: 
+    cardName: 
+    strength: 0
+    speed: 0
+    health: 0
+    shield: 0
+    ability: []
+  placedCreature: {fileID: 0}
 --- !u!1 &1472497262
 GameObject:
   m_ObjectHideFlags: 0
