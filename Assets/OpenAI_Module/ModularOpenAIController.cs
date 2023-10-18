@@ -115,7 +115,7 @@ public class ModularOpenAIController : MonoBehaviour
             new string[] {"\n\n"},
             StringSplitOptions.None
         );
-        
+
          Debug.Log(cardUnserialized[0]);
 
         //Initialize Array of Card Objects
@@ -128,6 +128,7 @@ public class ModularOpenAIController : MonoBehaviour
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
+            Debug.Log(descriptionMatch.Value);
             Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
                                 nameMatch.Value, 

@@ -16,7 +16,7 @@ public class BaseCard {
 
     public BaseCard(string name, string description, int strength, int speed, int health) {
         this.cardName = name;
-        this.cardName = description;
+        this.description = description;
         this.strength = strength;
         this.speed = speed;
         this.health = health;
