@@ -95,7 +95,7 @@ public class ModularOpenAIController : MonoBehaviour
         {
             Model = Model.ChatGPTTurbo,
             Temperature = 0.1,
-            MaxTokens = 300,
+            MaxTokens = moduleConfigGetterSetter.TokenLimit,
             Messages = cardCreationMessage
         });
 
@@ -135,7 +135,8 @@ public class ModularOpenAIController : MonoBehaviour
                                 descriptionMatch.Value,
                                 int.Parse(attackMatch.Value), 
                                 int.Parse(speedMatch.Value), 
-                                int.Parse(hpMatch.Value)
+                                int.Parse(hpMatch.Value),
+                                "wug"
                                 );
             cards.Add(card);
         }
@@ -154,6 +155,7 @@ public class ModularOpenAIController : MonoBehaviour
 public class ModuleConfigGetterSetter {
     public int NumberOfObjcets { get; set; }
     public int NumberOfObjectAttributes { get; set; }
+    public int TokenLimit { get; set; }
     public string ObjectAttributes { get; set; }
     public string ObjectContextDescription { get; set; }
 }

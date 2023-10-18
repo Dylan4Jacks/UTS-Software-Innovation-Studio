@@ -5,45 +5,66 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InitiativeQueueSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InitiativeQueueSlot : MonoBehaviour
 {
       public PlacedCreature creature;
-      public AnimationHandler animator;
       public SelectedCreatureBox selectedCreatureBox;
-      public Sprite creatureSprite;
-      public Sprite deathSprite;
-      public int priority; 
-      private UnityEngine.UI.Image currentImage;
+      public SpriteRenderer creatureSprite;
+      public GameObject highlight;
+      public GameObject deathSprite;
     void Start() {
-        currentImage = gameObject.GetComponentInChildren<UnityEngine.UI.Image>();
     }
     void Update() {
-        if (currentImage.sprite == creatureSprite && creature.isSlain) {
-            currentImage.sprite = deathSprite;
+    }
+
+    void OnMouseEnter() {
+        if (creature == null) {
+            return;
         }
-    }
-     public void OnPointerEnter(PointerEventData eventData)
-    {
         highlightSelf();
-        selectedCreatureBox.highlightSelf();
     }
-    public void OnPointerExit(PointerEventData eventData)
-    {
+
+    void OnMouseExit() {
         unHighlightSelf();
-        selectedCreatureBox.unHighlightSelf();
     }
 
     public void highlightSelf() {
-        animator.changeAnimationState("Highlighted");
+        if (creature != null) {
+            selectedCreatureBox.highlightSelf();
+            highlight.SetActive(true);
+        }
     }
 
     public void unHighlightSelf() {
-        animator.changeAnimationState("Normal");
+        if (creature != null) {
+            selectedCreatureBox.unHighlightSelf();
+            highlight.SetActive(false);        
+        }
     }
-    
-    public void setupSlot(PlacedCreature creature, GameObject creatureSelectionBox) {
+
+    public void setCreature(PlacedCreature creature) {
         this.creature = creature;
+        if (creature.isSlain) {
+            creatureSprite.gameObject.SetActive(false);
+            deathSprite.SetActive(true);
+        } else {
+            deathSprite.SetActive(false);
+            creatureSprite.gameObject.SetActive(true);
+            creatureSprite.sprite = creature.baseCard.sprite;
+        }
+        
+        Team team = BattleController.instance.teams[creature.alignment];
+        GameObject relevantContainer = team.creatureContainers[Utils.calculateLane(creature.position)];
+        GameObject creatureSelectionBox = Utils.getChildren(relevantContainer)[creature.position > 2? 1 : 0];
+
         this.selectedCreatureBox = creatureSelectionBox.GetComponent<SelectedCreatureBox>();
         creatureSelectionBox.GetComponent<SelectedCreatureBox>().setInitiativeQueueSlot(this);
+    }
+    public void empty() {
+        if (selectedCreatureBox != null) { selectedCreatureBox.emptySlot(); }
+        this.creature = null;
+        this.selectedCreatureBox = null;
+        creatureSprite.gameObject.SetActive(false);
+        deathSprite.SetActive(false);
     }
 }

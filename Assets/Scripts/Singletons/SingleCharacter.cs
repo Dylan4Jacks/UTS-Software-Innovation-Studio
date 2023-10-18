@@ -7,16 +7,8 @@ using UnityEngine;
 public class SingleCharacter : MonoBehaviour
 {
     public static SingleCharacter Instance;
-
-    public List<ChatMessage> cardCreationMessage;
     public List<BaseCard> cards;
-
-    public class QuestionResponse
-    {
-        public string question;
-        public string response;
-    }
-    public List<QuestionResponse> AskedQuestions = new List<QuestionResponse>();
+    public string CharacterDescription;
 
     private void Awake()
     {
@@ -27,13 +19,6 @@ public class SingleCharacter : MonoBehaviour
         }
         else {
             Destroy(gameObject); // Destroy any additional instances
-        }
-    }
-
-    public void AddQuestionAndResponse(string question, string response)
-    {
-        if (!AskedQuestions.Any(qr => qr.question.Equals(question))) {
-            AskedQuestions.Add(new QuestionResponse { question=question, response=response });
         }
     }
 }
