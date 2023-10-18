@@ -8,14 +8,16 @@ public class BaseCard {
     public Sprite sprite;
     public string spriteType;
     public string cardName;
+    public string description;
     public int strength;
     public int speed;
     public int health;
     public int shield;
     public string[] ability;
 
-    public BaseCard(string name, int strength, int speed, int health, string spriteType) {
+    public BaseCard(string name, string description, int strength, int speed, int health, string spriteType) {
         this.cardName = name;
+        this.description = description;
         this.strength = strength;
         this.speed = speed;
         this.health = health;
