@@ -105,7 +105,7 @@ public class ModularOpenAIController : MonoBehaviour
             StringSplitOptions.None
         );
 
-        // adds each card name to a string
+        /*// adds each card name to a string
         string cardNames = "";
         foreach (var item in cardUnserialized)
         {
@@ -114,8 +114,9 @@ public class ModularOpenAIController : MonoBehaviour
 
         // removes final comma and space
         cardNames.Substring(cardNames.Length - 2);
+        Debug.Log(cardNames);*/
 
-        string[] alloactedImages = await allocateImages(cardNames);
+        //string[] alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
@@ -132,7 +133,8 @@ public class ModularOpenAIController : MonoBehaviour
                                 int.Parse(attackMatch.Value),
                                 int.Parse(speedMatch.Value),
                                 int.Parse(hpMatch.Value),
-                                alloactedImages[i]
+                                //alloactedImages[i]
+                                "wug"
                                 );
             cards.Add(card);
             i++;
