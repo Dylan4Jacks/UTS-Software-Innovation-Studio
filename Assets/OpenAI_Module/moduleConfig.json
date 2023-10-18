@@ -1,6 +1,7 @@
 {
-    "NumberOfObjcets": 3,
+    "NumberOfObjcets": 8,
     "NumberOfObjectAttributes": 4,
+    "TokenLimit": 1000,
     "ObjectAttributes": "name, HP, Speed, and Attack",
     "ObjectContextDescription": "cards in a card game"
 }
