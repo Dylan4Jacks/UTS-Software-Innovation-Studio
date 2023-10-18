@@ -15,6 +15,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public class ModularOpenAIController : MonoBehaviour
 {
@@ -117,34 +118,76 @@ public class ModularOpenAIController : MonoBehaviour
         );
 
          Debug.Log(cardUnserialized[0]);
+        // adds each card name to a string
+        string cardNames = "";
+        foreach (var item in cardUnserialized)
+        {
+            cardNames += Regex.Match(item, rxCardNameString) + ", ";
+        }
+
+        // removes final comma and space
+        cardNames = cardNames.Substring(0, cardNames.Length - 2);
+        Debug.Log(cardNames);
+
+        string alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
+        int i = 0;
         foreach (var item in cardUnserialized)
         {
-
             Match nameMatch = Regex.Match(item, rxCardNameString);
             Match descriptionMatch = Regex.Match(item, rxDescriptionString);
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
+            Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
             Debug.Log(descriptionMatch.Value);
             Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
-                                nameMatch.Value, 
+                                nameMatch.Value,
                                 descriptionMatch.Value,
                                 int.Parse(attackMatch.Value), 
                                 int.Parse(speedMatch.Value), 
                                 int.Parse(hpMatch.Value),
-                                "wug"
+                                imageMatch.Value
                                 );
             cards.Add(card);
+            i++;
         }
 
         Debug.Log(cards[0].cardName.ToString());
         Debug.Log(cards[0].strength.ToString());
 
         return cards;
+    }
+
+    private async Task<string> allocateImages(string cardNames)
+    {
+        string imageOptions = "wug, beast, humanoid, furniture";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
+
+        // Fill the user message form the input field
+        ChatMessage userMessage = new ChatMessage();
+        userMessage.Role = ChatMessageRole.User;
+        userMessage.Content = imageAllocationPrompt;
+
+        List<ChatMessage> test = new List<ChatMessage>();
+        test.Add(userMessage);
+
+        // Send Character creation message to OpenAI to get the reponse in cards
+        var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
+        {
+            Model = Model.ChatGPTTurbo,
+            Temperature = 0.1,
+            MaxTokens = 300,
+            Messages = test
+        });
+
+        // Get Response from API
+        string apiResponseString = chatResult.Choices[0].Message.Content;
+
+        return apiResponseString;
     }
 
     internal static void submitCharacterPrompt()
