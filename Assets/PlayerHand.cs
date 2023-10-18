@@ -19,9 +19,9 @@ public class PlayerHand : MonoBehaviour
         }
  
         List<BaseCard> cards = new List<BaseCard>();
-        cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2));
-        cards.Add(new BaseCard("Yeah", "Description2", 3, 3, 3));
-        cards.Add(new BaseCard("Ohno", "Description3", 4, 4, 4));
+        cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2, "wug"));
+        cards.Add(new BaseCard("Yeah", "Description2", 3, 3, 3, "wug"));
+        cards.Add(new BaseCard("Ohno", "Description3", 4, 4, 4, "wug"));
 
         spawnHand(cards);
     }
@@ -32,11 +32,11 @@ public class PlayerHand : MonoBehaviour
         
     }
 
-    void spawnHand() {
-        List<BaseCard> cards = new List<BaseCard>();
-        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
+    void spawnHand(List<BaseCard> cards) {
+        //List<BaseCard> cards = new List<BaseCard>();
+        /*cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
         cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
-        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
+        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));*/
 
         if (SingleCharacter.Instance != null) {
             cards = SingleCharacter.Instance.cards;

@@ -144,6 +144,7 @@ public class ModularOpenAIController : MonoBehaviour
             Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
                                 nameMatch.Value,
+                                descriptionMatch.Value,
                                 int.Parse(attackMatch.Value),
                                 int.Parse(speedMatch.Value),
                                 int.Parse(hpMatch.Value),
