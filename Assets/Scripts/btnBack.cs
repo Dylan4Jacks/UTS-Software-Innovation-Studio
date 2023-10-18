@@ -15,24 +15,12 @@ public class btnBack : MonoBehaviour
     [Range(0, 1)] public float fadeAmountPress = 0.3f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
     private bool isMouseOver = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     public void OnMouseDown()
     {
         spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, fadeAmountPress);
