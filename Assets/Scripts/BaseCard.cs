@@ -5,13 +5,13 @@ using UnityEngine;
 
 [System.Serializable]
 public class BaseCard {
-    public Sprite sprite;
-    public string spriteType;
     public string cardName;
     public string description;
     public int strength;
     public int speed;
     public int health;
+    public string spriteType;
+    public Sprite sprite;
     public int shield;
     public string[] ability;
 

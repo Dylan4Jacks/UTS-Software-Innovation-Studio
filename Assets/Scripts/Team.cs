@@ -42,6 +42,8 @@ public class Team : MonoBehaviour
         } else {
             placedCreature.transform.parent = teamSlots[position].transform;
         }
+        //handleinitiativequeuestuff
+        BattleController.instance.insertInInitiativeQueue(placedCreatures[position]);
     }
 
     private void replaceCreature(GameObject teamSlot, GameObject newCreature) {

@@ -67,6 +67,8 @@ MonoBehaviour:
   displayHealth: {fileID: 8573984274994553301}
   displayStrength: {fileID: 5484388190977171111}
   creatureRenderer: {fileID: 6359603618831224315}
+  alignment: 0
+  position: 0
   isVictorious: 0
   lanePartner: {fileID: 0}
 --- !u!1 &4317708263096175478

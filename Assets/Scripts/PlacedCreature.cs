@@ -14,7 +14,7 @@ public class PlacedCreature : MonoBehaviour
     public int currentHealth;
     public int currentStrength;
     public int currentSpeed; 
-    public bool isSlain;
+    public bool isSlain = false;
     public int currentShield;
     public string[] currentAbility;
 
@@ -24,8 +24,8 @@ public class PlacedCreature : MonoBehaviour
     
     private TextMeshPro healthText;
     private TextMeshPro strengthText;
-    private int alignment;
-    private int position;
+    public int alignment;
+    public int position;
     private Team team;
     public bool isVictorious; 
     public PlacedCreature lanePartner; 
@@ -194,6 +194,7 @@ public class PlacedCreature : MonoBehaviour
     public IEnumerator perish() {
         this.isSlain = true;
         yield return StartCoroutine(creatureAnimator.perish());
+        battleController.initiativeQueueUI.updateUI();
     }
 
     /*************************************************
@@ -276,7 +277,7 @@ public class PlacedCreature : MonoBehaviour
 
         if (currentAbility[0] == "shield")
         {
-            if (targetPosition != -1)
+            if (targetPosition != -1 && battleController.teams[alignment].placedCreatures[targetPosition] != null)
             {
                 battleController.teams[alignment].placedCreatures[targetPosition].currentShield = int.Parse(currentAbility[2]);
             }
