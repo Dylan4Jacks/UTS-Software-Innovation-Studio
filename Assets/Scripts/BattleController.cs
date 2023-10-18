@@ -57,7 +57,7 @@ public class BattleController : MonoBehaviour
             laneVictors[i] = -1; //temporary for debugging
         } 
         for (int i = 0; i < 6; i++) {
-            teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5), "beast"));
+            teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), "Description_"+1.ToString(), Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5), "beast"));
         }
     }
 
@@ -107,26 +107,6 @@ public class BattleController : MonoBehaviour
             handleBattleEnd();
         }
     }
-
-    // private void fillInitiativeQueue() {
-    //     initiativeQueue.Clear();
-    //     foreach (Team team in this.teams) {
-    //         foreach (PlacedCreature creature in team.placedCreatures) {
-    //             if (creature == null) {
-    //                 break;
-    //             }
-    //             if (!creature.isSlain && !creature.isVictorious) {
-    //                 initiativeQueue.Add(creature);
-    //             }
-    //         }
-    //     }
-    //     sortInitiativeQueue();
-    // }
-
-    // private void sortInitiativeQueue() {
-    //     initiativeQueue.Sort(Utils.ComparePlacedCreaturesBySpeed);
-    //     //initiativeQueueUI.handleNewQueue(initiativeQueue, this);
-    // }
 
     /********************************************
     * battle outcomes

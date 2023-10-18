@@ -17,10 +17,6 @@ public class PlayerHand : MonoBehaviour
         else {
             Instance = this;
         }
-    
-        
-        
-
         spawnHand();
     }
 
@@ -32,9 +28,9 @@ public class PlayerHand : MonoBehaviour
 
     void spawnHand() {
         List<BaseCard> cards = new List<BaseCard>();
-        cards.Add(new BaseCard("Woah", 2, 2, 2, "beast"));
-        cards.Add(new BaseCard("Yeah", 3, 3, 3, "humanoid"));
-        cards.Add(new BaseCard("Ohno", 4, 4, 4, "wug"));
+        cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2, "beast"));
+        cards.Add(new BaseCard("Yeah", "Description1", 3, 3, 3, "humanoid"));
+        cards.Add(new BaseCard("Ohno", "Description1", 4, 4, 4, "wug"));
 
         if (SingleCharacter.Instance != null) {
             cards = SingleCharacter.Instance.cards;
