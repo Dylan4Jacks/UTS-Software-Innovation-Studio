@@ -47,6 +47,8 @@ public class InfoPanelController : MonoBehaviour
         creatureAttack.text = placedCreature.currentStrength.ToString();
         creatureSpeed.text = placedCreature.currentSpeed.ToString();
         creatureHealth.text = placedCreature.currentHealth.ToString();
+        creatureDescription.text = baseCard.description;
+
 
         creatureSprite.sprite = placedCreature.baseCard.sprite;
     }
@@ -62,6 +64,7 @@ public class InfoPanelController : MonoBehaviour
         creatureAttack.text = baseCard.strength.ToString();
         creatureSpeed.text = baseCard.speed.ToString();
         creatureHealth.text = baseCard.health.ToString();
+        creatureDescription.text = baseCard.description;
 
         creatureSprite.sprite = baseCard.sprite;
     }
