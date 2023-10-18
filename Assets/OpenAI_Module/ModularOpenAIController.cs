@@ -15,6 +15,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 
 public class ModularOpenAIController : MonoBehaviour
 {
@@ -117,7 +118,7 @@ public class ModularOpenAIController : MonoBehaviour
         );
 
          Debug.Log(cardUnserialized[0]);
-        /*// adds each card name to a string
+        // adds each card name to a string
         string cardNames = "";
         foreach (var item in cardUnserialized)
         {
@@ -125,10 +126,10 @@ public class ModularOpenAIController : MonoBehaviour
         }
 
         // removes final comma and space
-        cardNames.Substring(cardNames.Length - 2);
-        Debug.Log(cardNames);*/
+        cardNames = cardNames.Substring(0, cardNames.Length - 2);
+        Debug.Log(cardNames);
 
-        //string[] alloactedImages = await allocateImages(cardNames);
+        string alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
@@ -140,6 +141,7 @@ public class ModularOpenAIController : MonoBehaviour
             Match hpMatch = Regex.Match(item, rxHPString);
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
+            Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
             Debug.Log(descriptionMatch.Value);
             Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
@@ -148,7 +150,7 @@ public class ModularOpenAIController : MonoBehaviour
                                 int.Parse(attackMatch.Value), 
                                 int.Parse(speedMatch.Value), 
                                 int.Parse(hpMatch.Value),
-                                "wug"
+                                imageMatch.Value
                                 );
             cards.Add(card);
             i++;
@@ -160,10 +162,10 @@ public class ModularOpenAIController : MonoBehaviour
         return cards;
     }
 
-    private async Task<string[]> allocateImages(string cardNames)
+    private async Task<string> allocateImages(string cardNames)
     {
         string imageOptions = "wug, beast, humanoid, furniture";
-        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. You should respond with only the words chosen to describe each card, without including the card, and only in the format '{descriptive word}, {descriptive word}'.";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
 
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
@@ -183,26 +185,9 @@ public class ModularOpenAIController : MonoBehaviour
         });
 
         // Get Response from API
-        string apiResponseString = chatResult.Choices[0].Message.Content; ;
+        string apiResponseString = chatResult.Choices[0].Message.Content;
 
-        // Split Creatures/Objects into individual Strings
-        string[] allocatedImagesUnserialized = apiResponseString.Split(
-            new string[] { "\\,\\ ", "\\," },
-            StringSplitOptions.None
-        );
-
-        // ensuring allocated image is real, otherwise allocating unknown image
-        string[] cardImages = { "wug", "beast", "humanoid", "furniture" };
-        for (int i = 0; i < allocatedImagesUnserialized.Length; i++)
-        {
-            int pos = Array.IndexOf(cardImages, allocatedImagesUnserialized[i]);
-            if (pos < 0 )
-            {
-                allocatedImagesUnserialized[i] = "unknown";
-            }
-        }
-
-        return allocatedImagesUnserialized;
+        return apiResponseString;
     }
 
     internal static void submitCharacterPrompt()
