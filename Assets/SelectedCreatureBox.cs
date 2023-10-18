@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -18,14 +19,27 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         highlightSelf();
-        if (initiativeQueueSlot == null) {return;}
+        if (initiativeQueueSlot == null) {
+                PlacedCreature creature = getCreature();
+                if (creature != null) {
+                    InfoPanelController.instance.viewPlacedCreature(creature);
+                } else {
+                    InfoPanelController.instance.returnToDefault("EMPTY_SELECTION_BOX");
+                }
+                return;
+            }
+        InfoPanelController.instance.viewPlacedCreature(initiativeQueueSlot.creature);
         initiativeQueueSlot.highlightSelf();
 
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         unHighlightSelf();
-        if (initiativeQueueSlot == null) {return;}
+        InfoPanelController.instance.returnToDefault("");
+
+        if (initiativeQueueSlot == null) {
+            return;
+        }
         initiativeQueueSlot.unHighlightSelf();
 
     }
@@ -53,5 +67,13 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
         if (PlayerHand.Instance.selectedCard != null) {
             PlayerHand.Instance.placeCreature(this.team, this.slotPosition);
         }
+    }
+
+    public bool hasCreature() {
+        return BattleController.instance.teams[team].placedCreatures[slotPosition] != null;
+    }
+
+    public PlacedCreature getCreature() {
+        return BattleController.instance.teams[team].placedCreatures[slotPosition];
     }
 }

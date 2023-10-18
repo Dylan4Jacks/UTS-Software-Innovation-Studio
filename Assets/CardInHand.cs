@@ -47,10 +47,12 @@ public class CardInHand : MonoBehaviour
     
     void OnMouseEnter() {
         gameObject.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+        InfoPanelController.instance.viewBaseCard(baseCard);
     }
 
     void OnMouseExit() {
         gameObject.transform.rotation = originalRotate;
+        InfoPanelController.instance.returnToDefault("");
     }
 
     public void OnMouseDown() {

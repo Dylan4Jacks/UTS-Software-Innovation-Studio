@@ -22,10 +22,12 @@ public class InitiativeQueueSlot : MonoBehaviour
             return;
         }
         highlightSelf();
+        InfoPanelController.instance.viewPlacedCreature(creature);
     }
 
     void OnMouseExit() {
         unHighlightSelf();
+        InfoPanelController.instance.returnToDefault("");
     }
 
     public void highlightSelf() {

@@ -4669,7 +4669,6 @@ GameObject:
   m_Component:
   - component: {fileID: 950250829}
   - component: {fileID: 950250828}
-  - component: {fileID: 950250830}
   m_Layer: 0
   m_Name: infopanel
   m_TagString: Untagged
@@ -4746,20 +4745,6 @@ Transform:
   - {fileID: 657811010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.32}
---- !u!114 &950250830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950250827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 396ba158e59066b4bafc7efb09177fe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultView: {fileID: 1234754810}
-  creatureView: {fileID: 657811009}
 --- !u!1 &956212184
 GameObject:
   m_ObjectHideFlags: 0
@@ -6968,6 +6953,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: DEFAULT
+  defaultView: {fileID: 1234754810}
+  creatureView: {fileID: 657811009}
+  panelDescription: {fileID: 2139167356}
+  defaultText: Place your creatures!
 --- !u!1 &1472497262
 GameObject:
   m_ObjectHideFlags: 0
