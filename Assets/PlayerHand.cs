@@ -17,11 +17,13 @@ public class PlayerHand : MonoBehaviour
         else {
             Instance = this;
         }
-    
-        
-        
+ 
+        List<BaseCard> cards = new List<BaseCard>();
+        cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2));
+        cards.Add(new BaseCard("Yeah", "Description2", 3, 3, 3));
+        cards.Add(new BaseCard("Ohno", "Description3", 4, 4, 4));
 
-        spawnHand();
+        spawnHand(cards);
     }
 
     // Update is called once per frame

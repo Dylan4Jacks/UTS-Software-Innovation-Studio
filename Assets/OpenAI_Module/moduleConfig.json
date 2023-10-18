@@ -1,6 +1,6 @@
 {
     "NumberOfObjcets": 3,
-    "NumberOfObjectAttributes": 4,
-    "ObjectAttributes": "name, HP, Speed, and Attack",
+    "NumberOfObjectAttributes": 5,
+    "ObjectAttributes": "Name, Description, HP, Speed, and Attack",
     "ObjectContextDescription": "cards in a card game"
 }
