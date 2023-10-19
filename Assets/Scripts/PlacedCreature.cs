@@ -169,7 +169,7 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = attacker.currentStrength - currentShield;
         if (adjustedAttack > 0)
         {
-            setCurrentHealth(currentHealth - adjustedAttack);
+            takeDamage(adjustedAttack);
         }
         retaliate(attacker);
         yield return StartCoroutine(this.checkDeath(attacker)); 
@@ -180,7 +180,7 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = this.currentStrength - attacker.currentShield;
         if (adjustedAttack > 0)
         {
-            attacker.setCurrentHealth(attacker.currentHealth - adjustedAttack);
+            attacker.takeDamage(adjustedAttack);
         }
     }
 
@@ -303,5 +303,16 @@ public class PlacedCreature : MonoBehaviour
                 battleController.teams[alignment].placedCreatures[targetPosition].currentSpeed += int.Parse(currentAbility[2]);
             }
         }
+    }
+
+    public void takeDamage(int damage) {
+        this.setCurrentHealth(this.currentHealth - damage);
+        GameObject damageText = Instantiate(
+            RuntimeResources.Instance.damageGraphicPrefab, 
+            this.healthText.gameObject.transform.position, 
+            Quaternion.identity
+        );
+        damageText.GetComponent<TextMeshPro>().text = "-" + damage;
+        damageText.transform.SetParent(this.healthText.gameObject.transform.parent);
     }
 }

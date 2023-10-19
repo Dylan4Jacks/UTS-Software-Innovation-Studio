@@ -6935,6 +6935,7 @@ MonoBehaviour:
   - {fileID: 684244849}
   - {fileID: 1544593781}
   initiativeQueueUI: {fileID: 1546645814}
+  infoPanel: {fileID: 1459340882}
 --- !u!4 &1459340879
 Transform:
   m_ObjectHideFlags: 0
@@ -6963,6 +6964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorTexture: {fileID: 2800000, guid: b28d21c2eadb97d40a2f5c8eb325fa8e, type: 3}
+  damageGraphicPrefab: {fileID: 1904064103132995770, guid: 92d6edd62185b5446b1ffaaa3d910d7d, type: 3}
 --- !u!114 &1459340882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10947,6 +10949,7 @@ MonoBehaviour:
   hand: []
   cardPrefab: {fileID: 6914258130127149327, guid: 4ebcda94892dce342969c1fce16efaa2, type: 3}
   selectedCard: {fileID: 0}
+  hasHoveredCard: 0
   cardsInHand: []
 --- !u!1 &2114918620
 GameObject:

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class InfoPanelController : MonoBehaviour
 {
@@ -87,5 +88,25 @@ public class InfoPanelController : MonoBehaviour
                 break;
             default: break; 
         }
+    }
+
+    public void changeBattleState(string newState) {
+        switch(newState) {
+            case "PREPARATION": 
+            defaultText = "Place your creatures!";
+                break;
+            case "BATTLING":
+            defaultText = "Round " + (BattleController.instance.currentRound + 1) + 
+                " in progress...";
+                break;
+            case "BATTLE_END":
+            defaultText = "Click the back button in the top right to play again!";
+                break;
+            case "ROUND_BREAK":
+            defaultText = "Press the 'Next Round' button to continue";
+                break;
+            default: break;
+        }
+        panelDescription.text = defaultText;
     }
 }

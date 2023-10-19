@@ -8,6 +8,7 @@ public class RuntimeResources : MonoBehaviour
     public static RuntimeResources Instance;
     public Dictionary<string, Sprite> spriteDictionary = new Dictionary<string, Sprite>();
     public Texture2D cursorTexture;
+    public GameObject damageGraphicPrefab;
     void Awake() 
     {
         if (Instance != null && Instance != this) {

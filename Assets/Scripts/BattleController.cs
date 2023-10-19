@@ -23,9 +23,8 @@ public class BattleController : MonoBehaviour
     public GameObject creaturePrefab;
     public List<Team> teams = new List<Team>(); 
     public InitiativeQueueUI initiativeQueueUI;
+    public InfoPanelController infoPanel;
     
-
-
     void Awake() {
         teams[Utils.ENEMY].alignment = Utils.ENEMY;
         teams[Utils.PLAYER].alignment = Utils.PLAYER;
@@ -82,7 +81,7 @@ public class BattleController : MonoBehaviour
     private IEnumerator runBattle () {
         do {
             yield return runRound();
-            if (enableRoundBreaks) {
+            if (enableRoundBreaks && battleState != "BATTLE_END") {
                 changeBattleState("ROUND_BREAK");
                 break;
             };
@@ -194,6 +193,7 @@ public class BattleController : MonoBehaviour
     }
 
     private void changeBattleState(string newState) {
+        infoPanel.changeBattleState(newState);
         if (battleState == "BATTLE_END" && newState != "PREPARATION") {
             return;
         }
