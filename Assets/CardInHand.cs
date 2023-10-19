@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 public class CardInHand : MonoBehaviour
 {
+    public SpriteRenderer healthIcon;
+    public SpriteRenderer speedIcon;
+    public SpriteRenderer attackIcon;
+    public SpriteRenderer cardMask;
+    public SpriteRenderer cardBack;
     public BaseCard baseCard; 
     public TextMeshPro cardNameText;
     public TextMeshPro cardAttackValueText;

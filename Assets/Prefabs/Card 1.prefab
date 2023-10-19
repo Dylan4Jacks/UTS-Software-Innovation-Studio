@@ -827,6 +827,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943d1c702054ae94883214ae6303a05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthIcon: {fileID: 4180061754333433216}
+  speedIcon: {fileID: 1063231274687806647}
+  attackIcon: {fileID: 4168686244683356499}
+  cardMask: {fileID: 522938490917387378}
+  cardBack: {fileID: 8400640778780783417}
   baseCard:
     sprite: {fileID: 0}
     spriteType: 
