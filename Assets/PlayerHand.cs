@@ -63,7 +63,8 @@ public class PlayerHand : MonoBehaviour
             cardObj.cardNameText.sortingOrder = 5 + cardCount;
             cardObj.cardSpeedValueText.sortingOrder = 5 + cardCount;
             cardObj.cardAttackValueText.sortingOrder = 5 + cardCount;
-            cardObj.cardHealthValueText.sortingOrder = 5 + cardCount;  
+            cardObj.cardHealthValueText.sortingOrder = 5 + cardCount;
+            cardObj.creatureSpriteRenderer.sortingOrder= 5 + cardCount;
 
             cardInHand.transform.SetParent(gameObject.transform, false);
             cardsInHand.Add(cardInHand.GetComponent<CardInHand>());
@@ -76,6 +77,10 @@ public class PlayerHand : MonoBehaviour
     
     public void placeCreature(int team, int position) {
         BattleController.instance.teams[team].placeCreature(position, this.selectedCard.baseCard);
+        int cardIndex = cardsInHand.FindIndex(a => a.Equals(selectedCard));
+        for (int i = cardIndex + 1; i < cardsInHand.Count; i++) {
+            cardsInHand[i].gameObject.transform.position += Vector3.left * 110;
+        }
         cardsInHand.Remove(selectedCard);
         Destroy(this.selectedCard.gameObject);
         this.selectedCard = null;
