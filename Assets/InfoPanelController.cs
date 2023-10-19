@@ -10,6 +10,7 @@ public class InfoPanelController : MonoBehaviour
     public static InfoPanelController instance; 
     public GameObject defaultView; 
     public GameObject creatureView;
+    public GameObject promptReminderView;
     public TextMeshPro panelDescription; 
     public TextMeshPro creatureDescription;
     public TextMeshPro creatureName;
@@ -40,6 +41,7 @@ public class InfoPanelController : MonoBehaviour
     public void viewPlacedCreature(PlacedCreature placedCreature) {
         defaultView.SetActive(false);
         creatureView.SetActive(true);
+        promptReminderView.SetActive(false);
 
         this.placedCreature = placedCreature;
         this.baseCard = placedCreature.baseCard;
@@ -57,6 +59,7 @@ public class InfoPanelController : MonoBehaviour
     public void viewBaseCard(BaseCard baseCard) {
         defaultView.SetActive(false);
         creatureView.SetActive(true);
+        promptReminderView.SetActive(false);
 
         this.placedCreature = null;
         this.baseCard = baseCard;
@@ -76,6 +79,7 @@ public class InfoPanelController : MonoBehaviour
 
         defaultView.SetActive(true);
         creatureView.SetActive(false);
+        promptReminderView.SetActive(false);
         
         switch(state) {
             case "":  panelDescription.text = defaultText; break;
@@ -88,6 +92,12 @@ public class InfoPanelController : MonoBehaviour
                 break;
             default: break; 
         }
+    }
+
+    public void setPromptReminderView() {
+        defaultView.SetActive(false);
+        creatureView.SetActive(false);
+        promptReminderView.SetActive(true);        
     }
 
     public void changeBattleState(string newState) {
