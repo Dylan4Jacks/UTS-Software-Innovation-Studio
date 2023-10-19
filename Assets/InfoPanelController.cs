@@ -78,7 +78,13 @@ public class InfoPanelController : MonoBehaviour
         
         switch(state) {
             case "":  panelDescription.text = defaultText; break;
-            case "EMPTY_SELECTION_BOX": panelDescription.text = "Select a creature card from your hand to place it in this empty slot." ;break;
+            case "EMPTY_SELECTION_BOX": 
+                if (PlayerHand.Instance.selectedCard == null) {
+                    panelDescription.text = "Select a creature card from your hand to place it in this empty slot." ;
+                } else {
+                    panelDescription.text = "Click to play '" + PlayerHand.Instance.selectedCard.baseCard.cardName + "' here";
+                }
+                break;
             default: break; 
         }
     }

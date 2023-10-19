@@ -549,6 +549,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 5
+  battlefield: {fileID: 1211461868}
 --- !u!114 &221758486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,6 +905,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 3
+  battlefield: {fileID: 1211461868}
 --- !u!114 &305714532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1194,6 +1196,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 0
+  battlefield: {fileID: 1211461868}
 --- !u!222 &445476265
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1605,6 +1608,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 5
+  battlefield: {fileID: 1211461868}
 --- !u!114 &470281947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,6 +1914,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 4
+  battlefield: {fileID: 1211461868}
 --- !u!114 &536942886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4092,6 +4097,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 1
+  battlefield: {fileID: 1211461868}
 --- !u!114 &861605613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4309,6 +4315,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 0
+  battlefield: {fileID: 1211461868}
 --- !u!114 &887541949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4882,6 +4889,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 3
+  battlefield: {fileID: 1211461868}
 --- !u!114 &956212191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5831,6 +5839,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 1
+  battlefield: {fileID: 1211461868}
 --- !u!114 &1181442455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5950,6 +5959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1211461867}
+  - component: {fileID: 1211461868}
   m_Layer: 0
   m_Name: BattleField
   m_TagString: Untagged
@@ -5978,6 +5988,19 @@ Transform:
   - {fileID: 743826796}
   m_Father: {fileID: 1734954035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1211461868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211461866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d618635ca93a147a7b55817f7ca142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSelection: {fileID: 0}
 --- !u!1 &1213598643
 GameObject:
   m_ObjectHideFlags: 0
@@ -7439,6 +7462,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 2
+  battlefield: {fileID: 1211461868}
 --- !u!114 &1530112619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8317,6 +8341,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 0
   slotPosition: 4
+  battlefield: {fileID: 1211461868}
 --- !u!114 &1599838827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10706,6 +10731,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   team: 1
   slotPosition: 2
+  battlefield: {fileID: 1211461868}
 --- !u!114 &2009132947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10921,6 +10947,7 @@ MonoBehaviour:
   hand: []
   cardPrefab: {fileID: 6914258130127149327, guid: 4ebcda94892dce342969c1fce16efaa2, type: 3}
   selectedCard: {fileID: 0}
+  cardsInHand: []
 --- !u!1 &2114918620
 GameObject:
   m_ObjectHideFlags: 0

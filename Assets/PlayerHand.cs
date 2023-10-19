@@ -8,6 +8,7 @@ public class PlayerHand : MonoBehaviour
     public GameObject cardPrefab;
     public CardInHand selectedCard;
     public static PlayerHand Instance;
+    public bool hasHoveredCard = false;
     public List<CardInHand> cardsInHand = new List<CardInHand>(); 
     // Start is called before the first frame update
     void Start()

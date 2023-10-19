@@ -10,14 +10,14 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     public AnimationHandler animator;
     public int team; 
     public int slotPosition;
-    private BattleController battleController;
+    public Battlefield battlefield;
 
     public void Start() {
-        this.battleController = BattleController.instance;
         this.animator = gameObject.GetComponent<AnimationHandler>();
     }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
+
+    public void onHover () {
+        if (PlayerHand.Instance.hasHoveredCard) {return;}
         highlightSelf();
         PlacedCreature creature = getCreature();
         if (creature == null) {
@@ -30,15 +30,27 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         if (initiativeQueueSlot != null) { initiativeQueueSlot.highlightSelf(); }
     }
-    public void OnPointerExit(PointerEventData eventData)
-    {
+
+    public void onUnhover() {
         unHighlightSelf();
-        InfoPanelController.instance.returnToDefault("");
+        if (!PlayerHand.Instance.hasHoveredCard){
+            InfoPanelController.instance.returnToDefault("");
+        }
 
         if (initiativeQueueSlot == null) {
             return;
         }
         initiativeQueueSlot.unHighlightSelf();
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        battlefield.currentSelection = this;
+        onHover();
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+       battlefield.currentSelection = null;
+       onUnhover();
     }
 
     public void OnMouseDown() {

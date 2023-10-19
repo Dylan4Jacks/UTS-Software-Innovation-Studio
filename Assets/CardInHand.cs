@@ -53,11 +53,22 @@ public class CardInHand : MonoBehaviour
     void OnMouseEnter() {
         gameObject.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
         InfoPanelController.instance.viewBaseCard(baseCard);
+        hand.hasHoveredCard = true;
+        //hardcoded fix for the infopanel being weird and unresponsive
+        if (Battlefield.instance.currentSelection != null) {
+            Battlefield.instance.currentSelection.onUnhover();
+        }
     }
 
     void OnMouseExit() {
         gameObject.transform.rotation = originalRotate;
         InfoPanelController.instance.returnToDefault("");
+        hand.hasHoveredCard = false;
+
+        //hardcoded fix for the infopanel being weird and unresponsive
+        if (Battlefield.instance.currentSelection != null) {
+            Battlefield.instance.currentSelection.onHover();
+        }
     }
 
     public void OnMouseDown() {
