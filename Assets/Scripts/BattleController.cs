@@ -62,7 +62,13 @@ public class BattleController : MonoBehaviour
 
     public void startBattle() {
         //Initiate game start abilities
-        activateInitiationAbilities();
+        // activateInitiationAbilities();
+        PlayerHand playerHand = PlayerHand.Instance;
+        while(playerHand.cardsInHand.Count > 0) {
+            CardInHand card = playerHand.cardsInHand[0];
+            playerHand.cardsInHand.Remove(card);
+            Destroy(card.gameObject);
+        }
         StartCoroutine(runBattle());
     }
     public void toggleRoundBreaks() {
