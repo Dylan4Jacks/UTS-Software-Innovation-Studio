@@ -170,7 +170,6 @@ public class BattleController : MonoBehaviour
                 if (creature.currentSpeed > initiativeQueue[i].currentSpeed) {
                     initiativeQueue.Insert(i, creature);
                     initiativeQueueUI.updateUI();
-                    //do initiative queue UI thing
                     return;
                 }
             }

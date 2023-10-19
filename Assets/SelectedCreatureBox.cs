@@ -19,18 +19,16 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         highlightSelf();
-        if (initiativeQueueSlot == null) {
-                PlacedCreature creature = getCreature();
-                if (creature != null) {
-                    InfoPanelController.instance.viewPlacedCreature(creature);
-                } else {
-                    InfoPanelController.instance.returnToDefault("EMPTY_SELECTION_BOX");
-                }
-                return;
-            }
-        InfoPanelController.instance.viewPlacedCreature(initiativeQueueSlot.creature);
-        initiativeQueueSlot.highlightSelf();
-
+        PlacedCreature creature = getCreature();
+        if (creature == null) {
+            InfoPanelController.instance.returnToDefault("EMPTY_SELECTION_BOX");
+            initiativeQueueSlot = null;
+        } else {
+            InfoPanelController.instance.viewPlacedCreature(creature);
+            int queueIndex = BattleController.instance.initiativeQueue.FindIndex(a => a.Equals(creature));
+            initiativeQueueSlot = queueIndex > 5? null : InitiativeQueueUI.instance.slots[queueIndex]; 
+        }
+        if (initiativeQueueSlot != null) { initiativeQueueSlot.highlightSelf(); }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -41,7 +39,6 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
             return;
         }
         initiativeQueueSlot.unHighlightSelf();
-
     }
 
     public void OnMouseDown() {
