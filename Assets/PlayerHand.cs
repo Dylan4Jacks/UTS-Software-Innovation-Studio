@@ -31,6 +31,9 @@ public class PlayerHand : MonoBehaviour
         cards.Add(new BaseCard("Woah", "Description1", 2, 2, 2, "beast"));
         cards.Add(new BaseCard("Yeah", "Description1", 3, 3, 3, "humanoid"));
         cards.Add(new BaseCard("Ohno", "Description1", 4, 4, 4, "wug"));
+        cards.Add(new BaseCard("Wahoo", "wahoo", 4, 4, 4, "whale"));
+        cards.Add(new BaseCard("WOOGH", "Description1", 1, 5, 2, "ghost"));
+        cards.Add(new BaseCard("Beepo", "Description1", 3, 1, 3, "robot"));
 
         if (SingleCharacter.Instance != null) {
             cards = SingleCharacter.Instance.cards;
@@ -45,7 +48,7 @@ public class PlayerHand : MonoBehaviour
             cardTransform.position += Vector3.back * 20 + Vector3.back * cardCount * 7; //to stop overlapping
             cardTransform.position += Vector3.down * 345; 
             cardTransform.position += Vector3.left * 400;
-            cardTransform.position += Vector3.right * 115 * (cardCount - 1); 
+            cardTransform.position += Vector3.right * 110 * (cardCount - 1); 
             cardTransform.rotation = Quaternion.AngleAxis(7 - cardCount, Vector3.forward);
             cardTransform.localScale = new Vector3(0.4f,0.4f,0.4f);
             cardInHand.GetComponent<CardInHand>().initialise(card, this);
