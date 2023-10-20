@@ -85,6 +85,10 @@ public class BattleController : MonoBehaviour
         }
     }
     private IEnumerator runBattle () {
+        switch (battleState) {
+            case "PREPARATION": yield return StateBanner.instance.summonBanner("BATTLE START!", 0.5f); break;
+            default: break;
+        }
         do {
             yield return runRound();
             if (enableRoundBreaks && battleState != "BATTLE_END") {
@@ -157,6 +161,7 @@ public class BattleController : MonoBehaviour
     }
 
     private void handleBattleEnd() {
+        StartCoroutine(StateBanner.instance.summonBanner(Utils.alignmentString(determineWinner()).ToUpper() + " WINS",0.5f));
         roundCounter.setText(Utils.alignmentString(determineWinner()) + " wins!");
         Debug.Log("Winner: " + Utils.alignmentString(determineWinner()));
         changeBattleState("BATTLE_END");
