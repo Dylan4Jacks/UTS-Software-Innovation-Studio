@@ -79,6 +79,10 @@ public class PlayerHand : MonoBehaviour
     }
     
     public void placeCreature(int team, int position) {
+        if (BattleController.instance.teams[team].placedCreatures[position] != null) {
+            InfoPanelController.instance.setErrorView("Someone's already in that spot!!");
+            return;
+        }
         BattleController.instance.teams[team].placeCreature(position, this.selectedCard.baseCard);
         int cardIndex = cardsInHand.FindIndex(a => a.Equals(selectedCard));
         for (int i = cardIndex + 1; i < cardsInHand.Count; i++) {

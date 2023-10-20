@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,19 +9,19 @@ public class InfoPanelController : MonoBehaviour
 {
     public string currentState = "DEFAULT"; //DEFAULT, BASECARD, PLACEDCREATURE
     public static InfoPanelController instance; 
-    public GameObject defaultView; 
-    public GameObject creatureView;
-    public GameObject promptReminderView;
+    public GameObject defaultView, creatureView, promptReminderView, errorView;
     public TextMeshPro panelDescription; 
-    public TextMeshPro creatureDescription;
-    public TextMeshPro creatureName;
-    public TextMeshPro creatureAttack;
-    public TextMeshPro creatureSpeed;
-    public TextMeshPro creatureHealth;
+    public TextMeshPro creatureDescription, creatureName, creatureAttack, creatureSpeed, creatureHealth,
+        movePriority;
     public SpriteRenderer creatureSprite;
     public string defaultText = "Place your creatures!";
     public BaseCard baseCard; 
     public PlacedCreature placedCreature;
+    public TextMeshPro errorReason, errorTitle;
+
+    
+    //LIST STUFF
+    public List<string> possibleErrorTitles;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,9 +40,13 @@ public class InfoPanelController : MonoBehaviour
     }
 
     public void viewPlacedCreature(PlacedCreature placedCreature) {
+        creatureDescription.margin = new Vector4(-52.5f, 0f, -72.8f, -51f);
+        movePriority.gameObject.SetActive(true);
+
         defaultView.SetActive(false);
         creatureView.SetActive(true);
         promptReminderView.SetActive(false);
+        errorView.SetActive(false);
 
         this.placedCreature = placedCreature;
         this.baseCard = placedCreature.baseCard;
@@ -57,9 +62,13 @@ public class InfoPanelController : MonoBehaviour
     }
 
     public void viewBaseCard(BaseCard baseCard) {
+        creatureDescription.margin = new Vector4(-52.5f, 0f, -72.8f, -51f);
+        movePriority.gameObject.SetActive(false);
+
         defaultView.SetActive(false);
         creatureView.SetActive(true);
         promptReminderView.SetActive(false);
+        errorView.SetActive(false);
 
         this.placedCreature = null;
         this.baseCard = baseCard;
@@ -80,6 +89,7 @@ public class InfoPanelController : MonoBehaviour
         defaultView.SetActive(true);
         creatureView.SetActive(false);
         promptReminderView.SetActive(false);
+        errorView.SetActive(false);
         
         switch(state) {
             case "":  panelDescription.text = defaultText; break;
@@ -97,7 +107,8 @@ public class InfoPanelController : MonoBehaviour
     public void setPromptReminderView() {
         defaultView.SetActive(false);
         creatureView.SetActive(false);
-        promptReminderView.SetActive(true);        
+        promptReminderView.SetActive(true);      
+        errorView.SetActive(false);  
     }
 
     public void changeBattleState(string newState) {
@@ -118,5 +129,14 @@ public class InfoPanelController : MonoBehaviour
             default: break;
         }
         panelDescription.text = defaultText;
+    }
+
+    public void setErrorView(string errorReason) {
+        defaultView.SetActive(false);
+        creatureView.SetActive(false);
+        promptReminderView.SetActive(false);
+        errorView.SetActive(true);
+        this.errorReason.text = errorReason;
+        errorTitle.text = possibleErrorTitles[UnityEngine.Random.Range(0, possibleErrorTitles.Count)];
     }
 }
