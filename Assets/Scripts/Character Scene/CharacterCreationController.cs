@@ -90,7 +90,7 @@ public class CharacterCreationController : MonoBehaviour
 
     void ToggleErrors(string Error)
     {
-
+        //TODO: Add Error Message to Player so they know why there prompt didnt work
     }
 
         // Function to load the next scene
