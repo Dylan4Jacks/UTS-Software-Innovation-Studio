@@ -57,7 +57,7 @@ public class BattleController : MonoBehaviour
             laneVictors[i] = -1; //temporary for debugging
         } 
         for (int i = 0; i < 6; i++) {
-            teams[Utils.ENEMY].placeCreature(i, new BaseCard("Enemy_"+i.ToString(), "Description_"+1.ToString(), Random.Range(1, 5), Random.Range(1, 5), Random.Range(1, 5), "beast"));
+            teams[Utils.ENEMY].placeCreature(i, SingleCharacter.Instance.enemyCards[i]);
         }
     }
 
