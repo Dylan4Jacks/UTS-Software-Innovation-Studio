@@ -9,7 +9,7 @@ public class InfoPanelController : MonoBehaviour
 {
     public string currentState = "DEFAULT"; //DEFAULT, BASECARD, PLACEDCREATURE
     public static InfoPanelController instance; 
-    public GameObject defaultView, creatureView, promptReminderView, errorView;
+    public GameObject defaultView, creatureView, promptReminderView, errorView, returnView;
     public TextMeshPro panelDescription; 
     public TextMeshPro creatureDescription, creatureName, creatureAttack, creatureSpeed, creatureHealth,
         movePriority;
@@ -54,6 +54,7 @@ public class InfoPanelController : MonoBehaviour
         creatureView.SetActive(true);
         promptReminderView.SetActive(false);
         errorView.SetActive(false);
+        returnView.SetActive(false);
 
         this.placedCreature = placedCreature;
         this.baseCard = placedCreature.baseCard;
@@ -76,6 +77,7 @@ public class InfoPanelController : MonoBehaviour
         creatureView.SetActive(true);
         promptReminderView.SetActive(false);
         errorView.SetActive(false);
+        returnView.SetActive(false);
 
         this.placedCreature = null;
         this.baseCard = baseCard;
@@ -97,6 +99,7 @@ public class InfoPanelController : MonoBehaviour
         creatureView.SetActive(false);
         promptReminderView.SetActive(false);
         errorView.SetActive(false);
+        returnView.SetActive(false);
         
         switch(state) {
             case "":  panelDescription.text = defaultText; break;
@@ -115,7 +118,8 @@ public class InfoPanelController : MonoBehaviour
         defaultView.SetActive(false);
         creatureView.SetActive(false);
         promptReminderView.SetActive(true);      
-        errorView.SetActive(false);  
+        errorView.SetActive(false);
+        returnView.SetActive(false);
     }
 
     public void changeBattleState(string newState) {
@@ -143,7 +147,16 @@ public class InfoPanelController : MonoBehaviour
         creatureView.SetActive(false);
         promptReminderView.SetActive(false);
         errorView.SetActive(true);
+        returnView.SetActive(false);
         this.errorReason.text = errorReason;
         errorTitle.text = possibleErrorTitles[UnityEngine.Random.Range(0, possibleErrorTitles.Count)];
+    }
+
+    public void setReturnView() {
+        defaultView.SetActive(false);
+        creatureView.SetActive(false);
+        promptReminderView.SetActive(false);
+        errorView.SetActive(false);
+        returnView.SetActive(true);
     }
 }
