@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
 using UnityEditor.VersionControl;
+using System;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
@@ -64,6 +65,12 @@ public class CharacterCreationController : MonoBehaviour
             if (allTasks.Status == TaskStatus.RanToCompletion) {
                 List<BaseCard> cards = taskPlayer.Result;
                 List<BaseCard> enemyCards = taskEnemy.Result;
+                
+                if(!cards.Any() || !enemyCards.Any()){
+                  Debug.Log($"Invalid Prompt. Please try a different Prompt");
+                  return;
+                }
+                
                 SingleCharacter.Instance.cards.AddRange(cards);
                 SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
                 SingleCharacter.Instance.CharacterDescription = inputField.text;
