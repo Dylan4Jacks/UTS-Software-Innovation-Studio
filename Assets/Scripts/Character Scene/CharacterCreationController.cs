@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
 using Unity.Collections.LowLevel.Unsafe;
+using System;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
@@ -56,8 +57,13 @@ public class CharacterCreationController : MonoBehaviour
         string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
 
         //List<card>
-        List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
-        List<BaseCard> enemyCards = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
+
+        List<BaseCard>cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
+        List<BaseCard>enemyCards = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
+        if(!cards.Any() || !enemyCards.Any()){
+            Debug.Log($"Invalid Prompt. Please try a different Prompt");
+            return;
+        }
         SingleCharacter.Instance.cards.AddRange(cards);
         SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
         SingleCharacter.Instance.CharacterDescription = inputField.text;
