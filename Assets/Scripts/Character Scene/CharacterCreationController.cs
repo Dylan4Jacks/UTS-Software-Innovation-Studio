@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading.Tasks;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
@@ -53,10 +54,23 @@ public class CharacterCreationController : MonoBehaviour
         }
 
         //List<card>
-        List<BaseCard> cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
-        SingleCharacter.Instance.cards.AddRange(cards);
-        SingleCharacter.Instance.CharacterDescription = inputField.text;
-        LoadNextScene();
+        modularOpenAIController.submitCharacterPrompt(inputField.text).ContinueWith(task =>
+        {
+            if (task.Status == TaskStatus.RanToCompletion) {
+                List<BaseCard> cards = task.Result;
+                SingleCharacter.Instance.cards.AddRange(cards);
+                SingleCharacter.Instance.CharacterDescription = inputField.text;
+                // Ensure Unity-specific code runs on the main thread
+                SingleMainThreadDispatcher.Instance.Enqueue(() =>
+                {
+                    LoadNextScene();
+                });
+            }
+            else if (task.Status == TaskStatus.Faulted) {
+                // Handle error, task.Exception will contain the exception
+                Debug.LogError(task.Exception.ToString());
+            }
+        });
     }
 
     // Function to load the next scene

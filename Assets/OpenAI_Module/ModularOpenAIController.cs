@@ -49,13 +49,13 @@ public class ModularOpenAIController : MonoBehaviour
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-    public List<BaseCard> submitCharacterPrompt(string inputPrompt)
+    public Task<List<BaseCard>> submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
         api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
         return StartCharacterCreation(inputPrompt);
     }
-    private List<BaseCard> StartCharacterCreation(string inputPrompt)
+    private Task<List<BaseCard>> StartCharacterCreation(string inputPrompt)
     {
         Debug.Log("Modular Button function Beginning");
         cardCreationMessage = new List<ChatMessage> { 
@@ -68,10 +68,7 @@ public class ModularOpenAIController : MonoBehaviour
         {
             return GetResponse(inputPrompt);
         });
-
-        task.Wait();
-
-        return task.Result;
+        return task;
     }
 
     private async Task<List<BaseCard>> GetResponse(string inputPrompt)
@@ -142,8 +139,8 @@ public class ModularOpenAIController : MonoBehaviour
             Match speedMatch = Regex.Match(item, rxSpeedString);
             Match attackMatch = Regex.Match(item, rxAttackString);
             Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
-            Debug.Log(descriptionMatch.Value);
-            Debug.Log($"item: {item}");
+            // Debug.Log(descriptionMatch.Value);
+            // Debug.Log($"item: {item}");
             BaseCard card = new BaseCard(
                                 nameMatch.Value,
                                 descriptionMatch.Value,
@@ -156,8 +153,8 @@ public class ModularOpenAIController : MonoBehaviour
             i++;
         }
 
-        Debug.Log(cards[0].cardName.ToString());
-        Debug.Log(cards[0].strength.ToString());
+        // Debug.Log(cards[0].cardName.ToString());
+        // Debug.Log(cards[0].strength.ToString());
 
         return cards;
     }
