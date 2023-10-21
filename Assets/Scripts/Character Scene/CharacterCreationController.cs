@@ -61,9 +61,7 @@ public class CharacterCreationController : MonoBehaviour
         {
             if (task.Status == TaskStatus.RanToCompletion) {
                 List<BaseCard> cards = task.Result;
-                List<BaseCard> enemyCards = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
                 SingleCharacter.Instance.cards.AddRange(cards);
-                SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
                 SingleCharacter.Instance.CharacterDescription = inputField.text;
                 // Ensure Unity-specific code runs on the main thread
                 SingleMainThreadDispatcher.Instance.Enqueue(() =>
@@ -76,6 +74,21 @@ public class CharacterCreationController : MonoBehaviour
                 Debug.LogError(task.Exception.ToString());
             }
         });
+        modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text).ContinueWith(task => {
+            if (task.Status == TaskStatus.RanToCompletion) {
+                List<BaseCard> enemyCards = task.Result;
+                SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
+                // Ensure Unity-specific code runs on the main thread
+                SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                    LoadNextScene();
+                });
+            }
+            else if (task.Status == TaskStatus.Faulted) {
+                // Handle error, task.Exception will contain the exception
+                Debug.LogError(task.Exception.ToString());
+            }
+        });
+        
     }
 
     // Function to load the next scene
