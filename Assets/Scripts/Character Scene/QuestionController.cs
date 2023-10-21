@@ -4,44 +4,31 @@ using System.Collections;
 
 public class QuestionController : MonoBehaviour
 {
-    public float delayBeforeStart = 0.1f;
-    public float fadeInTime = 0.1f;
+
     private TMP_Text textComponent;
+    private float duration = 2.5f; // 2 seconds
 
     private void Start()
     {
         textComponent = GetComponent<TMP_Text>();
-        StartCoroutine(FadeIn());
+        // Set the text to 0% opacity at the start
+        textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0f);
+        // Start the delayed fade-in coroutine
+        StartCoroutine(FadeInAfterDelay());
     }
-
-    private IEnumerator FadeIn()
+    private IEnumerator FadeInAfterDelay()
     {
-        textComponent.ForceMeshUpdate();
-        var textInfo = textComponent.textInfo;
-        
-        yield return new WaitForSeconds(delayBeforeStart);
+        // Wait for 1 second
+        yield return new WaitForSeconds(0.67f);
 
-        for (int i = 0; i < textInfo.characterCount; ++i)
-        {
-            var charInfo = textInfo.characterInfo[i];
+        float elapsedTime = 0f;
+        while (elapsedTime < duration) {
+            elapsedTime += Time.deltaTime;
 
-            if (!charInfo.isVisible)
-                continue;
+            // Calculate alpha value
+            float alpha = Mathf.Clamp01(elapsedTime / duration);
+            textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, alpha);
 
-            float counter = 0f;
-            Color32[] newVertexColors = textComponent.textInfo.meshInfo[charInfo.materialReferenceIndex].colors32;
-            Color32 c = newVertexColors[charInfo.vertexIndex + 0];
-
-            while (counter < fadeInTime)
-            {
-                counter += Time.deltaTime;
-                float alpha = Mathf.Lerp(0, 1, counter / fadeInTime);
-                c.a = (byte)(alpha * 255);
-                for (int j = 0; j < 4; ++j)
-                    newVertexColors[charInfo.vertexIndex + j] = c;
-                textComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-                yield return null;
-            }
             yield return null;
         }
     }

@@ -51,6 +51,7 @@ public class CharacterCreationController : MonoBehaviour
         int charLimit = 30;
         if (inputField.text.Length < charLimit) {
             Debug.Log($"Character Length Too Small. Must be Greater then {charLimit}");
+            ToggleErrors($"Character Length Too Small. Must be Greater then {charLimit}");
             return;
         }
 
@@ -67,8 +68,9 @@ public class CharacterCreationController : MonoBehaviour
                 List<BaseCard> enemyCards = taskEnemy.Result;
                 
                 if(!cards.Any() || !enemyCards.Any()){
-                  Debug.Log($"Invalid Prompt. Please try a different Prompt");
-                  return;
+                    Debug.Log($"Invalid Prompt. Please try a different Prompt");
+                    ToggleErrors($"Invalid Prompt. Please try a different Prompt");
+                    return;
                 }
                 
                 SingleCharacter.Instance.cards.AddRange(cards);
@@ -84,6 +86,11 @@ public class CharacterCreationController : MonoBehaviour
                 Debug.LogError(allTasks.Exception.ToString());
             }
         });
+    }
+
+    void ToggleErrors(string Error)
+    {
+
     }
 
         // Function to load the next scene
