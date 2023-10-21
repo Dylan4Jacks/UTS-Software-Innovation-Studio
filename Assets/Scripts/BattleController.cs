@@ -23,9 +23,8 @@ public class BattleController : MonoBehaviour
     public GameObject creaturePrefab;
     public List<Team> teams = new List<Team>(); 
     public InitiativeQueueUI initiativeQueueUI;
+    public InfoPanelController infoPanel;
     
-
-
     void Awake() {
         teams[Utils.ENEMY].alignment = Utils.ENEMY;
         teams[Utils.PLAYER].alignment = Utils.PLAYER;
@@ -62,8 +61,14 @@ public class BattleController : MonoBehaviour
     }
 
     public void startBattle() {
-        //Initiate game start abilities
-        activateInitiationAbilities();
+        // activateInitiationAbilities(); 
+
+        PlayerHand playerHand = PlayerHand.Instance;
+        while(playerHand.cardsInHand.Count > 0) {
+            CardInHand card = playerHand.cardsInHand[0];
+            playerHand.cardsInHand.Remove(card);
+            Destroy(card.gameObject);
+        }
         StartCoroutine(runBattle());
     }
     public void toggleRoundBreaks() {
@@ -80,9 +85,13 @@ public class BattleController : MonoBehaviour
         }
     }
     private IEnumerator runBattle () {
+        switch (battleState) {
+            case "PREPARATION": yield return StateBanner.instance.summonBanner("BATTLE START!", 0.5f); break;
+            default: break;
+        }
         do {
             yield return runRound();
-            if (enableRoundBreaks) {
+            if (enableRoundBreaks && battleState != "BATTLE_END") {
                 changeBattleState("ROUND_BREAK");
                 break;
             };
@@ -152,6 +161,7 @@ public class BattleController : MonoBehaviour
     }
 
     private void handleBattleEnd() {
+        StartCoroutine(StateBanner.instance.summonBanner(Utils.alignmentString(determineWinner()).ToUpper() + " WINS",0.5f));
         roundCounter.setText(Utils.alignmentString(determineWinner()) + " wins!");
         Debug.Log("Winner: " + Utils.alignmentString(determineWinner()));
         changeBattleState("BATTLE_END");
@@ -170,7 +180,6 @@ public class BattleController : MonoBehaviour
                 if (creature.currentSpeed > initiativeQueue[i].currentSpeed) {
                     initiativeQueue.Insert(i, creature);
                     initiativeQueueUI.updateUI();
-                    //do initiative queue UI thing
                     return;
                 }
             }
@@ -195,6 +204,7 @@ public class BattleController : MonoBehaviour
     }
 
     private void changeBattleState(string newState) {
+        infoPanel.changeBattleState(newState);
         if (battleState == "BATTLE_END" && newState != "PREPARATION") {
             return;
         }

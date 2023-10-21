@@ -22,7 +22,7 @@ public class BaseCard {
         this.speed = speed;
         this.health = health;
         this.shield = 0;
-        this.ability = new string[] {"shield", "right", "1"};
+        // this.ability = new string[] {"shield", "right", "1"};
 
         RuntimeResources resources = RuntimeResources.Instance;
         if (resources.spriteDictionary.TryGetValue(spriteType, out this.sprite)) {

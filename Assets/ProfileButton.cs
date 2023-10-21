@@ -19,9 +19,11 @@ public class ProfileButton : MonoBehaviour
 
     public void OnMouseEnter() {
         highlighted.SetActive(true);
+        InfoPanelController.instance.setPromptReminderView();
     }
 
     public void OnMouseExit() {
         highlighted.SetActive(false);
+        InfoPanelController.instance.returnToDefault("");
     }
 }
