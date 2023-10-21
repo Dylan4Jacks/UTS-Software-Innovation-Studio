@@ -62,6 +62,7 @@ public class CharacterCreationController : MonoBehaviour
         Task<List<BaseCard>> taskPlayer = modularOpenAIController.submitCharacterPrompt(inputField.text);
         Task<List<BaseCard>> taskEnemy = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
 
+        //Code below only runs after getting a response from all calls. 
         System.Threading.Tasks.Task.WhenAll(taskPlayer, taskEnemy).ContinueWith(allTasks => {
             if (allTasks.Status == TaskStatus.RanToCompletion) {
                 List<BaseCard> cards = taskPlayer.Result;
@@ -86,7 +87,12 @@ public class CharacterCreationController : MonoBehaviour
                 Debug.LogError(allTasks.Exception.ToString());
             }
         });
+
+        //TODO: Can handle/Toggle loading animation here:
+
+
     }
+
 
     void ToggleErrors(string Error)
     {
