@@ -10,38 +10,47 @@ public class SelectedCreatureBox : MonoBehaviour, IPointerEnterHandler, IPointer
     public AnimationHandler animator;
     public int team; 
     public int slotPosition;
-    private BattleController battleController;
+    public Battlefield battlefield;
 
     public void Start() {
-        this.battleController = BattleController.instance;
         this.animator = gameObject.GetComponent<AnimationHandler>();
     }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        highlightSelf();
-        if (initiativeQueueSlot == null) {
-                PlacedCreature creature = getCreature();
-                if (creature != null) {
-                    InfoPanelController.instance.viewPlacedCreature(creature);
-                } else {
-                    InfoPanelController.instance.returnToDefault("EMPTY_SELECTION_BOX");
-                }
-                return;
-            }
-        InfoPanelController.instance.viewPlacedCreature(initiativeQueueSlot.creature);
-        initiativeQueueSlot.highlightSelf();
 
+    public void onHover () {
+        if (PlayerHand.Instance.hasHoveredCard) {return;}
+        highlightSelf();
+        PlacedCreature creature = getCreature();
+        if (creature == null) {
+            InfoPanelController.instance.returnToDefault("EMPTY_SELECTION_BOX");
+            initiativeQueueSlot = null;
+        } else {
+            InfoPanelController.instance.viewPlacedCreature(creature);
+            int queueIndex = BattleController.instance.initiativeQueue.FindIndex(a => a.Equals(creature));
+            initiativeQueueSlot = queueIndex > 5? null : InitiativeQueueUI.instance.slots[queueIndex]; 
+        }
+        if (initiativeQueueSlot != null) { initiativeQueueSlot.highlightSelf(); }
     }
-    public void OnPointerExit(PointerEventData eventData)
-    {
+
+    public void onUnhover() {
         unHighlightSelf();
-        InfoPanelController.instance.returnToDefault("");
+        if (!PlayerHand.Instance.hasHoveredCard){
+            InfoPanelController.instance.returnToDefault("");
+        }
 
         if (initiativeQueueSlot == null) {
             return;
         }
         initiativeQueueSlot.unHighlightSelf();
-
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        battlefield.currentSelection = this;
+        onHover();
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+       battlefield.currentSelection = null;
+       onUnhover();
     }
 
     public void OnMouseDown() {

@@ -14,7 +14,7 @@ public class PlacedCreature : MonoBehaviour
     public int currentHealth;
     public int currentStrength;
     public int currentSpeed; 
-    public bool isSlain = false;
+    public PlacedCreature killer;
     public int currentShield;
     public string[] currentAbility;
 
@@ -117,9 +117,9 @@ public class PlacedCreature : MonoBehaviour
         // They are in the front row OR the creature infront has died
         // They have an attribute which lets them ignore the card infront
         bool canAttack = true; 
-        if (this.isSlain) {canAttack = false;}
+        if (this.killer != null) {canAttack = false;}
         if (Utils.calculateRow(position, alignment) == Utils.BACK_ROW) {
-            if (hasLanePartner() && !lanePartner.isSlain) {canAttack = false;}
+            if (hasLanePartner() && lanePartner.killer == null) {canAttack = false;}
         }
         return canAttack;
     }
@@ -131,9 +131,9 @@ public class PlacedCreature : MonoBehaviour
         //attack directly infront 
         PlacedCreature target = laneOpponents[0];
         //attack directly infront in its own row
-        if (target == null || target.isSlain) {
+        if (target == null || target.killer != null) {
             target = laneOpponents[1];
-            if (target == null || target.isSlain) {
+            if (target == null || target.killer != null) {
                 return null; 
             }
         }
@@ -141,7 +141,7 @@ public class PlacedCreature : MonoBehaviour
         return target;
     }
      public IEnumerator attack() {
-        if (this.isSlain || !this.canAttack()) {
+        if (this.killer != null || !this.canAttack()) {
             Debug.Log(Utils.roundTemplate() + this.baseCard.cardName + "cannot attack.");
             yield break;
         }
@@ -169,7 +169,7 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = attacker.currentStrength - currentShield;
         if (adjustedAttack > 0)
         {
-            setCurrentHealth(currentHealth - adjustedAttack);
+            takeDamage(adjustedAttack);
         }
         retaliate(attacker);
         yield return StartCoroutine(this.checkDeath(attacker)); 
@@ -180,19 +180,19 @@ public class PlacedCreature : MonoBehaviour
         int adjustedAttack = this.currentStrength - attacker.currentShield;
         if (adjustedAttack > 0)
         {
-            attacker.setCurrentHealth(attacker.currentHealth - adjustedAttack);
+            attacker.takeDamage(adjustedAttack);
         }
     }
 
     public IEnumerator checkDeath(PlacedCreature killer) {
         if (this.currentHealth <= 0) {
-            yield return perish();
+            yield return perish(killer);
             Debug.Log(this.baseCard.cardName + " has been slain by " + killer.baseCard.cardName);
         }
     }
 
-    public IEnumerator perish() {
-        this.isSlain = true;
+    public IEnumerator perish(PlacedCreature killer) {
+        this.killer = killer;
         yield return StartCoroutine(creatureAnimator.perish());
         battleController.initiativeQueueUI.updateUI();
     }
@@ -303,5 +303,16 @@ public class PlacedCreature : MonoBehaviour
                 battleController.teams[alignment].placedCreatures[targetPosition].currentSpeed += int.Parse(currentAbility[2]);
             }
         }
+    }
+
+    public void takeDamage(int damage) {
+        this.setCurrentHealth(this.currentHealth - damage);
+        GameObject damageText = Instantiate(
+            RuntimeResources.Instance.damageGraphicPrefab, 
+            this.healthText.gameObject.transform.position, 
+            Quaternion.identity
+        );
+        damageText.GetComponent<TextMeshPro>().text = "-" + damage;
+        damageText.transform.SetParent(this.healthText.gameObject.transform.parent);
     }
 }

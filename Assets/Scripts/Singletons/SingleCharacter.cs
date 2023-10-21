@@ -8,6 +8,7 @@ public class SingleCharacter : MonoBehaviour
 {
     public static SingleCharacter Instance;
     public List<BaseCard> cards;
+    public List<BaseCard> enemyCards;
     public string CharacterDescription;
 
     private void Awake()

@@ -33,7 +33,7 @@ public class Team : MonoBehaviour
         Transform placedCreatureTransform =  placedCreature.GetComponent<Transform>();
         placedCreatureTransform.position += Vector3.back * 7; 
         placedCreatureTransform.position += Vector3.left * 3;
-        placedCreatureTransform.position += ((position > 2)? Vector3.down : Vector3.up) * 48;
+        placedCreatureTransform.position += ((position > 2)? Vector3.down : Vector3.up) * 55;
 
         placedCreatures[position].setupCard(baseCard, alignment, position);
         // If there's already a creature here
@@ -100,7 +100,7 @@ public class Team : MonoBehaviour
         List<PlacedCreature> laneCreatures = getLaneCreatures(lane);
         bool laneDefeated = true;
         foreach (PlacedCreature creature in laneCreatures) {
-            if (creature != null && !creature.isSlain) {laneDefeated = false;}
+            if (creature != null && creature.killer == null) {laneDefeated = false;}
         } 
         return laneDefeated;
     }

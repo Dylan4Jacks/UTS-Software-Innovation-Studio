@@ -438,6 +438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorTexture: {fileID: 0}
+  damageGraphicPrefab: {fileID: 1904064103132995770, guid: 92d6edd62185b5446b1ffaaa3d910d7d, type: 3}
 --- !u!4 &644861441
 Transform:
   m_ObjectHideFlags: 0
@@ -498,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cards: []
+  enemyCards: []
   CharacterDescription: 
 --- !u!1 &726661933
 GameObject:
@@ -1186,6 +1188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459340879}
   - component: {fileID: 1459340880}
+  - component: {fileID: 1459340881}
   m_Layer: 0
   m_Name: SCENE_MANAGER
   m_TagString: Untagged
@@ -1223,6 +1226,20 @@ MonoBehaviour:
   textField: {fileID: 1173127758}
   inputField: {fileID: 1566947265}
   BtnSubmit: {fileID: 390733838}
+--- !u!114 &1459340881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459340877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d52124abf38eb746b368a43097fbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 2800000, guid: b28d21c2eadb97d40a2f5c8eb325fa8e, type: 3}
+  damageGraphicPrefab: {fileID: 1904064103132995770, guid: 92d6edd62185b5446b1ffaaa3d910d7d, type: 3}
 --- !u!1 &1566947263
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,12 +53,17 @@ public class CharacterCreationController : MonoBehaviour
             return;
         }
 
+        // Enemy Faction prompt addition:
+        string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
+
         //List<card>
         modularOpenAIController.submitCharacterPrompt(inputField.text).ContinueWith(task =>
         {
             if (task.Status == TaskStatus.RanToCompletion) {
                 List<BaseCard> cards = task.Result;
+                List<BaseCard> enemyCards = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
                 SingleCharacter.Instance.cards.AddRange(cards);
+                SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
                 SingleCharacter.Instance.CharacterDescription = inputField.text;
                 // Ensure Unity-specific code runs on the main thread
                 SingleMainThreadDispatcher.Instance.Enqueue(() =>

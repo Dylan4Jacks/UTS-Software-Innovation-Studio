@@ -15,6 +15,7 @@ public class btnBack : MonoBehaviour
     [Range(0, 1)] public float fadeAmountPress = 0.3f; // Define how much you want to fade. 1 means no fade, 0 means fully transparent.
     private bool isMouseOver = false;
 
+    [SerializeField] private GameObject highlightedButton;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -46,12 +47,16 @@ public class btnBack : MonoBehaviour
 
     public void OnMouseEnter()
     {
+        InfoPanelController.instance.setReturnView();
+        highlightedButton.SetActive(true);
         spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, fadeAmountHover);
         isMouseOver = true;
     }
 
     public void OnMouseExit()
     {
+        InfoPanelController.instance.returnToDefault("");
+        highlightedButton.SetActive(false);
         spriteRenderer.color = originalColor;
         isMouseOver = false;
     }
