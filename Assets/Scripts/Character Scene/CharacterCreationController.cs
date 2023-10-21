@@ -44,10 +44,6 @@ public class CharacterCreationController : MonoBehaviour
             SingleCharacter.Instance = new SingleCharacter();
         }
 
-        if (SingleCharacter.Instance.CharacterDescription == inputField.text) {
-            LoadNextScene();
-        }
-
         int charLimit = 30;
         if (inputField.text.Length < charLimit) {
             Debug.Log($"Character Length Too Small. Must be Greater then {charLimit}");
