@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading.Tasks;
+using UnityEditor.VersionControl;
 using System;
 
 //TODO
@@ -47,8 +49,7 @@ public class CharacterCreationController : MonoBehaviour
         }
 
         int charLimit = 30;
-        if(inputField.text.Length < charLimit) 
-        {
+        if (inputField.text.Length < charLimit) {
             Debug.Log($"Character Length Too Small. Must be Greater then {charLimit}");
             return;
         }
@@ -56,22 +57,37 @@ public class CharacterCreationController : MonoBehaviour
         // Enemy Faction prompt addition:
         string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
 
-        //List<card>
+        //Run 2 API calls In Parallel 
+        Task<List<BaseCard>> taskPlayer = modularOpenAIController.submitCharacterPrompt(inputField.text);
+        Task<List<BaseCard>> taskEnemy = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
 
-        List<BaseCard>cards = modularOpenAIController.submitCharacterPrompt(inputField.text);
-        List<BaseCard>enemyCards = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
-        if(!cards.Any() || !enemyCards.Any()){
-            Debug.Log($"Invalid Prompt. Please try a different Prompt");
-            return;
-        }
-        SingleCharacter.Instance.cards.AddRange(cards);
-        SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
-        SingleCharacter.Instance.CharacterDescription = inputField.text;
-        LoadNextScene();
+        System.Threading.Tasks.Task.WhenAll(taskPlayer, taskEnemy).ContinueWith(allTasks => {
+            if (allTasks.Status == TaskStatus.RanToCompletion) {
+                List<BaseCard> cards = taskPlayer.Result;
+                List<BaseCard> enemyCards = taskEnemy.Result;
+                
+                if(!cards.Any() || !enemyCards.Any()){
+                  Debug.Log($"Invalid Prompt. Please try a different Prompt");
+                  return;
+                }
+                
+                SingleCharacter.Instance.cards.AddRange(cards);
+                SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
+                SingleCharacter.Instance.CharacterDescription = inputField.text;
+                // Ensure Unity-specific code runs on the main thread
+                SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                    LoadNextScene();
+                });
+            }
+            else {
+                // Handle error, allTasks.Exception will contain the aggregate exception
+                Debug.LogError(allTasks.Exception.ToString());
+            }
+        });
     }
 
-    // Function to load the next scene
-    public void LoadNextScene()
+        // Function to load the next scene
+        public void LoadNextScene()
     {
         // Card Limit set to 0 for testing. Limit should be 7 at the minimum for a good game
         if(SingleCharacter.Instance.cards.Count < 0) 
