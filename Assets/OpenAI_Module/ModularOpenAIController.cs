@@ -57,7 +57,6 @@ public class ModularOpenAIController : MonoBehaviour
     }
     private Task<List<BaseCard>> StartCharacterCreation(string inputPrompt)
     {
-        Debug.Log("Modular Button function Beginning");
         cardCreationMessage = new List<ChatMessage> { 
             //This is where the prompt limits are imput
             new (ChatMessageRole.System, "You are to create exactly" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given, you cannot create more or less. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. The format for each creature should be numbered list similar to this '1. Lizard Frog:\n Description: This creatures lives underground and has scaly skin\n HP: 10\n Speed: 10\n Attack: 10' then double new line to create a gap between objects")
