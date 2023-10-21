@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorTexture: {fileID: 0}
-  damageGraphicPrefab: {fileID: 0}
+  damageGraphicPrefab: {fileID: 1904064103132995770, guid: 92d6edd62185b5446b1ffaaa3d910d7d, type: 3}
 --- !u!4 &644861441
 Transform:
   m_ObjectHideFlags: 0
@@ -499,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cards: []
+  enemyCards: []
   CharacterDescription: 
 --- !u!1 &1173127756
 GameObject:
