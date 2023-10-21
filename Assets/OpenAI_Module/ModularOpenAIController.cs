@@ -134,26 +134,31 @@ public class ModularOpenAIController : MonoBehaviour
         //Initialize Array of Card Objects
         cards = new List<BaseCard>();
         int i = 0;
-        foreach (var item in cardUnserialized)
-        {
-            Match nameMatch = Regex.Match(item, rxCardNameString);
-            Match descriptionMatch = Regex.Match(item, rxDescriptionString);
-            Match hpMatch = Regex.Match(item, rxHPString);
-            Match speedMatch = Regex.Match(item, rxSpeedString);
-            Match attackMatch = Regex.Match(item, rxAttackString);
-            Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
-            Debug.Log(descriptionMatch.Value);
-            Debug.Log($"item: {item}");
-            BaseCard card = new BaseCard(
-                                nameMatch.Value,
-                                descriptionMatch.Value,
-                                int.Parse(attackMatch.Value), 
-                                int.Parse(speedMatch.Value), 
-                                int.Parse(hpMatch.Value),
-                                imageMatch.Value
-                                );
-            cards.Add(card);
-            i++;
+        try{
+            foreach (var item in cardUnserialized)
+            {
+                Match nameMatch = Regex.Match(item, rxCardNameString);
+                Match descriptionMatch = Regex.Match(item, rxDescriptionString);
+                Match hpMatch = Regex.Match(item, rxHPString);
+                Match speedMatch = Regex.Match(item, rxSpeedString);
+                Match attackMatch = Regex.Match(item, rxAttackString);
+                Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
+                Debug.Log(descriptionMatch.Value);
+                Debug.Log($"item: {item}");
+                BaseCard card = new BaseCard(
+                                    nameMatch.Value,
+                                    descriptionMatch.Value,
+                                    int.Parse(attackMatch.Value), 
+                                    int.Parse(speedMatch.Value), 
+                                    int.Parse(hpMatch.Value),
+                                    imageMatch.Value
+                                    );
+                cards.Add(card);
+                i++;
+            }
+        } catch {
+            List<BaseCard> emptyCards = new List<BaseCard>();
+            return emptyCards;
         }
 
         Debug.Log(cards[0].cardName.ToString());
