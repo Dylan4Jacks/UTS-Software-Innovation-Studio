@@ -42,6 +42,13 @@ public class InfoPanelController : MonoBehaviour
     public void viewPlacedCreature(PlacedCreature placedCreature) {
         creatureDescription.margin = new Vector4(-52.5f, 0f, -72.8f, -51f);
         movePriority.gameObject.SetActive(true);
+        if (placedCreature.killer != null) {
+            movePriority.text = "Slain by " + placedCreature.killer.baseCard.cardName;
+        } else {
+            int initiativeQueuePos = BattleController.instance.initiativeQueue.FindIndex(a => a.Equals(placedCreature)) + 1;
+            movePriority.text = "Moves " + initiativeQueuePos.ToString() + 
+            (initiativeQueuePos == 1? "st" : initiativeQueuePos == 2? "nd" : initiativeQueuePos == 3? "rd" : "th");
+        }
 
         defaultView.SetActive(false);
         creatureView.SetActive(true);
@@ -52,7 +59,7 @@ public class InfoPanelController : MonoBehaviour
         this.baseCard = placedCreature.baseCard;
 
         creatureName.text = placedCreature.baseCard.cardName;
-        creatureAttack.text = placedCreature.currentStrength.ToString();
+        creatureAttack.text = placedCreature.currentStrength.ToString() + "/" + placedCreature.baseCard.strength;
         creatureSpeed.text = placedCreature.currentSpeed.ToString();
         creatureHealth.text = placedCreature.currentHealth.ToString();
         creatureDescription.text = baseCard.description;

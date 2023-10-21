@@ -46,7 +46,7 @@ public class InitiativeQueueSlot : MonoBehaviour
 
     public void setCreature(PlacedCreature creature) {
         this.creature = creature;
-        if (creature.isSlain) {
+        if (creature.killer != null) {
             creatureSprite.gameObject.SetActive(false);
             deathSprite.SetActive(true);
         } else {
