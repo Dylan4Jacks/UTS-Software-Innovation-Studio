@@ -4,45 +4,32 @@ using System.Collections;
 
 public class QuestionController : MonoBehaviour
 {
-    public float delayBeforeStart = 0.1f;
-    public float fadeInTime = 0.1f;
+
     private TMP_Text textComponent;
+    private float duration = 2f; // 2 seconds
+    private float elapsedTime = 0f;
+    private bool isFadingIn = true;
 
     private void Start()
     {
         textComponent = GetComponent<TMP_Text>();
-        StartCoroutine(FadeIn());
+        // Set the text to 0% opacity at the start
+        textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0f);
     }
-
-    private IEnumerator FadeIn()
+    private void Update()
     {
-        textComponent.ForceMeshUpdate();
-        var textInfo = textComponent.textInfo;
-        
-        yield return new WaitForSeconds(delayBeforeStart);
+        if (isFadingIn) {
+            // Update elapsed time
+            elapsedTime += Time.deltaTime;
 
-        for (int i = 0; i < textInfo.characterCount; ++i)
-        {
-            var charInfo = textInfo.characterInfo[i];
+            // Calculate alpha value
+            float alpha = Mathf.Clamp01(elapsedTime / duration);
+            textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, alpha);
 
-            if (!charInfo.isVisible)
-                continue;
-
-            float counter = 0f;
-            Color32[] newVertexColors = textComponent.textInfo.meshInfo[charInfo.materialReferenceIndex].colors32;
-            Color32 c = newVertexColors[charInfo.vertexIndex + 0];
-
-            while (counter < fadeInTime)
-            {
-                counter += Time.deltaTime;
-                float alpha = Mathf.Lerp(0, 1, counter / fadeInTime);
-                c.a = (byte)(alpha * 255);
-                for (int j = 0; j < 4; ++j)
-                    newVertexColors[charInfo.vertexIndex + j] = c;
-                textComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-                yield return null;
+            // Check if fading is completed
+            if (alpha >= 1f) {
+                isFadingIn = false;
             }
-            yield return null;
         }
     }
 }
