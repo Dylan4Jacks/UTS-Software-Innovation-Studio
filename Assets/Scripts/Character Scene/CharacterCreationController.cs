@@ -17,6 +17,8 @@ public class CharacterCreationController : MonoBehaviour
     public TMP_Text textField;
     public TMP_Text inputField;
     public Button BtnSubmit;
+    public GameObject LoadingScreen;
+    public GameObject PlayerInput;
 
     ModularOpenAIController modularOpenAIController;
 
@@ -51,6 +53,10 @@ public class CharacterCreationController : MonoBehaviour
             return;
         }
 
+        // Start Loading animation
+        //LoadingScreen.SetActive( true );
+        LoadingScene(true);
+
         // Enemy Faction prompt addition:
         string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
 
@@ -60,6 +66,7 @@ public class CharacterCreationController : MonoBehaviour
 
         //Code below only runs after getting a response from all calls. 
         System.Threading.Tasks.Task.WhenAll(taskPlayer, taskEnemy).ContinueWith(allTasks => {
+            //LoadingScene(false);
             if (allTasks.Status == TaskStatus.RanToCompletion) {
                 List<BaseCard> cards = taskPlayer.Result;
                 List<BaseCard> enemyCards = taskEnemy.Result;
@@ -67,6 +74,7 @@ public class CharacterCreationController : MonoBehaviour
                 if(!cards.Any() || !enemyCards.Any()){
                     Debug.Log($"Invalid Prompt. Please try a different Prompt");
                     ToggleErrors($"Invalid Prompt. Please try a different Prompt");
+                    LoadingScene(false);
                     return;
                 }
                 
@@ -80,6 +88,7 @@ public class CharacterCreationController : MonoBehaviour
             }
             else {
                 // Handle error, allTasks.Exception will contain the aggregate exception
+                LoadingScene(false);
                 Debug.LogError(allTasks.Exception.ToString());
             }
         });
@@ -89,6 +98,10 @@ public class CharacterCreationController : MonoBehaviour
 
     }
 
+    public void LoadingScene(bool active)
+    {
+        BtnSubmit.gameObject.SetActive(!active);
+    }
 
     void ToggleErrors(string Error)
     {
