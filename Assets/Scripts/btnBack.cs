@@ -29,6 +29,10 @@ public class btnBack : MonoBehaviour
     public void OnMouseUp()
     {
         if (isMouseOver) {
+            SingleCharacter.Instance.cards.Clear();
+            SingleCharacter.Instance.enemyCards.Clear();
+            SingleCharacter.Instance.CharacterDescription = "";
+
             LoadLastScene();
         }
     }
