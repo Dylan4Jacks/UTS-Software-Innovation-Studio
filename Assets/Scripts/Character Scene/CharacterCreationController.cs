@@ -10,12 +10,13 @@ using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
 using UnityEditor.VersionControl;
 using System;
+using UnityEngine.EventSystems;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
 {
     public TMP_Text textField;
-    public TMP_Text inputField;
+    public TMP_InputField inputField;
     public Button BtnSubmit;
 
     ModularOpenAIController modularOpenAIController;
@@ -25,6 +26,13 @@ public class CharacterCreationController : MonoBehaviour
     {
         modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
+        EventSystem.current.SetSelectedGameObject(null); // Deselect any previously selected object
+        EventSystem.current.SetSelectedGameObject(inputField.gameObject); // Set the new selected object
+
+        // For TMP_InputField, you might not need the OnPointerClick line.
+        // But if you do, you'll need to handle it differently, perhaps by manually activating the input field.
+        inputField.ActivateInputField();
+
     }
 
     void Update()
