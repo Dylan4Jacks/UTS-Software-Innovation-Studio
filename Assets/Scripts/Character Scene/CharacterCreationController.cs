@@ -101,6 +101,7 @@ public class CharacterCreationController : MonoBehaviour
     public void LoadingScene(bool active)
     {
         BtnSubmit.gameObject.SetActive(!active);
+        LoadingScreen.SetActive(active);
     }
 
     void ToggleErrors(string Error)
