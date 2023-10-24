@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using System.Linq;
 
 public class ModularOpenAIController : MonoBehaviour
 {
@@ -81,7 +82,6 @@ public class ModularOpenAIController : MonoBehaviour
             //Shorten user message if over 100
             userMessage.Content = userMessage.Content.Substring(0, 200);
         }
-        Debug.Log(string.Format("{0}: {1}", userMessage.rawRole, userMessage.Content));
 
         //Add Message to list
         cardCreationMessage.Add(userMessage);
@@ -100,9 +100,10 @@ public class ModularOpenAIController : MonoBehaviour
         ChatMessage APIResponse = new ChatMessage();
         APIResponse.Role = chatResult.Choices[0].Message.Role;
         APIResponse.Content = chatResult.Choices[0].Message.Content;
-        Debug.Log(string.Format("{0}: {1}", APIResponse.rawRole, APIResponse.Content));
+        Debug.Log(string.Format("{0}: {1}\n{2}: {3}", userMessage.rawRole, userMessage.Content, APIResponse.rawRole, APIResponse.Content));
 
         cardCreationMessage.Add(APIResponse);
+        Debug.Log(string.Join("\n", cardCreationMessage.Select(n =>  $"{n.Role}: {n.Content}").ToArray()));
 
         string apiResponseString = APIResponse.Content;
 
@@ -113,7 +114,6 @@ public class ModularOpenAIController : MonoBehaviour
             StringSplitOptions.None
         );
 
-         Debug.Log(cardUnserialized[0]);
         // adds each card name to a string
         string cardNames = "";
         foreach (var item in cardUnserialized)
@@ -123,7 +123,6 @@ public class ModularOpenAIController : MonoBehaviour
 
         // removes final comma and space
         cardNames = cardNames.Substring(0, cardNames.Length - 2);
-        Debug.Log(cardNames);
 
         string alloactedImages = await allocateImages(cardNames);
 
@@ -139,8 +138,6 @@ public class ModularOpenAIController : MonoBehaviour
                 Match speedMatch = Regex.Match(item, rxSpeedString);
                 Match attackMatch = Regex.Match(item, rxAttackString);
                 Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
-                //Debug.Log(descriptionMatch.Value);
-                //Debug.Log($"item: {item}");
                 BaseCard card = new BaseCard(
                                     nameMatch.Value,
                                     descriptionMatch.Value,
@@ -156,9 +153,6 @@ public class ModularOpenAIController : MonoBehaviour
             List<BaseCard> emptyCards = new List<BaseCard>();
             return emptyCards;
         }
-
-        // Debug.Log(cards[0].cardName.ToString());
-        // Debug.Log(cards[0].strength.ToString());
 
         return cards;
     }
