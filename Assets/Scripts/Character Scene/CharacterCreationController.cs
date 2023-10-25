@@ -82,8 +82,12 @@ public class CharacterCreationController : MonoBehaviour
                 
                 if(!cards.Any() || !enemyCards.Any()){
                     Debug.Log($"Invalid Prompt. Please try a different Prompt");
-                    ToggleErrors($"Invalid Prompt. Please try a different Prompt");
-                    LoadingScene(false);
+                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                        ToggleErrors($"Invalid Prompt. Please try a different Prompt");
+                    });
+                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                        LoadingScene(false);
+                    });
                     return;
                 }
                 
@@ -112,6 +116,10 @@ public class CharacterCreationController : MonoBehaviour
     void ToggleErrors(string Error)
     {
         textError.text = Error;
+        // Set the opacity of the text to 100%
+        Color32 currentColor = textError.color;
+        currentColor.a = 255; // 255 is the maximum value for opacity
+        textError.color = currentColor;
     }
 
         // Function to load the next scene
