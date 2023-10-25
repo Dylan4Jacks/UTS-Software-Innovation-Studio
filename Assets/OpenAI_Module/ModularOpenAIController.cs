@@ -17,12 +17,11 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using System.Linq;
+using System.Threading;
 
 public class ModularOpenAIController : MonoBehaviour
 {
     private OpenAIAPI api;
-    private List<ChatMessage> cardCreationMessage;
-    List<BaseCard> cards;
     private ModuleConfigGetterSetter moduleConfigGetterSetter;
 
     // REGEX Expression for card creation
@@ -58,12 +57,6 @@ public class ModularOpenAIController : MonoBehaviour
     }
     private Task<List<BaseCard>> StartCharacterCreation(string inputPrompt)
     {
-        cardCreationMessage = new List<ChatMessage> { 
-            //This is where the prompt limits are imput
-            new (ChatMessageRole.System, "You are to create exactly" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given, you cannot create more or less. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. The format for each creature should be numbered list similar to this '1. Lizard Frog:\n Description: This creatures lives underground and has scaly skin\n HP: 10\n Speed: 10\n Attack: 10' then double new line to create a gap between objects")
-            // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
-        };
-
         Task<List<BaseCard>> task = Task.Run(() =>
         {
             return GetResponse(inputPrompt);
@@ -73,6 +66,12 @@ public class ModularOpenAIController : MonoBehaviour
 
     private async Task<List<BaseCard>> GetResponse(string inputPrompt)
     {
+        List<ChatMessage> cardCreationMessage = new List<ChatMessage> { 
+            //This is where the prompt limits are imput
+            new (ChatMessageRole.System, "You are to create exactly" + moduleConfigGetterSetter.NumberOfObjcets + " creatures related to the character brief that is given, you cannot create more or less. These creatures will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the creature's " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. The format for each creature should be numbered list similar to this '1. Lizard Frog:\n Description: This creatures lives underground and has scaly skin\n HP: 10\n Speed: 10\n Attack: 10' then double new line to create a gap between objects")
+            // Example Brief: The character brief is: I am a noble knight. I was born in a little village and conscripted into the royal army for training at a young age. I fight with sword and shield honourably to protect the king's palace.
+        };
+
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
         userMessage.Role = ChatMessageRole.User;
@@ -100,10 +99,13 @@ public class ModularOpenAIController : MonoBehaviour
         ChatMessage APIResponse = new ChatMessage();
         APIResponse.Role = chatResult.Choices[0].Message.Role;
         APIResponse.Content = chatResult.Choices[0].Message.Content;
-        Debug.Log(string.Format("{0}: {1}\n{2}: {3}", userMessage.rawRole, userMessage.Content, APIResponse.rawRole, APIResponse.Content));
 
+        string currentThread = Thread.CurrentThread.Name;
+                SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                            Debug.Log($"{currentThread}:{inputPrompt}\n{userMessage.rawRole}\n{userMessage.Content}\n{APIResponse.rawRole}\n{APIResponse.Content}" +
+                            $"\n\n{string.Join("\n", cardCreationMessage.Select(n =>  $"{n.Role}: {n.Content}").ToArray())}" );
+                        });
         cardCreationMessage.Add(APIResponse);
-        Debug.Log(string.Join("\n", cardCreationMessage.Select(n =>  $"{n.Role}: {n.Content}").ToArray()));
 
         string apiResponseString = APIResponse.Content;
 
@@ -127,7 +129,7 @@ public class ModularOpenAIController : MonoBehaviour
         string alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
-        cards = new List<BaseCard>();
+        List<BaseCard> cards = new List<BaseCard>();
         int i = 0;
         try{
             foreach (var item in cardUnserialized)
