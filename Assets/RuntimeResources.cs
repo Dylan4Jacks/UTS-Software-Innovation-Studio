@@ -29,7 +29,7 @@ public class RuntimeResources : MonoBehaviour
         spriteDictionary.Add("beast", Resources.Load<Sprite>("Sprites/beast"));
         spriteDictionary.Add("furniture", Resources.Load<Sprite>("Sprites/furniture"));
         spriteDictionary.Add("ghost", Resources.Load<Sprite>("Sprites/ghost"));
-        spriteDictionary.Add("car", Resources.Load<Sprite>("Sprites/car"));
+        spriteDictionary.Add("vehicle", Resources.Load<Sprite>("Sprites/car"));
         spriteDictionary.Add("alien", Resources.Load<Sprite>("Sprites/alien"));
         spriteDictionary.Add("four-legged creature", Resources.Load<Sprite>("Sprites/creature"));
         spriteDictionary.Add("aquatic", Resources.Load<Sprite>("Sprites/whale"));

@@ -21,6 +21,7 @@ public class CharacterCreationController : MonoBehaviour
     public Button BtnSubmit;
     public GameObject LoadingScreen;
     public GameObject PlayerInput;
+    public GameObject error;
 
     // Start is called before the first frame update
     void Start()
@@ -112,6 +113,7 @@ public class CharacterCreationController : MonoBehaviour
     public void LoadingScene(bool active)
     {
         BtnSubmit.gameObject.SetActive(!active);
+        error.SetActive(!active);
         LoadingScreen.SetActive(active);
     }
 
