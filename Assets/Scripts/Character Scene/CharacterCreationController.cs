@@ -6,9 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
-using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
-using UnityEditor.VersionControl;
 using System;
 using UnityEngine.EventSystems;
 

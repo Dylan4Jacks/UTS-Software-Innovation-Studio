@@ -1,12 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System.Threading;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using UnityEditorInternal;
+
 public class BattleController : MonoBehaviour
 {
     // Related to battle
@@ -198,7 +193,7 @@ public class BattleController : MonoBehaviour
     *********************************************/
     private void resetBattle() {
         generateNewTestTeam();
-        Utils.ClearConsole();
+        
         this.currentRound = 0;
         changeBattleState("PREPARATION");
     }

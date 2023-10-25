@@ -3,18 +3,12 @@ using OpenAI_API.Chat;
 using OpenAI_API.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEditor.Progress;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 using UnityEditor;
 using System.Linq;
 using System.Threading;
@@ -52,9 +46,16 @@ public class ModularOpenAIController
     public Task<List<BaseCard>> submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
-        string API_KEY = Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User);
-        if(API_KEY == null){
-            API_KEY = moduleConfigGetterSetter.APIKey;
+        string API_KEY = moduleConfigGetterSetter.APIKey;; 
+        if(API_KEY == "" || API_KEY == null){
+            try{
+                API_KEY = Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User);
+                if(API_KEY == null){
+                    API_KEY = moduleConfigGetterSetter.APIKey;
+                }
+            }catch(Exception e){
+                Debug.LogError(e);
+            }
         }
         api = new OpenAIAPI(API_KEY);
         Debug.Log(API_KEY == null);

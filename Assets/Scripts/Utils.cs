@@ -83,12 +83,7 @@ public static class Utils
             (b == null? -1 : a.currentSpeed > b.currentSpeed? -1: 
                 (a.currentSpeed < b.currentSpeed? 1 : 0)); 
     }
-    public static void ClearConsole() {
-        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(UnityEditor.SceneView));
-        System.Type type = assembly.GetType("UnityEditor.LogEntries");
-        System.Reflection.MethodInfo method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-    }
+    
 
     public static string roundTemplate() {
         return "Round " + BattleController.instance.currentRound.ToString() + ": ";
