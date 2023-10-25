@@ -37,8 +37,15 @@ public class ModularOpenAIController
     // Old Regex (?<=(, Attack: )).*(?=(\n)?)
 
     public ModularOpenAIController(){
-        string configJsonString  = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Assets/OpenAI_Module/moduleConfig.json"));
-        moduleConfigGetterSetter = JsonConvert.DeserializeObject<ModuleConfigGetterSetter>(configJsonString)!;
+        
+        moduleConfigGetterSetter = new ModuleConfigGetterSetter{
+            NumberOfObjcets = 8,
+            NumberOfObjectAttributes = 5,
+            TokenLimit = 1000,
+            ObjectAttributes = "Name, Description, HP (Max 20, Min 10), Speed (Max 20, Min 1), and Attack (Max 10, Min 1)",
+            ObjectContextDescription = "cards in a card game",
+            APIKey = "PASTE API KEY BEFORE BUILD/DEPLOY"
+        };
     }
     //Need to be a list because multiple Requests to the API will be made
 
