@@ -52,7 +52,12 @@ public class ModularOpenAIController
     public Task<List<BaseCard>> submitCharacterPrompt(string inputPrompt)
     {
         //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
-        api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User));
+        string API_KEY = Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User);
+        if(API_KEY == null){
+            API_KEY = moduleConfigGetterSetter.APIKey;
+        }
+        api = new OpenAIAPI(API_KEY);
+        Debug.Log(API_KEY == null);
         return StartCharacterCreation(inputPrompt);
     }
     private Task<List<BaseCard>> StartCharacterCreation(string inputPrompt)
@@ -161,8 +166,8 @@ public class ModularOpenAIController
 
     private async Task<string> allocateImages(string cardNames)
     {
-        string imageOptions = "bird, beast, humanoid, furniture, ghost, vehicle, alien, four-legged creature, aquatic, robot";
-        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Multiple cards can have the same descriptive word. Format your response in the following way 'card name: descriptive word' and then start a new line.";
+        string imageOptions = "wug, beast, humanoid, furniture";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
 
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
@@ -198,4 +203,6 @@ public class ModuleConfigGetterSetter {
     public int TokenLimit { get; set; }
     public string ObjectAttributes { get; set; }
     public string ObjectContextDescription { get; set; }
+    public string APIKey { get; set; }
+
 }

@@ -20,8 +20,11 @@ public class CharacterCreationController : MonoBehaviour
     public TMP_InputField inputField;
     public Button BtnSubmit;
     public GameObject LoadingScreen;
-    public GameObject PlayerInput;
     public GameObject error;
+ 
+    void Awake(){
+    }
+   
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,12 @@ public class CharacterCreationController : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Mouse0)){
+           if(EventSystem.current.currentSelectedGameObject != inputField.gameObject)
+            {
+                SetInputFocus();
+            }
+        }
         // Check if 'Enter' key is pressed
         if (!Input.GetKeyDown(KeyCode.Return))
         {
@@ -46,6 +55,22 @@ public class CharacterCreationController : MonoBehaviour
         // TODO: Implement After OpenAIController works with integration
         //LoadNextScene(); // Call function to load next scene
     }
+
+    public void SetInputFocus()
+        {
+            Debug.Log($"Set Focus");
+            if (inputField)
+            {
+                Debug.Log("Set to InputField");
+                EventSystem.current.SetSelectedGameObject(null); // Deselect any previously selected object
+                EventSystem.current.SetSelectedGameObject(inputField.gameObject); // Set the new selected object
+
+                inputField.ActivateInputField();
+
+                // Position the caret at the end of the text
+                inputField.caretPosition = inputField.text.Length;
+            }
+        }
 
     void CreateCharacter()
     {
