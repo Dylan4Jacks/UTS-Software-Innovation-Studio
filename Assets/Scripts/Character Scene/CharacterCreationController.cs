@@ -22,12 +22,9 @@ public class CharacterCreationController : MonoBehaviour
     public GameObject LoadingScreen;
     public GameObject PlayerInput;
 
-    ModularOpenAIController modularOpenAIController;
-
     // Start is called before the first frame update
     void Start()
     {
-        modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
         EventSystem.current.SetSelectedGameObject(null); // Deselect any previously selected object
         EventSystem.current.SetSelectedGameObject(inputField.gameObject); // Set the new selected object
@@ -68,6 +65,8 @@ public class CharacterCreationController : MonoBehaviour
 
         // Enemy Faction prompt addition:
         string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
+        
+        ModularOpenAIController modularOpenAIController = new ModularOpenAIController();
 
         //Run 2 API calls In Parallel 
         Task<List<BaseCard>> taskPlayer = modularOpenAIController.submitCharacterPrompt(inputField.text);
@@ -81,7 +80,10 @@ public class CharacterCreationController : MonoBehaviour
                 List<BaseCard> enemyCards = taskEnemy.Result;
                 
                 if(!cards.Any() || !enemyCards.Any()){
-                    Debug.Log($"Invalid Prompt. Please try a different Prompt");
+                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                        Debug.Log($"Invalid Prompt. Please try a different Prompt");
+                    });
+                   
                     SingleMainThreadDispatcher.Instance.Enqueue(() => {
                         ToggleErrors($"Invalid Prompt. Please try a different Prompt");
                     });

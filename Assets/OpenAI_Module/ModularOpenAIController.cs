@@ -19,7 +19,7 @@ using UnityEditor;
 using System.Linq;
 using System.Threading;
 
-public class ModularOpenAIController : MonoBehaviour
+public class ModularOpenAIController
 {
     private OpenAIAPI api;
     private ModuleConfigGetterSetter moduleConfigGetterSetter;
