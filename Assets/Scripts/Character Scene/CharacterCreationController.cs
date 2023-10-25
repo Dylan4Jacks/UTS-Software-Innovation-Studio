@@ -16,6 +16,7 @@ using UnityEngine.EventSystems;
 public class CharacterCreationController : MonoBehaviour
 {
     public TMP_Text textField;
+    public TMP_Text textError;
     public TMP_InputField inputField;
     public Button BtnSubmit;
     public GameObject LoadingScreen;
@@ -100,10 +101,6 @@ public class CharacterCreationController : MonoBehaviour
                 Debug.LogError(allTasks.Exception.ToString());
             }
         });
-
-        //TODO: Can handle/Toggle loading animation here:
-
-
     }
 
     public void LoadingScene(bool active)
@@ -114,7 +111,7 @@ public class CharacterCreationController : MonoBehaviour
 
     void ToggleErrors(string Error)
     {
-        //TODO: Add Error Message to Player so they know why there prompt didnt work
+        textError.text = Error;
     }
 
         // Function to load the next scene
