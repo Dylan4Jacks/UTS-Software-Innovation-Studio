@@ -10,12 +10,14 @@ using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
 using UnityEditor.VersionControl;
 using System;
+using UnityEngine.EventSystems;
 
 //TODO
 public class CharacterCreationController : MonoBehaviour
 {
     public TMP_Text textField;
-    public TMP_Text inputField;
+    public TMP_Text textError;
+    public TMP_InputField inputField;
     public Button BtnSubmit;
     public GameObject LoadingScreen;
     public GameObject PlayerInput;
@@ -27,6 +29,13 @@ public class CharacterCreationController : MonoBehaviour
     {
         modularOpenAIController = gameObject.AddComponent<ModularOpenAIController>();
         BtnSubmit.onClick.AddListener(() => CreateCharacter());
+        EventSystem.current.SetSelectedGameObject(null); // Deselect any previously selected object
+        EventSystem.current.SetSelectedGameObject(inputField.gameObject); // Set the new selected object
+
+        // For TMP_InputField, you might not need the OnPointerClick line.
+        // But if you do, you'll need to handle it differently, perhaps by manually activating the input field.
+        inputField.ActivateInputField();
+
     }
 
     void Update()
@@ -73,8 +82,12 @@ public class CharacterCreationController : MonoBehaviour
                 
                 if(!cards.Any() || !enemyCards.Any()){
                     Debug.Log($"Invalid Prompt. Please try a different Prompt");
-                    ToggleErrors($"Invalid Prompt. Please try a different Prompt");
-                    LoadingScene(false);
+                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                        ToggleErrors($"Invalid Prompt. Please try a different Prompt");
+                    });
+                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                        LoadingScene(false);
+                    });
                     return;
                 }
                 
@@ -92,10 +105,6 @@ public class CharacterCreationController : MonoBehaviour
                 Debug.LogError(allTasks.Exception.ToString());
             }
         });
-
-        //TODO: Can handle/Toggle loading animation here:
-
-
     }
 
     public void LoadingScene(bool active)
@@ -106,7 +115,11 @@ public class CharacterCreationController : MonoBehaviour
 
     void ToggleErrors(string Error)
     {
-
+        textError.text = Error;
+        // Set the opacity of the text to 100%
+        Color32 currentColor = textError.color;
+        currentColor.a = 255; // 255 is the maximum value for opacity
+        textError.color = currentColor;
     }
 
         // Function to load the next scene
