@@ -24,16 +24,16 @@ public class RuntimeResources : MonoBehaviour
     }
 
     private void initialiseSprites() {
-        spriteDictionary.Add("wug", Resources.Load<Sprite>("Sprites/Wug"));
+        spriteDictionary.Add("bird", Resources.Load<Sprite>("Sprites/Wug"));
         spriteDictionary.Add("humanoid", Resources.Load<Sprite>("Sprites/humanoid"));
         spriteDictionary.Add("beast", Resources.Load<Sprite>("Sprites/beast"));
         spriteDictionary.Add("furniture", Resources.Load<Sprite>("Sprites/furniture"));
         spriteDictionary.Add("ghost", Resources.Load<Sprite>("Sprites/ghost"));
         spriteDictionary.Add("car", Resources.Load<Sprite>("Sprites/car"));
         spriteDictionary.Add("alien", Resources.Load<Sprite>("Sprites/alien"));
-        spriteDictionary.Add("creature", Resources.Load<Sprite>("Sprite/creature"));
-        spriteDictionary.Add("whale", Resources.Load<Sprite>("Sprites/whale"));
+        spriteDictionary.Add("four-legged creature", Resources.Load<Sprite>("Sprites/creature"));
+        spriteDictionary.Add("aquatic", Resources.Load<Sprite>("Sprites/whale"));
         spriteDictionary.Add("robot", Resources.Load<Sprite>("Sprites/robot"));
-        spriteDictionary.Add("unknown", Resources.Load<Sprite>("Sprite/unknown"));
+        spriteDictionary.Add("unknown", Resources.Load<Sprite>("Sprites/unknown"));
     }
 }

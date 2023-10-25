@@ -28,9 +28,9 @@ public class BaseCard {
         if (resources.spriteDictionary.TryGetValue(spriteType, out this.sprite)) {
             this.spriteType = spriteType;
         } else {
-            Debug.Log("[ERROR]: No such sprite type as \"" + spriteType + "\". Defaulting to wug");
-            this.spriteType = "wug";
-            this.sprite = resources.spriteDictionary["wug"];
+            Debug.Log("[ERROR]: No such sprite type as \"" + spriteType + "\". Defaulting to unknown");
+            this.spriteType = "unknown";
+            this.sprite = resources.spriteDictionary["unknown"];
         }
     }
 }

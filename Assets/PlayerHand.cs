@@ -35,8 +35,8 @@ public class PlayerHand : MonoBehaviour
         } else {
             cards.Add(new BaseCard("Woah This is a long name", "Description1", 2, 2, 2, "beast"));
             cards.Add(new BaseCard("Yeah", "Description1", 3, 3, 3, "humanoid"));
-            cards.Add(new BaseCard("Ohno", "Description1", 4, 4, 4, "wug"));
-            cards.Add(new BaseCard("Wahoo", "wahoo", 4, 4, 4, "whale"));
+            cards.Add(new BaseCard("Ohno", "Description1", 4, 4, 4, "bird"));
+            cards.Add(new BaseCard("Wahoo", "wahoo", 4, 4, 4, "aquatic"));
             cards.Add(new BaseCard("WOOGH", "Description1", 1, 5, 2, "ghost"));
             cards.Add(new BaseCard("Beepo", "Description1", 3, 1, 3, "robot"));
             cards.Add(new BaseCard("Beepo", "I exist to die and existence is pain. Please ease my suffering now.", 3, 1, 3, "robot"));        
