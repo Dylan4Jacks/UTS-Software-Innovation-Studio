@@ -103,7 +103,7 @@ public class CharacterCreationController : MonoBehaviour
                 List<BaseCard> cards = taskPlayer.Result;
                 List<BaseCard> enemyCards = taskEnemy.Result;
                 
-                if(!cards.Any() || !enemyCards.Any()){
+                if(cards.Count < 6 || enemyCards.Count < 6){
                     SingleMainThreadDispatcher.Instance.Enqueue(() => {
                         Debug.Log($"Invalid Prompt. Please try a different Prompt");
                     });
