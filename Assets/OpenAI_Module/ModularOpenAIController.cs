@@ -44,7 +44,7 @@ public class ModularOpenAIController
             TokenLimit = 1000,
             ObjectAttributes = "Name, Description, HP (Max 20, Min 10), Speed (Max 20, Min 1), and Attack (Max 10, Min 1)",
             ObjectContextDescription = "cards in a card game",
-            APIKey = "PASTE API KEY BEFORE BUILD/DEPLOY"
+            APIKey = "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"
         };
     }
     //Need to be a list because multiple Requests to the API will be made
