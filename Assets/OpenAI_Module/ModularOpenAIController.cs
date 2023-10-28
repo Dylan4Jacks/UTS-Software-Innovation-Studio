@@ -83,11 +83,7 @@ public class ModularOpenAIController
 
         // First API request
         yield return monoBehaviour.StartCoroutine(CardsRequest(cardCreationMessage, cardUnserialized));
-
-
-
-        
-
+        Debug.Log("Card Counting Time\n" + cardUnserialized.Count());
         // adds each card name to a string
         string cardNames = "";
         foreach (var item in cardUnserialized)
@@ -97,35 +93,56 @@ public class ModularOpenAIController
 
         // removes final comma and space
         cardNames = cardNames.Substring(0, cardNames.Length - 2);
-            string alloactedImages = "";
-            Debug.Log("END ALL");
-        //string alloactedImages = await allocateImages(cardNames);
+        Debug.Log("END ALL");
 
-        //Initialize Array of Card Objects
-        int i = 0;
-        try{
-            foreach (var item in cardUnserialized)
-            {
-                Match nameMatch = Regex.Match(item, rxCardNameString);
-                Match descriptionMatch = Regex.Match(item, rxDescriptionString);
-                Match hpMatch = Regex.Match(item, rxHPString);
-                Match speedMatch = Regex.Match(item, rxSpeedString);
-                Match attackMatch = Regex.Match(item, rxAttackString);
-                Match imageMatch = Regex.Match(alloactedImages, @"(?<=(" + nameMatch.Value + ": )).*");
-                BaseCard card = new BaseCard(
-                                    nameMatch.Value,
-                                    descriptionMatch.Value,
-                                    int.Parse(attackMatch.Value), 
-                                    int.Parse(speedMatch.Value), 
-                                    int.Parse(hpMatch.Value),
-                                    imageMatch.Value
-                                    );
-                Cards.Add(card);
-                i++;
+///////////////////
+
+
+
+        string imageOptions = "wug, beast, humanoid, furniture";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
+
+        // Fill the user message form the input field
+        ChatMessage userMessageImage = new ChatMessage();
+        userMessageImage.Role = ChatMessageRole.User;
+        userMessageImage.Content = imageAllocationPrompt;
+
+        List<ChatMessage> lChatImages = new List<ChatMessage>();
+        lChatImages.Add(userMessageImage);
+
+
+        string allocatedImages = null; // This will hold the result when the coroutine is done
+        yield return monoBehaviour.StartCoroutine(allocateImages(lChatImages, (result) => {
+            Debug.Log($"Inside The CallBack\n{result}");
+            allocatedImages = result;
+            //Initialize Array of Card Objects
+            int i = 0;
+            try{
+                foreach (var item in cardUnserialized)
+                {
+                    Match nameMatch = Regex.Match(item, rxCardNameString);
+                    Match descriptionMatch = Regex.Match(item, rxDescriptionString);
+                    Match hpMatch = Regex.Match(item, rxHPString);
+                    Match speedMatch = Regex.Match(item, rxSpeedString);
+                    Match attackMatch = Regex.Match(item, rxAttackString);
+                    Match imageMatch = Regex.Match(allocatedImages, @"(?<=(" + nameMatch.Value + ": )).*");
+                    BaseCard card = new BaseCard(
+                                        nameMatch.Value,
+                                        descriptionMatch.Value,
+                                        int.Parse(attackMatch.Value), 
+                                        int.Parse(speedMatch.Value), 
+                                        int.Parse(hpMatch.Value),
+                                        imageMatch.Value
+                                        );
+                    Cards.Add(card);
+                    i++;
+                }
+            } catch {
+                Cards = new List<BaseCard>();
             }
-        } catch {
-            Cards = new List<BaseCard>();
-        }
+        }));
+
+        
     }
 
     private IEnumerator CardsRequest(List<ChatMessage> cardCreationMessage, List<string> outputList){
@@ -143,8 +160,6 @@ public class ModularOpenAIController
         };
         // Convert the data object to JSON
         string dataJson = JsonConvert.SerializeObject(data);
-        Debug.Log("DATABELOW");
-        Debug.Log("DATA\n" + dataJson);
 
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(dataJson);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -159,22 +174,63 @@ public class ModularOpenAIController
             Debug.LogError($"Request Error: {request.error}");
         }
         else
-        {
-            string responseBody = request.downloadHandler.text;
-            // Deserialize and process the response
-            // Assuming you have a corresponding C# class for the response, or use dynamic with Newtonsoft.Json
-            // For example, using JsonUtility:
-            // ChatCompletion responseObj = JsonUtility.FromJson<ChatCompletion>(responseBody);
-            // string messageContent = responseObj.choices[0].message.content;
-            
+        {   
             // Or, if using Newtonsoft.Json:
-            Debug.Log("Just before Deserialisation\n\n");
             string adjustedJson = request.downloadHandler.text.Replace("\"object\":", "\"objectType\":");
             ChatCompletion chatCompletion = JsonUtility.FromJson<ChatCompletion>(adjustedJson);
             var messageContent = chatCompletion.choices[0].message.content;
             Debug.Log("Reached the message content success\n\n" + messageContent);
+            outputList.AddRange(messageContent.Split(new string[] {"\n\n"},StringSplitOptions.None));
+            Debug.Log("Card Counting 2\n" + outputList.Count());
         }
     }
+        // Send the request
+    private IEnumerator allocateImages(List<ChatMessage> cardCreationMessage, Action<string> callback)
+    {
+        // Set up the request
+        UnityWebRequest request = new UnityWebRequest("https://api.openai.com/v1/chat/completions", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + moduleConfigGetterSetter.APIKey);
+        request.SetRequestHeader("Content-Type", "application/json");
+        
+        // Constructing the request body
+        var data = new
+        {
+            model = "gpt-3.5-turbo",
+            messages = cardCreationMessage,
+            temperature = 0.1f
+        };
+        // Convert the data object to JSON
+        string dataJson = JsonConvert.SerializeObject(data);
+
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(dataJson);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        // Send the request
+        yield return request.SendWebRequest();
+
+        // Handle the response
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError($"Request Error: {request.error}");
+            callback("");
+        }
+        else
+        {   
+            // Or, if using Newtonsoft.Json:
+            string adjustedJson = request.downloadHandler.text.Replace("\"object\":", "\"objectType\":");
+            ChatCompletion chatCompletion = JsonUtility.FromJson<ChatCompletion>(adjustedJson);
+            var messageContent = chatCompletion.choices[0].message.content;
+            Debug.Log("Reached the message content success\n\n" + messageContent);
+            callback(messageContent);
+        }
+    }
+
+    internal static void submitCharacterPrompt()
+    {
+        throw new NotImplementedException();
+    }
+
 
     [Serializable]
     public class ChatCompletion
@@ -210,39 +266,6 @@ public class ModularOpenAIController
         public int total_tokens;
     }
 
-        // Send the request
-    private async Task<string> allocateImages(string cardNames)
-    {
-        string imageOptions = "wug, beast, humanoid, furniture";
-        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
-
-        // Fill the user message form the input field
-        ChatMessage userMessage = new ChatMessage();
-        userMessage.Role = ChatMessageRole.User;
-        userMessage.Content = imageAllocationPrompt;
-
-        List<ChatMessage> test = new List<ChatMessage>();
-        test.Add(userMessage);
-
-        // Send Character creation message to OpenAI to get the reponse in cards
-        var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
-        {
-            Model = Model.ChatGPTTurbo,
-            Temperature = 0.1,
-            MaxTokens = 300,
-            Messages = test
-        });
-
-        // Get Response from API
-        string apiResponseString = chatResult.Choices[0].Message.Content;
-
-        return apiResponseString;
-    }
-
-    internal static void submitCharacterPrompt()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class ModuleConfigGetterSetter {
