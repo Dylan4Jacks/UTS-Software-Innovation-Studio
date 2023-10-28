@@ -12,11 +12,18 @@ using System.Threading.Tasks;
 using UnityEditor;
 using System.Linq;
 using System.Threading;
+using UnityEngine.Networking;
+using System.Collections;
+using System.Net.Http;
+using UnityEditor.Tilemaps;
+using UnityEditor.Build.Content;
+using UnityEditor.PackageManager;
 
 public class ModularOpenAIController
 {
     private OpenAIAPI api;
     private ModuleConfigGetterSetter moduleConfigGetterSetter;
+    private MonoBehaviour monoBehaviour;
 
     // REGEX Expression for card creation
 
@@ -36,8 +43,8 @@ public class ModularOpenAIController
     // New Regex Attack String (?<=(Attack: )).*
     // Old Regex (?<=(, Attack: )).*(?=(\n)?)
 
-    public ModularOpenAIController(){
-        
+    public ModularOpenAIController(MonoBehaviour mono){
+        monoBehaviour = mono;
         moduleConfigGetterSetter = new ModuleConfigGetterSetter{
             NumberOfObjcets = 8,
             NumberOfObjectAttributes = 5,
@@ -50,35 +57,10 @@ public class ModularOpenAIController
     //Need to be a list because multiple Requests to the API will be made
 
     // Start is called before the first frame update
-    public Task<List<BaseCard>> submitCharacterPrompt(string inputPrompt)
+    public IEnumerator submitCharacterPrompt(string inputPrompt, List<BaseCard> Cards)
     {
-        //Create a new instance of the OpenAI API, and give it the APIKEY (Stored in the System Environment Variables)
-        string API_KEY = moduleConfigGetterSetter.APIKey;; 
-        if(API_KEY == "" || API_KEY == null){
-            try{
-                API_KEY = Environment.GetEnvironmentVariable("OPEN_AI_APIKEY", EnvironmentVariableTarget.User);
-                if(API_KEY == null){
-                    API_KEY = moduleConfigGetterSetter.APIKey;
-                }
-            }catch(Exception e){
-                Debug.LogError(e);
-            }
-        }
-        api = new OpenAIAPI(API_KEY);
-        Debug.Log(API_KEY == null);
-        return StartCharacterCreation(inputPrompt);
-    }
-    private Task<List<BaseCard>> StartCharacterCreation(string inputPrompt)
-    {
-        Task<List<BaseCard>> task = Task.Run(() =>
-        {
-            return GetResponse(inputPrompt);
-        });
-        return task;
-    }
+        Debug.Log("Running submitCharacterPrompt with input:\n" + inputPrompt);
 
-    private async Task<List<BaseCard>> GetResponse(string inputPrompt)
-    {
         List<ChatMessage> cardCreationMessage = new List<ChatMessage> { 
             //This is where the prompt limits are imput
             new (ChatMessageRole.System, "You are to create exactly" + moduleConfigGetterSetter.NumberOfObjcets + " entities related to the character brief that is given, you cannot create more or less. The entities could be people, objects or creatures. These entities will be used for " + moduleConfigGetterSetter.ObjectContextDescription + ". You will respond with only the entities " + moduleConfigGetterSetter.ObjectAttributes + " stats, no other information. The format for each entity should be numbered list similar to this '1. Lizard Frog:\n Description: This creatures lives underground and has scaly skin\n HP: 10\n Speed: 10\n Attack: 10' then double new line to create a gap between objects")
@@ -97,37 +79,14 @@ public class ModularOpenAIController
 
         //Add Message to list
         cardCreationMessage.Add(userMessage);
+        List<string> cardUnserialized = new List<string>();
+
+        // First API request
+        yield return monoBehaviour.StartCoroutine(CardsRequest(cardCreationMessage, cardUnserialized));
 
 
-        // Send Character creation message to OpenAI to get the reponse in cards
-        var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
-        {
-            Model = Model.ChatGPTTurbo,
-            Temperature = 0.1,
-            MaxTokens = moduleConfigGetterSetter.TokenLimit,
-            Messages = cardCreationMessage
-        });
 
-        // Get Response from API
-        ChatMessage APIResponse = new ChatMessage();
-        APIResponse.Role = chatResult.Choices[0].Message.Role;
-        APIResponse.Content = chatResult.Choices[0].Message.Content;
-
-        string currentThread = Thread.CurrentThread.Name;
-                SingleMainThreadDispatcher.Instance.Enqueue(() => {
-                            Debug.Log($"{currentThread}:{inputPrompt}\n{userMessage.rawRole}\n{userMessage.Content}\n{APIResponse.rawRole}\n{APIResponse.Content}" +
-                            $"\n\n{string.Join("\n", cardCreationMessage.Select(n =>  $"{n.Role}: {n.Content}").ToArray())}" );
-                        });
-        cardCreationMessage.Add(APIResponse);
-
-        string apiResponseString = APIResponse.Content;
-
-
-        // Split Creatures/Objects into individual Strings
-        string[] cardUnserialized = apiResponseString.Split(
-            new string[] {"\n\n"},
-            StringSplitOptions.None
-        );
+        
 
         // adds each card name to a string
         string cardNames = "";
@@ -138,11 +97,11 @@ public class ModularOpenAIController
 
         // removes final comma and space
         cardNames = cardNames.Substring(0, cardNames.Length - 2);
-
-        string alloactedImages = await allocateImages(cardNames);
+            string alloactedImages = "";
+            Debug.Log("END ALL");
+        //string alloactedImages = await allocateImages(cardNames);
 
         //Initialize Array of Card Objects
-        List<BaseCard> cards = new List<BaseCard>();
         int i = 0;
         try{
             foreach (var item in cardUnserialized)
@@ -161,17 +120,97 @@ public class ModularOpenAIController
                                     int.Parse(hpMatch.Value),
                                     imageMatch.Value
                                     );
-                cards.Add(card);
+                Cards.Add(card);
                 i++;
             }
         } catch {
-            List<BaseCard> emptyCards = new List<BaseCard>();
-            return emptyCards;
+            Cards = new List<BaseCard>();
         }
-
-        return cards;
     }
 
+    private IEnumerator CardsRequest(List<ChatMessage> cardCreationMessage, List<string> outputList){
+        // Set up the request
+        UnityWebRequest request = new UnityWebRequest("https://api.openai.com/v1/chat/completions", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + moduleConfigGetterSetter.APIKey);
+        request.SetRequestHeader("Content-Type", "application/json");
+        
+        // Constructing the request body
+        var data = new
+        {
+            model = "gpt-3.5-turbo",
+            messages = cardCreationMessage,
+            temperature = 0.1f
+        };
+        // Convert the data object to JSON
+        string dataJson = JsonConvert.SerializeObject(data);
+        Debug.Log("DATABELOW");
+        Debug.Log("DATA\n" + dataJson);
+
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(dataJson);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        // Send the request
+        yield return request.SendWebRequest();
+
+        // Handle the response
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError($"Request Error: {request.error}");
+        }
+        else
+        {
+            string responseBody = request.downloadHandler.text;
+            // Deserialize and process the response
+            // Assuming you have a corresponding C# class for the response, or use dynamic with Newtonsoft.Json
+            // For example, using JsonUtility:
+            // ChatCompletion responseObj = JsonUtility.FromJson<ChatCompletion>(responseBody);
+            // string messageContent = responseObj.choices[0].message.content;
+            
+            // Or, if using Newtonsoft.Json:
+            Debug.Log("Just before Deserialisation\n\n");
+            string adjustedJson = request.downloadHandler.text.Replace("\"object\":", "\"objectType\":");
+            ChatCompletion chatCompletion = JsonUtility.FromJson<ChatCompletion>(adjustedJson);
+            var messageContent = chatCompletion.choices[0].message.content;
+            Debug.Log("Reached the message content success\n\n" + messageContent);
+        }
+    }
+
+    [Serializable]
+    public class ChatCompletion
+    {
+        public string id;
+        public string objectType;
+        public int created;
+        public string model;
+        public List<Choice> choices;
+        public Usage usage;
+    }
+
+    [Serializable]
+    public class Choice
+    {
+        public int index;
+        public Message message;
+        public string finish_reason;
+    }
+
+    [Serializable]
+    public class Message
+    {
+        public string role;
+        public string content;
+    }
+
+    [Serializable]
+    public class Usage
+    {
+        public int prompt_tokens;
+        public int completion_tokens;
+        public int total_tokens;
+    }
+
+        // Send the request
     private async Task<string> allocateImages(string cardNames)
     {
         string imageOptions = "wug, beast, humanoid, furniture";
@@ -205,6 +244,7 @@ public class ModularOpenAIController
         throw new NotImplementedException();
     }
 }
+
 public class ModuleConfigGetterSetter {
     public int NumberOfObjcets { get; set; }
     public int NumberOfObjectAttributes { get; set; }

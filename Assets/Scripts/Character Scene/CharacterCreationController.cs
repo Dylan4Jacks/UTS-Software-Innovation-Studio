@@ -90,47 +90,88 @@ public class CharacterCreationController : MonoBehaviour
         // Enemy Faction prompt addition:
         string enemyPromptPrefix = "For this prompt, generate exactly 6 cards instead. Do the opposite of the end prompt, You are to create the rival/enemy of the following prompt, so they must be opposite: ";
         
-        ModularOpenAIController modularOpenAIController = new ModularOpenAIController();
+        
+        StartCoroutine(MainCoroutine(enemyPromptPrefix, inputField.text));
+    }
 
-        //Run 2 API calls In Parallel 
-        Task<List<BaseCard>> taskPlayer = modularOpenAIController.submitCharacterPrompt(inputField.text);
-        Task<List<BaseCard>> taskEnemy = modularOpenAIController.submitCharacterPrompt(enemyPromptPrefix + inputField.text);
+    IEnumerator MainCoroutine(string enemyPrefix, string prompt)
+    {
+        ModularOpenAIController modularOpenAIController = new ModularOpenAIController(this);
 
-        //Code below only runs after getting a response from all calls. 
-        System.Threading.Tasks.Task.WhenAll(taskPlayer, taskEnemy).ContinueWith(allTasks => {
-            //LoadingScene(false);
-            if (allTasks.Status == TaskStatus.RanToCompletion) {
-                List<BaseCard> cards = taskPlayer.Result;
-                List<BaseCard> enemyCards = taskEnemy.Result;
-                
-                if(cards.Count < 6 || enemyCards.Count < 6){
-                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
-                        Debug.Log($"Invalid Prompt. Please try a different Prompt");
-                    });
-                   
-                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
-                        ToggleErrors($"Invalid Prompt. Please try a different Prompt");
-                    });
-                    SingleMainThreadDispatcher.Instance.Enqueue(() => {
-                        LoadingScene(false);
-                    });
-                    return;
-                }
-                
-                SingleCharacter.Instance.cards.AddRange(cards);
-                SingleCharacter.Instance.enemyCards.AddRange(enemyCards);
-                SingleCharacter.Instance.CharacterDescription = inputField.text;
-                // Ensure Unity-specific code runs on the main thread
-                SingleMainThreadDispatcher.Instance.Enqueue(() => {
-                    LoadNextScene();
-                });
-            }
-            else {
-                // Handle error, allTasks.Exception will contain the aggregate exception
+         List<BaseCard> PlayerCards = new List<BaseCard>();
+        Coroutine playerCoroutine = StartCoroutine(modularOpenAIController.submitCharacterPrompt(prompt, PlayerCards));
+
+        List<BaseCard> EnemyCards = new List<BaseCard>();
+        Coroutine enemyCoroutine = StartCoroutine(modularOpenAIController.submitCharacterPrompt(enemyPrefix + prompt, EnemyCards));
+
+        // Wait for both coroutines to complete
+        yield return StartCoroutine(WaitForAll(playerCoroutine, enemyCoroutine));
+
+        AfterBothFunctions(PlayerCards, EnemyCards);
+
+    }
+
+    IEnumerator WaitForAll(params Coroutine[] coroutines)
+    {
+        foreach (var coroutine in coroutines)
+        {
+            yield return coroutine;
+        }
+    }
+
+    IEnumerator MyFunction(string parameter, List<string> resultList)
+    {
+        Debug.Log("Running function with parameter: " + parameter);
+
+        // First API request
+        yield return StartCoroutine(APIRequest1(parameter, resultList));
+
+        // Using the result from the first API request for the second one
+        yield return StartCoroutine(APIRequest2(resultList[0], resultList));
+    }
+
+    IEnumerator APIRequest1(string input, List<string> outputList)
+    {
+        // Simulate an API request with a delay
+        yield return new WaitForSeconds(1);
+
+        // For demonstration purposes, add result to the list
+        outputList.Add(input + "_Output1");
+    }
+
+    IEnumerator APIRequest2(string input, List<string> outputList)
+    {
+        // Simulate an API request with a delay
+        yield return new WaitForSeconds(1);
+
+        // For demonstration purposes, add result to the list
+        outputList.Add(input + "_Output2");
+    }
+
+    void AfterBothFunctions(List<BaseCard> PlayerCards, List<BaseCard> EnemyCards)
+    {
+        // Your code that should run after both function calls
+        Debug.Log("Both functions completed!");
+        
+        if(PlayerCards.Count < 6 || EnemyCards.Count < 6){
+            SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                Debug.Log($"Invalid Prompt. Please try a different Prompt");
+            });
+        
+            SingleMainThreadDispatcher.Instance.Enqueue(() => {
+                ToggleErrors($"Invalid Prompt. Please try a different Prompt");
+            });
+            SingleMainThreadDispatcher.Instance.Enqueue(() => {
                 LoadingScene(false);
-                Debug.LogError(allTasks.Exception.ToString());
-            }
-        });
+            });
+            return;
+        }
+        
+        SingleCharacter.Instance.cards.AddRange(PlayerCards);
+        SingleCharacter.Instance.enemyCards.AddRange(EnemyCards);
+        SingleCharacter.Instance.CharacterDescription = inputField.text;
+        // Ensure Unity-specific code runs on the main thread
+        LoadNextScene();
     }
 
     public void LoadingScene(bool active)
