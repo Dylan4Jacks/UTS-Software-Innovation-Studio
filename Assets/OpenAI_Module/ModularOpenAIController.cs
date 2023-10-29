@@ -91,13 +91,9 @@ public class ModularOpenAIController
         cardNames = cardNames.Substring(0, cardNames.Length - 2);
         Debug.Log("END ALL");
 
-///////////////////
 
-
-
-        string imageOptions = "wug, beast, humanoid, furniture";
-        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Format your response in the following way 'card name: descriptive word' and then start a new line.";
-
+        string imageOptions = "bird, beast, humanoid, furniture, ghost, vehicle, alien, four-legged creature, aquatic, robot";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Multiple cards can have the same descriptive word. Format your response in the following way 'card name: descriptive word' and then start a new line.";
         // Fill the user message form the input field
         ChatMessage userMessageImage = new ChatMessage();
         userMessageImage.Role = ChatMessageRole.User;
