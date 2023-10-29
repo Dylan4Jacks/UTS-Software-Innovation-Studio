@@ -14,10 +14,6 @@ using System.Linq;
 using System.Threading;
 using UnityEngine.Networking;
 using System.Collections;
-using System.Net.Http;
-using UnityEditor.Tilemaps;
-using UnityEditor.Build.Content;
-using UnityEditor.PackageManager;
 
 public class ModularOpenAIController
 {
