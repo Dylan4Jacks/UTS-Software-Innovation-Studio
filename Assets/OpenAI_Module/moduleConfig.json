@@ -4,5 +4,5 @@
     "TokenLimit": 1000,
     "ObjectAttributes": "Title, Description, Damage (Max 20, Min 10), Durability (Max 20, Min 1), and Weight (Max 10, Min 1)",
     "ObjectContextDescription": "Weapons dropped from enemies in a dungeon",
-    "APIKey": "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"
+    "APIKey": ""
 }
