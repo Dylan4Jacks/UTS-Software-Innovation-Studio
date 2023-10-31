@@ -168,7 +168,7 @@ public class ModularOpenAIController
     private async Task<string> allocateImages(string cardNames)
     {
         string imageOptions = "bird, beast, humanoid, furniture, ghost, vehicle, alien, four-legged creature, aquatic, robot";
-        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating one, and only one, of the provided descriptive words to each of the provided cards. Multiple cards can have the same descriptive word. Format your response in the following way 'card name: descriptive word' and then start a new line.";
+        string imageAllocationPrompt = "The following items are playing cards in a card game: " + cardNames + ". The following items are descriptive words: " + imageOptions + ". You are responsible for allocating each of the provided cards the descriptive word that best suits them. Multiple cards can have the same assigned word, but the descriptive word you choose must come from the provided list of descriptive words. Format your response in the following way 'card name: descriptive word' and then start a new line.";
         
         // Fill the user message form the input field
         ChatMessage userMessage = new ChatMessage();
