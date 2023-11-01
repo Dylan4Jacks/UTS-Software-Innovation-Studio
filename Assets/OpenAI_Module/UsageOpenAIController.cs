@@ -41,7 +41,7 @@ public class UsageOpenAIController: MonoBehaviour
             //LoadingScene(false);
             if (allTasks.Status == TaskStatus.RanToCompletion) {
                 string cards = taskPlayer.Result;
-                Debug.Log("This is the last debug: " + cards);
+                Debug.Log(cards);
                 outputText.text = cards;
             }
         });
