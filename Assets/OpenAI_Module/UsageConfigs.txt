@@ -1,0 +1,37 @@
+Prompt: This is a dark and dusty cave full of skeletons
+{
+    "NumberOfObjcets": 3,
+    "NumberOfObjectAttributes": 5,
+    "TokenLimit": 1000,
+    "ObjectAttributes": "Title, Description, Damage (Max 20, Min 10), Durability (Max 20, Min 1), and Weight (Max 10, Min 1)",
+    "ObjectContextDescription": "Weapons dropped from enemies in a dungeon",
+    "APIKey": ""
+}
+
+{
+    "NumberOfObjcets": 7,
+    "NumberOfObjectAttributes": 5,
+    "TokenLimit": 1000,
+    "ObjectAttributes": "Name, Description, HP (Max 20, Min 10), Speed (Max 20, Min 1), and Attack (Max 10, Min 1)",
+    "ObjectContextDescription": "cards in a card game",
+    "APIKey": ""
+}
+
+{
+    "NumberOfObjcets": 3,
+    "NumberOfObjectAttributes": 5,
+    "TokenLimit": 1000,
+    "ObjectAttributes": "Name, Job, HP (Max 20, Min 10), Level (Max 20, Min 1), and Age (Max 100, Min 20)",
+    "ObjectContextDescription": "NPC's within a town",
+    "APIKey": ""
+}
+
+Prompt: I am a noble knight looking for a town to rest for the night
+{
+    "NumberOfObjcets": 6,
+    "NumberOfObjectAttributes": 5,
+    "TokenLimit": 1000,
+    "ObjectAttributes": "Title, Description, Population (Max 10000, Min 15), Faction, and Distance from Current Location (Max 500, Min 10)",
+    "ObjectContextDescription": "places for my adventurer to go",
+    "APIKey": ""
+}
